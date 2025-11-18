@@ -1,0 +1,783 @@
+{ "rewrites": [ { "source": "/(.*)", "destination": "/index.html" } ] }
+{
+  "Message": "Fetched successfully",
+  "MentorsCount": 2,
+  "CoursesCount": 5,
+  "QuizzesCount": 4,
+  "PYQsCount": 1,
+  "BatchesCount": 5,
+  "Mentors": [
+    {
+      "_id": "69048e5878c58e6b7493f09c",
+      "name": "Ankit",
+      "designation": "Teacher",
+      "experience": "4",
+      "specialization": "Mathematics",
+      "description": "Maths teacher",
+      "imageUrl": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1761906263/instructors/rzddhvjaqysjdnaoxanx.jpg",
+      "publicId": "instructors/rzddhvjaqysjdnaoxanx",
+      "linkedin": "https://www.linkedin.com/in/shivamgupta",
+      "coursesLink": "https://www.examoneducation.com/instructor/shivam-gupta",
+      "createdAt": "2025-10-31T10:24:24.745Z",
+      "updatedAt": "2025-10-31T10:24:24.745Z",
+      "__v": 0
+    },
+    {
+      "_id": "690cbfcefb30fe1022285475",
+      "name": "Anupam",
+      "designation": "pull stackdeveloper",
+      "experience": "-5",
+      "specialization": "Bakch*di",
+      "description": "Nothing",
+      "imageUrl": "https://res.cloudinary.com/dg3ac8huu/image/upload/v1762488974/instructors/auxm2kygm3hgkfechszy.png",
+      "publicId": "instructors/auxm2kygm3hgkfechszy",
+      "linkedin": "http://fkldsa.con",
+      "coursesLink": "http://fjskal.fdkl",
+      "createdAt": "2025-11-06T15:33:34.345Z",
+      "updatedAt": "2025-11-07T04:16:15.721Z",
+      "__v": 0
+    }
+  ],
+  "Courses": [
+    {
+      "_id": "690092052a9dc503fbb41217",
+      "examCategory": "GATE",
+      "courses": [
+        {
+          "img": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1761805317/course_images/dl57g5uurxlphkudd3ia.jpg",
+          "publicId": "course_images/dl57g5uurxlphkudd3ia",
+          "clientId": "6900ab9a4b60faca0c7b42f0",
+          "title": "GATE 2028 – Master Batch",
+          "insideCourses": [
+            "Full Technical Syllabus",
+            "Engineering Mathematics",
+            "Aptitude",
+            "Mock Tests"
+          ],
+          "actualprice": 7999,
+          "previousprice": 12000,
+          "percent": 58,
+          "description": "description",
+          "perks": ["RECORDED", "PYQs", "LIVE TESTS"],
+          "Discount": true,
+          "amount": 800,
+          "_id": "69030406a3beaa74a9147aca",
+          "createdAt": "2025-10-30T06:21:58.524Z",
+          "updatedAt": "2025-10-30T06:21:58.524Z"
+        },
+        {
+          "img": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1761805669/course_images/huvmu419hqpw3dtkjxje.jpg",
+          "publicId": "course_images/huvmu419hqpw3dtkjxje",
+          "clientId": "6900ab9a4b60faca0c7b42f0",
+          "title": "GATE 2028 – Master Batch",
+          "insideCourses": [
+            "Full Technical Syllabus",
+            "Engineering Mathematics",
+            "Aptitude",
+            "Mock Tests"
+          ],
+          "actualprice": 7999,
+          "previousprice": 12000,
+          "percent": 58,
+          "description": "description",
+          "perks": ["RECORDED", "PYQs", "LIVE TESTS"],
+          "Discount": true,
+          "amount": 800,
+          "_id": "6903056650d6fe19dbc73179",
+          "createdAt": "2025-10-30T06:27:50.698Z",
+          "updatedAt": "2025-10-30T06:27:50.698Z"
+        },
+        {
+          "img": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1761809387/course_images/lxfficzhnmqzk0aqhpl5.jpg",
+          "publicId": "course_images/lxfficzhnmqzk0aqhpl5",
+          "clientId": "690312923c63b0917c33a305",
+          "title": "GATE 2028 – Master Batch",
+          "insideCourses": [
+            "Full Technical Syllabus",
+            "Engineering Mathematics",
+            "Aptitude",
+            "Mock Tests"
+          ],
+          "actualprice": 7999,
+          "previousprice": 12000,
+          "percent": 58,
+          "description": "description",
+          "perks": ["RECORDED", "PYQs", "LIVE TESTS"],
+          "Discount": true,
+          "amount": 800,
+          "_id": "690313ed4f0d283d33b19f3c",
+          "createdAt": "2025-10-30T07:29:49.376Z",
+          "updatedAt": "2025-10-30T07:29:49.376Z"
+        }
+      ],
+      "createdAt": "2025-10-28T09:51:01.456Z",
+      "updatedAt": "2025-11-03T12:21:36.929Z",
+      "__v": 4
+    },
+    {
+      "_id": "690092222a9dc503fbb41220",
+      "examCategory": "UPSC",
+      "courses": [
+        {
+          "img": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1762248176/general_uploads/fa7coo3knh4gtuwnfn1b.png",
+          "publicId": "general_uploads/fa7coo3knh4gtuwnfn1b",
+          "clientId": "6900ab9a4b60faca0c7b42f0",
+          "title": "UPSC 2027 – Master Batch",
+          "insideCourses": [
+            "Full Technical Syllabus, Engineering Mathematics, Aptitude, Mock Tests"
+          ],
+          "actualprice": 17999,
+          "previousprice": 12000,
+          "percent": 58,
+          "description": "DESCRIPTION",
+          "perks": ["RECORDED, PYQs, LIVE TESTS"],
+          "Discount": true,
+          "amount": 800,
+          "_id": "6901c1ba25f8c1bea9ad6a8f",
+          "createdAt": "2025-10-29T07:26:50.657Z",
+          "updatedAt": "2025-11-04T09:22:56.947Z"
+        },
+        {
+          "img": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1761723406/course_images/l0kunbwq7f895uuwlmcr.jpg",
+          "publicId": "course_images/l0kunbwq7f895uuwlmcr",
+          "clientId": "6900ab9a4b60faca0c7b42f0",
+          "title": "UPSC 2027 – Master Batch",
+          "insideCourses": [
+            "Full Technical Syllabus",
+            "Engineering Mathematics",
+            "Aptitude",
+            "Mock Tests"
+          ],
+          "actualprice": 7999,
+          "previousprice": 12000,
+          "percent": 58,
+          "description": "description",
+          "perks": ["RECORDED", "PYQs", "LIVE TESTS"],
+          "Discount": true,
+          "amount": 800,
+          "_id": "6901c41025f8c1bea9ad6a98",
+          "createdAt": "2025-10-29T07:36:48.210Z",
+          "updatedAt": "2025-10-29T07:36:48.210Z"
+        },
+        {
+          "img": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1761727271/course_images/qp34bieyivwjjkmvnrth.jpg",
+          "publicId": "course_images/qp34bieyivwjjkmvnrth",
+          "clientId": "6900ab9a4b60faca0c7b42f0",
+          "title": "UPSC 2027 – Master Batch",
+          "insideCourses": [
+            "Full Technical Syllabus",
+            "Engineering Mathematics",
+            "Aptitude",
+            "Mock Tests"
+          ],
+          "actualprice": 7999,
+          "previousprice": 12000,
+          "percent": 58,
+          "description": "description",
+          "perks": ["RECORDED", "PYQs", "LIVE TESTS"],
+          "Discount": true,
+          "amount": 800,
+          "_id": "6901d329f89e2acb26c7221a",
+          "createdAt": "2025-10-29T08:41:13.027Z",
+          "updatedAt": "2025-10-29T08:41:13.027Z"
+        }
+      ],
+      "createdAt": "2025-10-28T09:51:30.476Z",
+      "updatedAt": "2025-11-04T09:22:56.947Z",
+      "__v": 19
+    },
+    {
+      "_id": "690993b5def9cb47b6de9fe2",
+      "courses": [],
+      "createdAt": "2025-11-04T05:48:37.941Z",
+      "updatedAt": "2025-11-04T06:43:06.138Z",
+      "__v": 1
+    }
+  ],
+  "Quizzes": [
+    {
+      "_id": "690b21ce3017397179faca42",
+      "id": "upsc_gs_2025_01",
+      "title": "UPSC Prelims 2025 - General Studies Set A",
+      "exam": "UPSC",
+      "duration": 7200,
+      "totalMarks": 20,
+      "tags": [
+        "Polity",
+        "Geography",
+        "Economy",
+        "Environment",
+        "History",
+        "Science",
+        "Current Affairs"
+      ],
+      "questions": [
+        {
+          "id": "upsc_q1",
+          "type": "multiple_choice",
+          "question": "Which of the following is not a Directive Principle of State Policy?",
+          "options": [
+            "Equal pay for equal work",
+            "Uniform civil code",
+            "Right to property",
+            "Promotion of international peace"
+          ],
+          "correctAnswerIndex": 2,
+          "marks": 2,
+          "topic": "Polity",
+          "difficulty": "medium",
+          "_id": "690b21ce3017397179faca43"
+        },
+        {
+          "id": "upsc_q2",
+          "type": "multiple_choice",
+          "question": "Which of the following rivers originates in India?",
+          "options": ["Brahmaputra", "Sutlej", "Mahanadi", "Indus"],
+          "correctAnswerIndex": 2,
+          "marks": 2,
+          "topic": "Geography",
+          "difficulty": "easy",
+          "_id": "690b21ce3017397179faca44"
+        },
+        {
+          "id": "upsc_q3",
+          "type": "multiple_choice",
+          "question": "The term ‘GDP deflator’ measures which of the following?",
+          "options": [
+            "Change in the level of real income",
+            "Change in price level of all goods and services",
+            "Difference between GNP and GDP",
+            "Ratio of fiscal deficit to GDP"
+          ],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Economy",
+          "difficulty": "medium",
+          "_id": "690b21ce3017397179faca45"
+        },
+        {
+          "id": "upsc_q4",
+          "type": "multiple_choice",
+          "question": "Which of the following is correctly matched?",
+          "options": [
+            "Chipko Movement – Water conservation",
+            "Silent Valley Project – Forest conservation",
+            "Appiko Movement – Air pollution control",
+            "Narmada Bachao Andolan – Industrial waste management"
+          ],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Environment",
+          "difficulty": "easy",
+          "_id": "690b21ce3017397179faca46"
+        },
+        {
+          "id": "upsc_q5",
+          "type": "multiple_choice",
+          "question": "Who among the following was associated with the Home Rule Movement in India?",
+          "options": [
+            "Bal Gangadhar Tilak",
+            "Mahatma Gandhi",
+            "Subhas Chandra Bose",
+            "Sardar Vallabhbhai Patel"
+          ],
+          "correctAnswerIndex": 0,
+          "marks": 2,
+          "topic": "History",
+          "difficulty": "medium",
+          "_id": "690b21ce3017397179faca47"
+        },
+        {
+          "id": "upsc_q6",
+          "type": "multiple_choice",
+          "question": "The phenomenon of Aurora Borealis occurs in which layer of the atmosphere?",
+          "options": [
+            "Troposphere",
+            "Stratosphere",
+            "Mesosphere",
+            "Thermosphere"
+          ],
+          "correctAnswerIndex": 3,
+          "marks": 2,
+          "topic": "Geography",
+          "difficulty": "medium",
+          "_id": "690b21ce3017397179faca48"
+        },
+        {
+          "id": "upsc_q7",
+          "type": "multiple_choice",
+          "question": "Which of the following gases is not a greenhouse gas?",
+          "options": ["Carbon dioxide", "Methane", "Nitrous oxide", "Oxygen"],
+          "correctAnswerIndex": 3,
+          "marks": 2,
+          "topic": "Environment",
+          "difficulty": "easy",
+          "_id": "690b21ce3017397179faca49"
+        },
+        {
+          "id": "upsc_q8",
+          "type": "multiple_choice",
+          "question": "The Fundamental Duties were added to the Constitution of India by which amendment?",
+          "options": [
+            "42nd Amendment",
+            "44th Amendment",
+            "52nd Amendment",
+            "61st Amendment"
+          ],
+          "correctAnswerIndex": 0,
+          "marks": 2,
+          "topic": "Polity",
+          "difficulty": "medium",
+          "_id": "690b21ce3017397179faca4a"
+        },
+        {
+          "id": "upsc_q9",
+          "type": "multiple_choice",
+          "question": "In which part of the human body are lymphocytes produced?",
+          "options": ["Liver", "Bone marrow", "Heart", "Kidney"],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Science",
+          "difficulty": "medium",
+          "_id": "690b21ce3017397179faca4b"
+        },
+        {
+          "id": "upsc_q10",
+          "type": "multiple_choice",
+          "question": "The theme of World Environment Day 2025 is most likely to focus on which of the following global concerns?",
+          "options": [
+            "Plastic pollution",
+            "Land restoration and drought resilience",
+            "Sustainable fashion",
+            "Deforestation awareness"
+          ],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Current Affairs",
+          "difficulty": "medium",
+          "_id": "690b21ce3017397179faca4c"
+        }
+      ],
+      "createdAt": "2025-11-05T10:07:10.206Z",
+      "updatedAt": "2025-11-05T10:07:10.206Z",
+      "__v": 0
+    },
+    {
+      "_id": "690d7104caaea100e027c7de",
+      "id": "upsc_gs_2025_02",
+      "title": "Gate",
+      "exam": "Gate",
+      "duration": 7200,
+      "totalMarks": 20,
+      "tags": [
+        "Polity",
+        "Geography",
+        "Economy",
+        "Environment",
+        "History",
+        "Science",
+        "Current Affairs"
+      ],
+      "questions": [
+        {
+          "id": "upsc_q1",
+          "type": "multiple_choice",
+          "question": "Which of the following is not a Directive Principle of State Policy?",
+          "options": [
+            "Equal pay for equal work",
+            "Uniform civil code",
+            "Right to property",
+            "Promotion of international peace"
+          ],
+          "correctAnswerIndex": 2,
+          "marks": 2,
+          "topic": "Polity",
+          "difficulty": "medium",
+          "_id": "690d7104caaea100e027c7df"
+        },
+        {
+          "id": "upsc_q2",
+          "type": "multiple_choice",
+          "question": "Which of the following rivers originates in India?",
+          "options": ["Brahmaputra", "Sutlej", "Mahanadi", "Indus"],
+          "correctAnswerIndex": 2,
+          "marks": 2,
+          "topic": "Geography",
+          "difficulty": "easy",
+          "_id": "690d7104caaea100e027c7e0"
+        },
+        {
+          "id": "upsc_q3",
+          "type": "multiple_choice",
+          "question": "The term ‘GDP deflator’ measures which of the following?",
+          "options": [
+            "Change in the level of real income",
+            "Change in price level of all goods and services",
+            "Difference between GNP and GDP",
+            "Ratio of fiscal deficit to GDP"
+          ],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Economy",
+          "difficulty": "medium",
+          "_id": "690d7104caaea100e027c7e1"
+        },
+        {
+          "id": "upsc_q4",
+          "type": "multiple_choice",
+          "question": "Which of the following is correctly matched?",
+          "options": [
+            "Chipko Movement – Water conservation",
+            "Silent Valley Project – Forest conservation",
+            "Appiko Movement – Air pollution control",
+            "Narmada Bachao Andolan – Industrial waste management"
+          ],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Environment",
+          "difficulty": "easy",
+          "_id": "690d7104caaea100e027c7e2"
+        },
+        {
+          "id": "upsc_q5",
+          "type": "multiple_choice",
+          "question": "Who among the following was associated with the Home Rule Movement in India?",
+          "options": [
+            "Bal Gangadhar Tilak",
+            "Mahatma Gandhi",
+            "Subhas Chandra Bose",
+            "Sardar Vallabhbhai Patel"
+          ],
+          "correctAnswerIndex": 0,
+          "marks": 2,
+          "topic": "History",
+          "difficulty": "medium",
+          "_id": "690d7104caaea100e027c7e3"
+        },
+        {
+          "id": "upsc_q6",
+          "type": "multiple_choice",
+          "question": "The phenomenon of Aurora Borealis occurs in which layer of the atmosphere?",
+          "options": [
+            "Troposphere",
+            "Stratosphere",
+            "Mesosphere",
+            "Thermosphere"
+          ],
+          "correctAnswerIndex": 3,
+          "marks": 2,
+          "topic": "Geography",
+          "difficulty": "medium",
+          "_id": "690d7104caaea100e027c7e4"
+        },
+        {
+          "id": "upsc_q7",
+          "type": "multiple_choice",
+          "question": "Which of the following gases is not a greenhouse gas?",
+          "options": ["Carbon dioxide", "Methane", "Nitrous oxide", "Oxygen"],
+          "correctAnswerIndex": 3,
+          "marks": 2,
+          "topic": "Environment",
+          "difficulty": "easy",
+          "_id": "690d7104caaea100e027c7e5"
+        },
+        {
+          "id": "upsc_q8",
+          "type": "multiple_choice",
+          "question": "The Fundamental Duties were added to the Constitution of India by which amendment?",
+          "options": [
+            "42nd Amendment",
+            "44th Amendment",
+            "52nd Amendment",
+            "61st Amendment"
+          ],
+          "correctAnswerIndex": 0,
+          "marks": 2,
+          "topic": "Polity",
+          "difficulty": "medium",
+          "_id": "690d7104caaea100e027c7e6"
+        },
+        {
+          "id": "upsc_q9",
+          "type": "multiple_choice",
+          "question": "In which part of the human body are lymphocytes produced?",
+          "options": ["Liver", "Bone marrow", "Heart", "Kidney"],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Science",
+          "difficulty": "medium",
+          "_id": "690d7104caaea100e027c7e7"
+        },
+        {
+          "id": "upsc_q10",
+          "type": "multiple_choice",
+          "question": "The theme of World Environment Day 2025 is most likely to focus on which of the following global concerns?",
+          "options": [
+            "Plastic pollution",
+            "Land restoration and drought resilience",
+            "Sustainable fashion",
+            "Deforestation awareness"
+          ],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Current Affairs",
+          "difficulty": "medium",
+          "_id": "690d7104caaea100e027c7e8"
+        }
+      ],
+      "createdAt": "2025-11-07T04:09:40.521Z",
+      "updatedAt": "2025-11-07T04:09:40.521Z",
+      "__v": 0
+    },
+    {
+      "_id": "690d9bd0dda5b665ae2c5e2c",
+      "id": "upsc_gs_2025_03",
+      "title": "Maths",
+      "exam": "Maths",
+      "duration": 7200,
+      "totalMarks": 20,
+      "tags": [
+        "Polity",
+        "Geography",
+        "Economy",
+        "Environment",
+        "History",
+        "Science",
+        "Current Affairs"
+      ],
+      "questions": [
+        {
+          "id": "upsc_q1",
+          "type": "multiple_choice",
+          "question": "Which of the following is not a Directive Principle of State Policy?",
+          "options": [
+            "Equal pay for equal work",
+            "Uniform civil code",
+            "Right to property",
+            "Promotion of international peace"
+          ],
+          "correctAnswerIndex": 2,
+          "marks": 2,
+          "topic": "Polity",
+          "difficulty": "medium",
+          "_id": "690d9bd0dda5b665ae2c5e2d"
+        },
+        {
+          "id": "upsc_q2",
+          "type": "multiple_choice",
+          "question": "Which of the following rivers originates in India?",
+          "options": ["Brahmaputra", "Sutlej", "Mahanadi", "Indus"],
+          "correctAnswerIndex": 2,
+          "marks": 2,
+          "topic": "Geography",
+          "difficulty": "easy",
+          "_id": "690d9bd0dda5b665ae2c5e2e"
+        },
+        {
+          "id": "upsc_q3",
+          "type": "multiple_choice",
+          "question": "The term ‘GDP deflator’ measures which of the following?",
+          "options": [
+            "Change in the level of real income",
+            "Change in price level of all goods and services",
+            "Difference between GNP and GDP",
+            "Ratio of fiscal deficit to GDP"
+          ],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Economy",
+          "difficulty": "medium",
+          "_id": "690d9bd0dda5b665ae2c5e2f"
+        },
+        {
+          "id": "upsc_q4",
+          "type": "multiple_choice",
+          "question": "Which of the following is correctly matched?",
+          "options": [
+            "Chipko Movement – Water conservation",
+            "Silent Valley Project – Forest conservation",
+            "Appiko Movement – Air pollution control",
+            "Narmada Bachao Andolan – Industrial waste management"
+          ],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Environment",
+          "difficulty": "easy",
+          "_id": "690d9bd0dda5b665ae2c5e30"
+        },
+        {
+          "id": "upsc_q5",
+          "type": "multiple_choice",
+          "question": "Who among the following was associated with the Home Rule Movement in India?",
+          "options": [
+            "Bal Gangadhar Tilak",
+            "Mahatma Gandhi",
+            "Subhas Chandra Bose",
+            "Sardar Vallabhbhai Patel"
+          ],
+          "correctAnswerIndex": 0,
+          "marks": 2,
+          "topic": "History",
+          "difficulty": "medium",
+          "_id": "690d9bd0dda5b665ae2c5e31"
+        },
+        {
+          "id": "upsc_q6",
+          "type": "multiple_choice",
+          "question": "The phenomenon of Aurora Borealis occurs in which layer of the atmosphere?",
+          "options": [
+            "Troposphere",
+            "Stratosphere",
+            "Mesosphere",
+            "Thermosphere"
+          ],
+          "correctAnswerIndex": 3,
+          "marks": 2,
+          "topic": "Geography",
+          "difficulty": "medium",
+          "_id": "690d9bd0dda5b665ae2c5e32"
+        },
+        {
+          "id": "upsc_q7",
+          "type": "multiple_choice",
+          "question": "Which of the following gases is not a greenhouse gas?",
+          "options": ["Carbon dioxide", "Methane", "Nitrous oxide", "Oxygen"],
+          "correctAnswerIndex": 3,
+          "marks": 2,
+          "topic": "Environment",
+          "difficulty": "easy",
+          "_id": "690d9bd0dda5b665ae2c5e33"
+        },
+        {
+          "id": "upsc_q8",
+          "type": "multiple_choice",
+          "question": "The Fundamental Duties were added to the Constitution of India by which amendment?",
+          "options": [
+            "42nd Amendment",
+            "44th Amendment",
+            "52nd Amendment",
+            "61st Amendment"
+          ],
+          "correctAnswerIndex": 0,
+          "marks": 2,
+          "topic": "Polity",
+          "difficulty": "medium",
+          "_id": "690d9bd0dda5b665ae2c5e34"
+        },
+        {
+          "id": "upsc_q9",
+          "type": "multiple_choice",
+          "question": "In which part of the human body are lymphocytes produced?",
+          "options": ["Liver", "Bone marrow", "Heart", "Kidney"],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Science",
+          "difficulty": "medium",
+          "_id": "690d9bd0dda5b665ae2c5e35"
+        },
+        {
+          "id": "upsc_q10",
+          "type": "multiple_choice",
+          "question": "The theme of World Environment Day 2025 is most likely to focus on which of the following global concerns?",
+          "options": [
+            "Plastic pollution",
+            "Land restoration and drought resilience",
+            "Sustainable fashion",
+            "Deforestation awareness"
+          ],
+          "correctAnswerIndex": 1,
+          "marks": 2,
+          "topic": "Current Affairs",
+          "difficulty": "medium",
+          "_id": "690d9bd0dda5b665ae2c5e36"
+        }
+      ],
+      "createdAt": "2025-11-07T07:12:16.257Z",
+      "updatedAt": "2025-11-07T07:12:16.257Z",
+      "__v": 0
+    }
+  ],
+  "PYQs": [
+    {
+      "_id": "69049252d5b00b7632f4c38e",
+      "pyqCategory": "PYQ",
+      "questionspaper": [
+        {
+          "title": "English",
+          "year": 2026,
+          "pdf": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1761907280/PYQ_PDFs/ydief5ymidb5q6agdbve.pdf",
+          "publicId": "PYQ_PDFs/ydief5ymidb5q6agdbve",
+          "_id": "69049252d5b00b7632f4c38f",
+          "createdAt": "2025-10-31T10:41:22.587Z",
+          "updatedAt": "2025-10-31T10:41:22.587Z"
+        },
+        {
+          "title": "MATHS",
+          "year": 2026,
+          "pdf": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1761907301/PYQ_PDFs/kadgsavkfurhnmuh1jdz.pdf",
+          "publicId": "PYQ_PDFs/kadgsavkfurhnmuh1jdz",
+          "_id": "69049267d5b00b7632f4c394",
+          "createdAt": "2025-10-31T10:41:43.142Z",
+          "updatedAt": "2025-10-31T10:41:43.142Z"
+        }
+      ],
+      "createdAt": "2025-10-31T10:41:22.588Z",
+      "updatedAt": "2025-10-31T10:41:43.142Z",
+      "__v": 1
+    }
+  ],
+  "Batches": [
+    {
+      "_id": "690af291812d5a8c942a63a2",
+      "batchCategory": "fdsaf",
+      "batches": [],
+      "createdAt": "2025-11-05T06:45:37.565Z",
+      "updatedAt": "2025-11-05T06:46:09.351Z",
+      "__v": 1
+    },
+    {
+      "_id": "690af2cf812d5a8c942a63b5",
+      "batchCategory": "fdsa",
+      "batches": [
+        {
+          "batchName": "fdsafds",
+          "syllabus": "afdsaf",
+          "duration": "32",
+          "price": 343242,
+          "teachers": ["adsaf"],
+          "enrollLink": "fdsafdaf",
+          "image": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1762325199/Batch_images/pfbt0kqalgabqlyfrvin.jpg",
+          "publicId": "Batch_images/pfbt0kqalgabqlyfrvin",
+          "_id": "690af2cf812d5a8c942a63b6",
+          "createdAt": "2025-11-05T06:46:39.880Z",
+          "updatedAt": "2025-11-05T07:01:22.952Z"
+        }
+      ],
+      "createdAt": "2025-11-05T06:46:39.880Z",
+      "updatedAt": "2025-11-05T07:01:22.952Z",
+      "__v": 1
+    },
+    {
+      "_id": "690af324812d5a8c942a63ba",
+      "batchCategory": "fdasf",
+      "batches": [
+        {
+          "batchName": "fdsafds",
+          "syllabus": "fdsaf",
+          "duration": "323",
+          "price": 32342,
+          "teachers": ["fdsaf,f,asf,a,sf,dasf"],
+          "enrollLink": "",
+          "image": "http://res.cloudinary.com/dg3ac8huu/image/upload/v1762327264/Batch_images/bfk7cjxwtaasoj5bqtff.jpg",
+          "publicId": "Batch_images/k1badudhad5ftvosfajp",
+          "_id": "690af324812d5a8c942a63bb",
+          "createdAt": "2025-11-05T06:48:04.546Z",
+          "updatedAt": "2025-11-05T07:21:05.761Z"
+        }
+      ],
+      "createdAt": "2025-11-05T06:48:04.546Z",
+      "updatedAt": "2025-11-05T07:21:05.762Z",
+      "__v": 0
+    }
+  ]
+}

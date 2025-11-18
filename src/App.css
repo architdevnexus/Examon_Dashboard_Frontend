@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+/* Reset */
+* {
+  /* overflow-x: hidden; */
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Global Colors */
+
+:root {
+  --primary-color: #003e68 !important;
+  --secondary-color: #3498db;
+  --tertiary-color: #eef6fc;
+  --background-color: #ffffff;
+  --text-color: #fbbc00 !important;
+  /* --border:white; */
+  --fade-color: #dddddd;
+  --accent-dark: #000000;
+  --footer-bg: #697077;
+  --font-family: "Inter", "Sans-serif", Arial, sans-serif;
+  --accent: #6366f1;
+  --success: #10b981;
+  --warning: #f59e0b;
+  /* --primary-bg: #f5f7fa;
+  --primary-text: #1f2937;
+  --secondary-text: #6b7280;
+  --secondary-bg: #ffffff;
+  --accent-dark: #4f46e5;
+  --danger: #ef4444;
+  --border: #e5e7eb;
+  --card-shadow: rgba(0, 0, 0, 0.05); */
+}
+
+/* App Container */
+body {
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
+  margin: 0;
+  padding: 0;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background-color: var(--secondary-bg);
+  border-right: 1px solid var(--border);
+  padding: 2rem 1.2rem;
+  box-shadow: 2px 0 5px var(--card-shadow);
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar h2 {
+  color: var(--accent);
+  font-weight: bold;
+  font-size: 1.4rem;
+  margin-bottom: 2rem;
+}
+
+.sidebar nav a {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  color: var(--secondary-text);
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+  transition: 0.3s;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  background-color: var(--accent);
+  color: white;
+}
+
+/* For Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--secondary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-radius: 4px;
+  border: 2px solid var(--secondary-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-dark);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--secondary-bg);
+}
+/* Global scrollbar styles */
+::-webkit-scrollbar {
+  width: 12px; /* Width of vertical scrollbar */
+  height: 12px; /* Height of horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background:#003e68; /* Track color */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #003e68; /* Thumb color */
+  border-radius: 8px;
+  border: 3px solid #003e68 /* Adds padding around thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #003e68; /* Hover color */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #003e68;
+}

@@ -1,0 +1,448 @@
+{
+  "admins": [
+    {
+      "admin_id": "admin_001",
+      "name": "Anupam Upadhyay",
+      "email": "admin@b2cmarketplace.com",
+      "avatar": "https://randomuser.me/api/portraits/men/75.jpg",
+      "role": "Super Admin",
+      "last_login": "2025-07-28T11:30:00Z",
+      "revenue_summary": {
+        "currentyear": {
+          "July": {
+            "total": 17450,
+            "breakdown": {
+              "commissions": 9600,
+              "ads": 5200,
+              "premium_subscriptions": 3650
+            }
+          }
+        }
+      },
+      "revenue_details": {
+        "monthly": {
+          "2025-07": {
+            "total_revenue": 17450,
+            "retailers": {
+              "ret_1001": {
+                "retailer_name": "Sharma Hardware",
+                "revenue": 6500,
+                "products": [
+                  {
+                    "product_id": "prod_001",
+                    "name": "Red Clay Bricks - 500 pcs",
+                    "revenue": 4000
+                  },
+                  {
+                    "product_id": "prod_002",
+                    "name": "Cement Bag - UltraTech",
+                    "revenue": 2500
+                  }
+                ]
+              },
+              "ret_1002": {
+                "retailer_name": "Singh Traders",
+                "revenue": 4300,
+                "products": [
+                  {
+                    "product_id": "prod_003",
+                    "name": "Steel Rods - 10mm",
+                    "revenue": 3000
+                  },
+                  {
+                    "product_id": "prod_004",
+                    "name": "Sand - 1 Ton",
+                    "revenue": 1300
+                  }
+                ]
+              },
+              "ret_1003": {
+                "retailer_name": "BrickBazaar",
+                "revenue": 4650,
+                "products": [
+                  {
+                    "product_id": "prod_005",
+                    "name": "Fly Ash Bricks - 300 pcs",
+                    "revenue": 2100
+                  },
+                  {
+                    "product_id": "prod_006",
+                    "name": "AAC Blocks - 100 pcs",
+                    "revenue": 1800
+                  },
+                  {
+                    "product_id": "prod_010",
+                    "name": "Hollow Bricks - 200 pcs",
+                    "revenue": 750
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "retailers": [
+    {
+      "retailer_id": "ret_1001",
+      "name": "Sharma Hardware",
+      "owner_name": "Rakesh Sharma",
+      "email": "sharma@hardware.com",
+      "phone": "+91-9876543210",
+      "profile_image": "https://randomuser.me/api/portraits/men/44.jpg",
+      "store_logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB_IlVlzDTwJyfNAgJ7l8mMJpOo2_as6wfbQ&s",
+      "store_banner": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT95dv1iON1El5H7DdNqM2-LUt0rp-Kph6GLA&s",
+      "location": "Varanasi, Uttar Pradesh",
+      "joined_on": "2025-07-15",
+      "kyc": {
+        "aadhaar": "aadhaar_ret_1001.pdf",
+        "gst": "gst_ret_1001.pdf",
+        "status": "pending"
+      },
+      "verification_status": "pending",
+      "store_description": "Quality construction materials.",
+      "rating": 4.2
+    },
+    {
+      "retailer_id": "ret_1002",
+      "name": "Singh Traders",
+      "owner_name": "Amit Singh",
+      "email": "singh@traders.com",
+      "phone": "+91-8888888888",
+      "profile_image": "https://randomuser.me/api/portraits/men/23.jpg",
+      "store_logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwIvSRcGKo9-rPifmgKU6UqqhIPBQOlKRPXw&s",
+      "store_banner": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfMulrGuBS-Q5VVFVwewEcKj1qgRRcESOpvg&s",
+      "location": "Kanpur, Uttar Pradesh",
+      "joined_on": "2025-07-12",
+      "kyc": {
+        "aadhaar": "aadhaar_ret_1002.pdf",
+        "gst": "gst_ret_1002.pdf",
+        "status": "approved"
+      },
+      "verification_status": "approved",
+      "store_description": "Supplies cement and metal rods.",
+      "rating": 4.0
+    },
+    {
+      "retailer_id": "ret_1003",
+      "name": "BrickBazaar",
+      "owner_name": "Neha Verma",
+      "email": "neha@brickbazaar.com",
+      "phone": "+91-7777777777",
+      "profile_image": "https://randomuser.me/api/portraits/women/33.jpg",
+      "store_logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSqqm92sMP-GtRZG_gFgvqfL2P-MUDBISKC02yw9eThVXX1hK9SqFIiZWf8MIiF8rrv3M&usqp=CAU",
+      "store_banner": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpKRN8egMDSe8A5D1shwgx9TWK8RvvzwLLLA&s",
+      "location": "Lucknow, Uttar Pradesh",
+      "joined_on": "2025-07-14",
+      "kyc": {
+        "aadhaar": "aadhaar_ret_1003.pdf",
+        "gst": "gst_ret_1003.pdf",
+        "status": "approved"
+      },
+      "verification_status": "approved",
+      "store_description": "Wholesale brick supplier.",
+      "rating": 4.5
+    },
+    {
+      "retailer_id": "ret_1004",
+      "name": "BuildPro Suppliers",
+      "owner_name": "Rajiv Kumar",
+      "email": "rajiv@buildpro.com",
+      "phone": "+91-9999999999",
+      "profile_image": "https://randomuser.me/api/portraits/men/66.jpg",
+      "store_logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ5kDAoK2TwdmHc2twJydWgaBCV8Vxn36z9A&s",
+      "store_banner": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd4yr3ii1TH9Byqk2jRspmMChZjzZsUUtVVA&s",
+      "location": "Allahabad, Uttar Pradesh",
+      "joined_on": "2025-07-10",
+      "kyc": {
+        "aadhaar": "aadhaar_ret_1004.pdf",
+        "gst": "gst_ret_1004.pdf",
+        "status": "pending"
+      },
+      "verification_status": "pending",
+      "store_description": "Bulk construction goods supplier.",
+      "rating": 4.1
+    }
+  ],
+  "customers": [
+    {
+      "customer_id": "cus_2001",
+      "name": "Priya Mishra",
+      "email": "priya.m@example.com",
+      "phone": "+91-9087654321",
+      "profile_image": "https://randomuser.me/api/portraits/women/44.jpg",
+      "location": "Lucknow",
+      "joined_on": "2025-07-12",
+      "status": "pending"
+    },
+    {
+      "customer_id": "cus_2002",
+      "name": "Rohan Das",
+      "email": "rohan.das@example.com",
+      "phone": "+91-9876512345",
+      "profile_image": "https://randomuser.me/api/portraits/men/34.jpg",
+      "location": "Kanpur",
+      "joined_on": "2025-07-14",
+      "status": "rejected"
+    },
+    {
+      "customer_id": "cus_2003",
+      "name": "Sneha Roy",
+      "email": "sneha.r@example.com",
+      "phone": "+91-9000011122",
+      "profile_image": "https://randomuser.me/api/portraits/women/30.jpg",
+      "location": "Varanasi",
+      "joined_on": "2025-07-16",
+      "status": "pending"
+    },
+    {
+      "customer_id": "cus_2004",
+      "name": "Aakash Jain",
+      "email": "aakash.j@example.com",
+      "phone": "+91-8123456789",
+      "profile_image": "https://randomuser.me/api/portraits/men/28.jpg",
+      "location": "Agra",
+      "joined_on": "2025-07-13",
+      "status": "pending"
+    },
+    {
+      "customer_id": "cus_2005",
+      "name": "Meena Gupta",
+      "email": "meena.g@example.com",
+      "phone": "+91-7000099999",
+      "profile_image": "https://randomuser.me/api/portraits/women/55.jpg",
+      "location": "Noida",
+      "joined_on": "2025-07-17",
+      "status": "rejected"
+    },
+    {
+      "customer_id": "cus_2006",
+      "name": "Arjun Tiwari",
+      "email": "arjun.t@example.com",
+      "phone": "+91-7666788888",
+      "profile_image": "https://randomuser.me/api/portraits/men/50.jpg",
+      "location": "Gorakhpur",
+      "joined_on": "2025-07-18",
+      "status": "pending"
+    }
+  ],
+  "product_listings": [
+    {
+      "product_id": "prod_001",
+      "retailer_id": "ret_1001",
+      "name": "Red Clay Bricks - 500 pcs",
+      "description": "Premium quality red bricks perfect for residential and commercial construction.",
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQV_dPfVCsYp3tukg-n3nYFiOEXJgzGepYong&s"
+      ],
+      "price": 5500,
+      "category": "Construction",
+      "stock": 10,
+      "submitted_on": "2025-07-26T08:00:00Z",
+      "status": "rejected"
+    },
+    {
+      "product_id": "prod_002",
+      "retailer_id": "ret_1001",
+      "name": "Cement Bag - UltraTech",
+      "description": "High-grade cement ideal for foundation work.",
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQiKHK5Z9p_zyX3m7jQ_LkvW2acdiNq_VI5A&s"
+      ],
+      "price": 410,
+      "category": "Construction",
+      "stock": 25,
+      "submitted_on": "2025-07-25T11:45:00Z",
+      "status": "pending"
+    },
+    {
+      "product_id": "prod_003",
+      "retailer_id": "ret_1002",
+      "name": "Steel Rods - 10mm",
+      "description": "Thermo-mechanically treated steel rods.",
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwKeRLv7Lkuo-GPkH_ElF6QkbBjHDm-SR3lw&s"
+      ],
+      "price": 72,
+      "category": "Metals",
+      "stock": 100,
+      "submitted_on": "2025-07-22T11:00:00Z",
+      "status": "approved"
+    },
+    {
+      "product_id": "prod_004",
+      "retailer_id": "ret_1002",
+      "name": "Sand - 1 Ton",
+      "description": "Fine river sand for plastering and flooring.",
+      "images": [
+        "https://images.jdmagicbox.com/quickquotes/images_main/earth-filling-sand-1-ton-2224324659-ys20oiil.jpg"
+      ],
+      "price": 1300,
+      "category": "Construction",
+      "stock": 50,
+      "submitted_on": "2025-07-20T09:30:00Z",
+      "status": "approved"
+    },
+    {
+      "product_id": "prod_005",
+      "retailer_id": "ret_1003",
+      "name": "Fly Ash Bricks - 300 pcs",
+      "description": "Lightweight bricks for modern buildings.",
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeAjgrxBTz9jGMR_WsZbj_gcBCsUBfPBQPPA&s"
+      ],
+      "price": 4200,
+      "category": "Construction",
+      "stock": 20,
+      "submitted_on": "2025-07-23T13:00:00Z",
+      "status": "approved"
+    },
+    {
+      "product_id": "prod_006",
+      "retailer_id": "ret_1003",
+      "name": "AAC Blocks - 100 pcs",
+      "description": "Autoclaved Aerated Concrete blocks for high-rise buildings.",
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhMPDGqxAvg_hD4CTmtNJKVZKIrNYWQjS6Mg&s"
+      ],
+      "price": 7500,
+      "category": "Construction",
+      "stock": 30,
+      "submitted_on": "2025-07-24T12:00:00Z",
+      "status": "approved"
+    },
+    {
+      "product_id": "prod_007",
+      "retailer_id": "ret_1004",
+      "name": "TMT Bars - 12mm",
+      "description": "TMT bars for seismic-resistant structures.",
+      "images": [
+        "https://5.imimg.com/data5/SELLER/Default/2021/9/HI/MD/FI/98548923/12-mm-tmt-bar-500x500.jpg"
+      ],
+      "price": 80,
+      "category": "Metals",
+      "stock": 70,
+      "submitted_on": "2025-07-26T14:00:00Z",
+      "status": "pending"
+    },
+    {
+      "product_id": "prod_008",
+      "retailer_id": "ret_1004",
+      "name": "Cement Bag - Ambuja",
+      "description": "Durable cement for multi-purpose usage.",
+      "images": [
+        "https://5.imimg.com/data5/SELLER/Default/2025/6/521785986/FC/GL/GQ/144097911/ambuja-compressive-strength-cement-250x250.png"
+      ],
+      "price": 390,
+      "category": "Construction",
+      "stock": 40,
+      "submitted_on": "2025-07-26T16:00:00Z",
+      "status": "pending"
+    },
+    {
+      "product_id": "prod_009",
+      "retailer_id": "ret_1002",
+      "name": "White Cement",
+      "description": "White cement for interior finishing.",
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOONQ1DRG5tXB4T5Ex9AeEUgeVENc3zPPxRw&s"
+      ],
+      "price": 600,
+      "category": "Finishing",
+      "stock": 15,
+      "submitted_on": "2025-07-21T10:00:00Z",
+      "status": "approved"
+    },
+    {
+      "product_id": "prod_010",
+      "retailer_id": "ret_1003",
+      "name": "Hollow Bricks - 200 pcs",
+      "description": "Efficient bricks with thermal insulation.",
+      "images": [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFIzXFh3qOZ-2kuTqw6LsAfujd-xch9kC4Cw&s"
+      ],
+      "price": 3600,
+      "category": "Construction",
+      "stock": 18,
+      "submitted_on": "2025-07-24T09:00:00Z",
+      "status": "approved"
+    }
+  ],
+  "messages": [
+    {
+      "message_id": "msg_001",
+      "sender_id": "cus_2002",
+      "receiver_id": "ret_1002",
+      "product_id": "prod_003",
+      "content": "Can you deliver steel rods to Kanpur within 2 days?",
+      "timestamp": "2025-07-28T10:00:00Z"
+    },
+    {
+      "message_id": "msg_002",
+      "sender_id": "cus_2003",
+      "receiver_id": "ret_1003",
+      "product_id": "prod_005",
+      "content": "Do you offer discounts for Fly Ash bricks?",
+      "timestamp": "2025-07-28T10:30:00Z"
+    },
+    {
+      "message_id": "msg_003",
+      "sender_id": "cus_2005",
+      "receiver_id": "ret_1004",
+      "product_id": "prod_007",
+      "content": "What's your shipping policy for TMT bars?",
+      "timestamp": "2025-07-28T11:00:00Z"
+    }
+  ],
+  "feedback": [
+  {
+    "feedback_id": "fb_001",
+    "from": "customer",
+    "customer_id": "cus_2001",
+    "name": "Priya Mishra",
+    "avatar": "https://randomuser.me/api/portraits/women/44.jpg",
+    "target_retailer": {
+      "retailer_id": "ret_1002",
+      "name": "Singh Traders"
+    },
+    "content": "Very quick delivery and helpful service.",
+    "status": "new",
+    "submitted_on": "2025-07-26T10:45:00Z"
+  },
+  {
+    "feedback_id": "fb_002",
+    "from": "customer",
+    "customer_id": "cus_2003",
+    "name": "Sneha Roy",
+    "avatar": "https://randomuser.me/api/portraits/women/30.jpg",
+    "target_retailer": {
+      "retailer_id": "ret_1001",
+      "name": "Sharma Hardware"
+    },
+    "content": "Product packaging was not up to the mark.",
+    "status": "reviewed",
+    "submitted_on": "2025-07-25T14:12:00Z"
+  },
+  {
+    "feedback_id": "fb_003",
+    "from": "retailer",
+    "retailer_id": "ret_1003",
+    "name": "Neha Verma",
+    "avatar": "https://randomuser.me/api/portraits/women/33.jpg",
+    "content": "App is good, but please improve the inventory upload flow.",
+    "status": "new",
+    "submitted_on": "2025-07-24T09:30:00Z"
+  },
+  {
+    "feedback_id": "fb_004",
+    "from": "retailer",
+    "retailer_id": "ret_1004",
+    "name": "Rajiv Kumar",
+    "avatar": "https://randomuser.me/api/portraits/men/66.jpg",
+    "content": "Customers are frequently canceling orders—need stricter policy.",
+    "status": "new",
+    "submitted_on": "2025-07-23T16:20:00Z"
+  }
+]
+}

@@ -32,7 +32,7 @@ import CourseFormPage from "./Pages/Courses/AddCourse";
 import CourseList from "./Pages/Courses/ListAllCourses";
 
 // Achivements
-import Achievements from "./Pages/achievements";
+import Achievements from "./Pages/Achievements";
 import ReviewListPage from "./Pages/Reviews";
 
 // blog

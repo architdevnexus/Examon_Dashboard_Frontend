@@ -235,7 +235,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
+    <Router basename="/admin">
       <SidebarProvider>
         <AppContent />
       </SidebarProvider>

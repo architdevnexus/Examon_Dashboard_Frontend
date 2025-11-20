@@ -70,7 +70,6 @@ import UserReview from "./Pages/DynamicPages/UserReview";
 import UserQuiz from "./Pages/DynamicPages/UserQuiz";
 import Notification from "./Pages/Notification";
 
-
 function AppContent() {
   const [authUser, setAuthUser] = useState(() => {
     const saved = localStorage.getItem("authUser");
@@ -85,8 +84,9 @@ function AppContent() {
 
       {/* Dynamic margin left based on collapse */}
       <main
-        className={`transition-all duration-300 w-full min-h-screen bg-gray-50 ${authUser && (collapsed ? "ml-20" : "ml-72")
-          }`}
+        className={`transition-all duration-300 w-full min-h-screen bg-gray-50 ${
+          authUser && (collapsed ? "ml-20" : "ml-72")
+        }`}
       >
         <Routes>
           <Route path="/login" index element={<Login />} />
@@ -112,7 +112,7 @@ function AppContent() {
                     element={<UpdateMentorForm />}
                   />
 
-                  <Route path ="/notification" element={<Notification/>}/>
+                  <Route path="/notification" element={<Notification />} />
 
                   {/* ------------- Quizzzzzz -------------- */}
                   <Route
@@ -162,8 +162,7 @@ function AppContent() {
                     element={<CourseUpdateForm />}
                   />
 
-                  <Route
-                    path="/user-reviews/:id" element={<UserReview />} />
+                  <Route path="/user-reviews/:id" element={<UserReview />} />
                   <Route path="/user-quizzes/:id" element={<UserQuiz />} />
 
                   {/* --------------------------- */}
@@ -235,7 +234,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router basename="/admin">
+    <Router>
       <SidebarProvider>
         <AppContent />
       </SidebarProvider>

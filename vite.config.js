@@ -8,6 +8,5 @@ export default defineConfig({
       "/api": "http://194.238.18.1:3004/",
     },
   },
-  base:"/admin/",
   plugins: [react(), tailwindcss()],
 });

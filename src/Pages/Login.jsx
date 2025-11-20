@@ -46,7 +46,7 @@ const Login = () => {
         const user = JSON.stringify(data.user);
         localStorage.setItem("token", data.accessToken);
         localStorage.setItem("authUser", user);
-        window.location.href = "/admin/dashboard"; // redirect after success
+        window.location.href = "/"; // redirect after success
       }
     } catch (err) {
       console.log(err);

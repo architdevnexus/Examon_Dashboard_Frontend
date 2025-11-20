@@ -30,7 +30,7 @@ const navItems = [
     icon: <FaTachometerAlt />,
     route: "/dashboard",
   },
-   {
+  {
     label: "Notification",
     icon: <IoIosNotifications />,
     route: "/notification",
@@ -179,6 +179,7 @@ export default function Sidebar({ user }) {
               {item.subMenu ? (
                 <>
                   <button
+                    title={collapsed && item.label}
                     onClick={() => toggleDropdown(item.label)}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-md ${
                       isActiveParent
@@ -211,7 +212,7 @@ export default function Sidebar({ user }) {
                             }`
                           }
                         >
-                          {sub.icon} {sub.label}
+                          {sub.icon} {!collapsed && sub.label}
                         </NavLink>
                       ))}
                     </div>
@@ -219,9 +220,10 @@ export default function Sidebar({ user }) {
                 </>
               ) : (
                 <NavLink
+                  title={collapsed && item.label}
                   to={item.route}
                   className={({ isActive }) =>
-                    `flex items-center gap-2 px-3 py-2 rounded-md transition ${
+                    `flex items-center  gap-2 px-3 py-2 rounded-md transition ${
                       isActive
                         ? " border bg-[var(--accent-dark)] text-[var(--tertiary-color)]"
                         : "text-[var(--primary-text)] hover:bg-[var(--accent-dark)] hover:text-white"
@@ -237,7 +239,10 @@ export default function Sidebar({ user }) {
       </nav>
 
       {/* Logout */}
-      <div className="p-3 border-t border-[var(--border)]">
+      <div
+        title={collapsed && "Logout"}
+        className="p-3 border-t border-[var(--border)]"
+      >
         <NavLink
           to="/logout"
           className="flex items-center gap-2 px-3 py-2 w-full rounded-md hover:text-red-600 hover:bg-[var(--accent-dark)]"

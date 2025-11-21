@@ -3,11 +3,13 @@ import { Editor } from "primereact/editor";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { useGetBlogById, useUpdateBlog } from "../../hooks/useBlog";
 import { toast } from "react-toastify";
 import Loader from "../../Component/Loader";
 import { useParams } from "react-router-dom";
-import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
+import {
+  useGetContentById,
+  useUpdateOrDeleteContent,
+} from "../../hooks/useHooks";
 
 function UpdateBlog() {
   const { id } = useParams();
@@ -16,7 +18,13 @@ function UpdateBlog() {
   const [content, setContent] = useState("");
   //   const [preview, setpreview] = useState(null);
 
-  const { data, isLoading, isError, isSuccess, error } = useGetBlogById(id);
+  const { data, isLoading, isError, isSuccess, error } = useGetContentById({
+    keys: ["blog", id],
+    id,
+    handlerProps: {
+      url: `/blogs/${id}`,
+    },
+  });
 
   const { mutate, isPending } = useUpdateOrDeleteContent({
     keys: ["blog"],

@@ -179,7 +179,7 @@ export default function Sidebar({ user }) {
               {item.subMenu ? (
                 <>
                   <button
-                    title={collapsed && item.label}
+                    title={collapsed ? item.label : undefined}
                     onClick={() => toggleDropdown(item.label)}
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-md ${
                       isActiveParent
@@ -220,7 +220,7 @@ export default function Sidebar({ user }) {
                 </>
               ) : (
                 <NavLink
-                  title={collapsed && item.label}
+                  title={collapsed ? item.label : undefined}
                   to={item.route}
                   className={({ isActive }) =>
                     `flex items-center  gap-2 px-3 py-2 rounded-md transition ${
@@ -230,7 +230,7 @@ export default function Sidebar({ user }) {
                     }`
                   }
                 >
-                  {item.icon} {!collapsed && item.label}
+                  {item.icon} {!collapsed ? item.label : undefined}
                 </NavLink>
               )}
             </div>
@@ -240,7 +240,7 @@ export default function Sidebar({ user }) {
 
       {/* Logout */}
       <div
-        title={collapsed && "Logout"}
+        title={collapsed ? "Logout" : undefined}
         className="p-3 border-t border-[var(--border)]"
       >
         <NavLink

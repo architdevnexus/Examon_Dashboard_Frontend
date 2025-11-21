@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
-import { useGetCourseById, useUpdateCourse } from "../../hooks/useCourse";
 import { toast } from "react-toastify";
 import Loader from "../../Component/Loader";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  useGetContentById,
+  useUpdateOrDeleteContent,
+} from "../../hooks/useHooks";
 
 const CourseUpdateForm = () => {
   const navigate = useNavigate();
   const { cid, id } = useParams();
-
-  const ids = {
-    cid,
-    id,
-  };
 
   const [formData, setFormData] = useState({
     img: null,
@@ -32,17 +30,24 @@ const CourseUpdateForm = () => {
     data: course,
     isSuccess,
     isLoading,
-    isPending,
     isError,
     error,
-  } = useGetCourseById(ids);
+  } = useGetContentById({
+    keys: ["course", id],
+    id: id,
+    handlerProps: {
+      url: `/course/${cid}/${id}`,
+    },
+  });
 
   const {
     mutate,
     isPending: isPending2,
     isError: isError2,
     error: error2,
-  } = useUpdateCourse();
+  } = useUpdateOrDeleteContent({
+    keys: ["course"],
+  });
 
   useEffect(() => {
     if (isSuccess && course?.data) {
@@ -101,7 +106,11 @@ const CourseUpdateForm = () => {
     }
 
     mutate(
-      { ids, formData1 },
+      {
+        method: "patch",
+        data: formData1,
+        url: `/course/update/${cid}/${id}`,
+      },
       {
         onSuccess: (resp) => {
           setFormData({
@@ -135,7 +144,6 @@ const CourseUpdateForm = () => {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        
         {/* Image Upload */}
         <div>
           <label className="block text-gray-700 font-semibold mb-2">

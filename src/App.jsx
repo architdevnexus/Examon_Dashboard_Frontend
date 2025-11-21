@@ -1,4 +1,3 @@
-// App.jsx
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Component/Navbar/Navbar";
@@ -69,6 +68,7 @@ import UserManagement from "./Pages/UserManagement";
 import UserReview from "./Pages/DynamicPages/UserReview";
 import UserQuiz from "./Pages/DynamicPages/UserQuiz";
 import Notification from "./Pages/Notification";
+import OfferForm from "./Pages/Notification/CreateNotification";
 
 function AppContent() {
   const [authUser, setAuthUser] = useState(() => {
@@ -113,6 +113,7 @@ function AppContent() {
                   />
 
                   <Route path="/notification" element={<Notification />} />
+                  <Route path="/offer" element={<OfferForm />} />
 
                   {/* ------------- Quizzzzzz -------------- */}
                   <Route
@@ -189,7 +190,6 @@ function AppContent() {
                   <Route path="/blog/add" element={<WriteBlog />} />
                   <Route path="/blog/update/:id" element={<UpdateBlog />} />
                   <Route path="/blog/:id" element={<DedicatedBlogPage />} />
-                  {/* <Route path="/blog/:id" element={< />} /> */}
 
                   {/* batch routes */}
 

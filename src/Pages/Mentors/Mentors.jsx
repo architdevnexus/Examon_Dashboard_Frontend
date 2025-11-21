@@ -29,7 +29,7 @@ function Mentors() {
     },
   });
 
-  const { mutate, isPending } = useUpdateOrDeleteContent({
+  const { mutate } = useUpdateOrDeleteContent({
     keys: ["mentor"],
   }); // delete exam
 

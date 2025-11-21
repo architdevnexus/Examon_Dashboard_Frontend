@@ -1,147 +1,310 @@
-import { useState } from "react";
-
+import { useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { useUpdateOrDeleteContent } from "../hooks/useHooks";
+import { useGetContent, useUpdateOrDeleteContent } from "../hooks/useHooks";
+import ListingPageHeader from "../Component/Header/ListingPageHeader";
+import Loader from "../Component/Loader";
+
+import { MdDelete } from "react-icons/md";
+import { MoonLoader } from "react-spinners";
 
 const NotificationForm = () => {
   const [formData, setFormData] = useState({
-    label: "",
-    message: "",
-    type: "success",
-    redirectURI: "",
+    image: null,
+    title: "",
+    subtitle: "",
+    description: "",
+    link: "",
+  });
+
+  const [deletingId, setDeletingId] = useState(false);
+  const [preview, setPreview] = useState(null);
+  const imgRef = useRef(null);
+
+  const {
+    data,
+    isLoading,
+    isError: isError2,
+    error: error2,
+  } = useGetContent({
+    keys: ["notification"],
+    handlerProps: {
+      url: "/notification/latest",
+    },
   });
 
   const { mutate, isPending, isError, error } = useUpdateOrDeleteContent({
     keys: ["notification"],
   });
+  // delete exam
+
+  if (isLoading) return <Loader />;
+
+  if (isError2) {
+    console.log(error2);
+    return;
+  }
+  console.log(data);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({ ...prev, image: file }));
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     mutate(
       {
         method: "post",
-        url: `notification/create`,
+        url: "notification/create",
         data: formData,
       },
       {
         onSuccess: (d) => {
           console.log("response data", d);
           setFormData({
-            label: "",
-            message: "",
-            type: "success",
-            redirectURI: "",
+            image: null,
+            title: "",
+            subtitle: "",
+            description: "",
+            link: "",
           });
-          toast.success(d.message);
+          setPreview(null);
+          if (imgRef.current) imgRef.current.value = null;
+          toast.success(d.description);
         },
-        onError: (error) => {
-          console.log(error);
-          toast.error(error.message);
+        onError: (err) => {
+          console.log(err);
+          toast.error(err?.description || "Something went wrong");
         },
       }
     );
   };
 
-  const typeOptions = ["success", "error", "info", "warning"];
-  const style = "w-full p-2 border border-gray-300 rounded mb-4";
+  const onDelete = (id) => {
+    console.log(id);
+    setDeletingId(id);
+    mutate(
+      {
+        method: "delete",
+        url: `/notification/delete/${id}`,
+      },
+      {
+        onSuccess: (resp) => {
+          console.log(resp);
+          toast.success("Notification deleted");
+          setDeletingId(null);
+        },
+        onError: (err) => {
+          console.log(err);
+          toast.error(err.response?.data?.message || "error");
+          setDeletingId(null);
+        },
+      }
+    );
+  };
+
+  const inputClass = "w-full p-2 border border-gray-300 rounded mb-4";
+
+  const headerProps = {
+    heading: "Send Notification",
+    hideSearch: true,
+    btnText: "+ Add Offer",
+    redirectURL: "/offer",
+  };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        Send Notification
-      </h2>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 font-sans">
+        <ListingPageHeader props={headerProps} />
 
-      <form className="space-y-4" onSubmit={handleSubmit}>
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            Label
-          </label>
-          <input
-            type="text"
-            name="label"
-            value={formData.label}
-            onChange={handleChange}
-            placeholder="Enter notification label"
-            className={style}
-            required
-          />
+        {/* 2-column layout: 3/5 form + 2/5 side list */}
+        <div className="grid gap-6 md:grid-cols-5">
+          {/* Left: Form */}
+          <div className="md:col-span-3">
+            <div className="bg-white shadow-lg rounded-xl p-4 md:p-6 border border-gray-200">
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Upload Image*
+                  </label>
+                  <input
+                    type="file"
+                    ref={imgRef}
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="w-full border border-gray-300 rounded-lg p-2 cursor-pointer file:cursor-pointer text-sm file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+                    required
+                  />
+
+                  {preview && (
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="mt-4 w-40 h-40 object-cover rounded-lg"
+                    />
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Title*
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    placeholder="Enter notification title"
+                    className={inputClass}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Subtitle*
+                  </label>
+                  <input
+                    type="text"
+                    name="subtitle"
+                    value={formData.subtitle}
+                    onChange={handleChange}
+                    placeholder="Enter short subtitle"
+                    className={inputClass}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Description*
+                  </label>
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    placeholder="Enter notification description"
+                    className={inputClass}
+                    rows={3}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 font-semibold mb-1">
+                    Redirect URI*
+                  </label>
+                  <input
+                    type="url"
+                    name="link"
+                    value={formData.link}
+                    onChange={handleChange}
+                    placeholder="Enter redirect URL"
+                    className={inputClass}
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className={`w-full py-3 rounded-lg text-white font-semibold ${
+                    isPending
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-blue-600 hover:bg-blue-700"
+                  }`}
+                  disabled={isPending}
+                >
+                  {isPending ? "Sending..." : "Send Notification"}
+                </button>
+
+                {isError && (
+                  <p className="mt-2 text-center font-medium text-red-600">
+                    {error?.response?.data?.message || "Something went wrong"}
+                  </p>
+                )}
+              </form>
+            </div>
+          </div>
+
+          {/* Right: Other notifications list */}
+          <div className="md:col-span-2">
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <div className="bg-white shadow-lg rounded-xl border border-gray-200 ">
+                <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    Other Notifications
+                  </h3>
+                  <span className="text-xs text-gray-500">
+                    {data.data.length} total
+                  </span>
+                </div>
+
+                {/* Scrollable list inside fixed panel */}
+                <div className="max-h-[460px] overflow-y-auto px-4 py-3 space-y-3">
+                  {data.data.length === 0 ? (
+                    <p className="text-sm text-gray-500 text-center py-4">
+                      No notifications yet.
+                    </p>
+                  ) : (
+                    data.data.map((n, index) => (
+                      <div
+                        key={index}
+                        className={`border relative border-gray-100 rounded-lg p-3 hover:bg-gray-50 transition
+                            ${deletingId === n._id ? "animate-pulse" : ""}
+                          `}
+                      >
+                        <p className="text-xs text-blue-500 font-medium mb-1">
+                          {n.title}
+                        </p>
+                        <p className="text-sm font-semibold text-gray-800">
+                          {n.subtitle}
+                        </p>
+                        <a
+                          href={n.link}
+                          target="_blank"
+                          className="text-sm font-semibold text-blue-800 underline"
+                        >
+                          Link
+                        </a>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {new Date(n.createdAt).toLocaleDateString("en-IN", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </p>
+                        <div className="absolute top-3 right-3">
+                          {deletingId === n._id ? (
+                            <MoonLoader color="#003e68" size={20} />
+                          ) : (
+                            <MdDelete
+                              size={30}
+                              className="bg-red-500    text-white rounded-full p-1.5 cursor-pointer hover:bg-red-600 transition"
+                              title="Delete"
+                              onClick={(e) => onDelete?.(n._id)}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-
-        <div>
-          <label className="block text-gray-700 outline-black font-semibold mb-1">
-            Message
-          </label>
-          <textarea
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            placeholder="Enter notification message"
-            className={style}
-            rows={3}
-            required
-          />
-        </div>
-
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">Type</label>
-          <select
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            className={style}
-          >
-            {typeOptions.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt.charAt(0).toUpperCase() + opt.slice(1)}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-gray-700 font-semibold mb-1">
-            Redirect URI
-          </label>
-          <input
-            type="text"
-            name="redirectURI"
-            value={formData.redirectURI}
-            onChange={handleChange}
-            placeholder="Enter redirect URL (optional)"
-            className={style}
-          />
-        </div>
-
-        <button
-          type="submit"
-          className={`w-full py-3 rounded-lg text-white font-semibold ${
-            isPending
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
-          }`}
-          disabled={isPending}
-        >
-          {isPending ? "Sending..." : "Send Notification"}
-        </button>
-      </form>
-
-      {isError && (
-        <p
-          className={`mt-4 text-center font-medium ${
-            error.toLowerCase().includes("error")
-              ? "text-red-600"
-              : "text-green-600"
-          }`}
-        >
-          {error}
-        </p>
-      )}
+      </div>
     </div>
   );
 };

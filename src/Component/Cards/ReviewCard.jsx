@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Check, X, Star, TurkishLira } from "lucide-react"; // icons
-import { useDeleteReview, useUpdateReview } from "../../hooks/useReview";
+import { Check, X, Star } from "lucide-react"; // icons
+
 import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
 import { MdDelete } from "react-icons/md";
+import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
 
 export default function ReviewCard({ review }) {
   const [hovered, setHoverd] = useState(false);
@@ -16,13 +17,16 @@ export default function ReviewCard({ review }) {
   const isLong = review.review.length > MAX;
 
   const { mutate: DeleteReview, isPending: isDeletionPending } =
-    useDeleteReview();
+    useUpdateOrDeleteContent({
+      keys: ["review"],
+    });
 
-  const { mutate, isPending } = useUpdateReview();
-
+  const { mutate, isPending } = useUpdateOrDeleteContent({
+    keys: ["review"],
+  });
   const handleUpdate = (id, status) => {
     mutate(
-      { id, status },
+      { url: `/review/update/${id}`, data: status, method: "PATCH" },
       {
         onSuccess: (resp) => {
           console.log(resp);
@@ -40,17 +44,23 @@ export default function ReviewCard({ review }) {
 
     if (!isConfirmed) return;
     // setHoverd(true);
-    DeleteReview(id, {
-      onSuccess: (resp) => {
-        console.log(resp);
-        toast.success("Review Deleted");
-        setHoverd(false);
+    DeleteReview(
+      {
+        url: `/review/delete/${id}`,
+        method: "DELETE",
       },
-      onError: (error) => {
-        console.log(error);
-        toast.error(error.response.data.message);
-      },
-    });
+      {
+        onSuccess: (resp) => {
+          console.log(resp);
+          toast.success("Review Deleted");
+          setHoverd(false);
+        },
+        onError: (error) => {
+          console.log(error);
+          toast.error(error.response.data.message);
+        },
+      }
+    );
   };
 
   return (

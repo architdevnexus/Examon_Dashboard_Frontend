@@ -1,12 +1,14 @@
 import { useState } from "react";
 import ListingPageHeader from "../../Component/Header/ListingPageHeader";
-import { useDeleteCourse } from "../../hooks/useCourse.js";
 import Loader from "../../Component/Loader";
 import CourseCard from "../../Component/Cards/CourseCard.jsx";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import CourseDetailsModal from "./CoursePopUp.jsx";
-import { useGetContent } from "../../hooks/useHooks.js";
+import {
+  useGetContent,
+  useUpdateOrDeleteContent,
+} from "../../hooks/useHooks.js";
 
 const CourseList = () => {
   const navigate = useNavigate();
@@ -28,7 +30,9 @@ const CourseList = () => {
     },
   });
 
-  const { mutate } = useDeleteCourse();
+  const { mutate } = useUpdateOrDeleteContent({
+    keys: ["course"],
+  });
 
   if (isLoading) return <Loader />;
 
@@ -67,7 +71,10 @@ const CourseList = () => {
     setDeletingId(id);
 
     mutate(
-      { cid, id },
+      {
+        url: `/course/delete/${cid}/${id}`,
+        method: "DELETE",
+      },
       {
         onSuccess: (data) => {
           console.log(data);

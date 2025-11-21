@@ -1,12 +1,23 @@
 import { useParams, useNavigate } from "react-router-dom";
 
 import Loader from "../../Component/Loader";
-import { useGetBlogById } from "../../hooks/useBlog";
+import { useGetContentById } from "../../hooks/useHooks";
 
 export default function DedicatedBlogPage() {
   const { id } = useParams();
 
-  const { data: blog, isLoading, isError, error } = useGetBlogById(id);
+  const {
+    data: blog,
+    isLoading,
+    isError,
+    error,
+  } = useGetContentById({
+    keys: ["blog", id],
+    id: id,
+    handlerProps: {
+      url: `/blogs/${id}`,
+    },
+  });
 
   if (isLoading) return <Loader />;
 

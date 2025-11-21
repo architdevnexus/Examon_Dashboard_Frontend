@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import { useAddCourse } from "../../hooks/useCourse";
 import { toast } from "react-toastify";
+import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
 
 const CourseFormPage = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +21,9 @@ const CourseFormPage = () => {
 
   const [preview, setPreview] = useState(null);
 
-  const { mutate, isSuccess, isPending, isError, error } = useAddCourse();
+  const { mutate, isPending } = useUpdateOrDeleteContent({
+    keys: ["course"],
+  });
 
   // Handle text input
   const handleChange = (e) => {
@@ -44,33 +46,43 @@ const CourseFormPage = () => {
     const formData1 = new FormData();
 
     for (const key in formData) {
+      if (formData.examCategory.trim() === "") {
+        formData.examCategory = "Other";
+      }
       formData1.append(key, formData[key]);
     }
 
-    mutate(formData1, {
-      onSuccess: (resp) => {
-        setFormData({
-          img: null,
-          title: "",
-          insideCourses: "",
-          description: "",
-          perks: "",
-          examCategory: "",
-          previousprice: "",
-          actualprice: "",
-          percent: "",
-          Discount: "true",
-          amount: "",
-        });
-        imgRef.current = null;
-        console.log(resp);
-        toast.success("Course added");
+    mutate(
+      {
+        method: "post",
+        url: "/course/create",
+        data: formData1,
       },
-      onError: (e) => {
-        console.log(e);
-        toast.error("error");
-      },
-    });
+      {
+        onSuccess: (resp) => {
+          setFormData({
+            img: null,
+            title: "",
+            insideCourses: "",
+            description: "",
+            perks: "",
+            examCategory: "",
+            previousprice: "",
+            actualprice: "",
+            percent: "",
+            Discount: "true",
+            amount: "",
+          });
+          imgRef.current.value = null;
+          console.log(resp);
+          toast.success("Course added");
+        },
+        onError: (e) => {
+          console.log(e);
+          toast.error("error");
+        },
+      }
+    );
   };
 
   return (

@@ -3,8 +3,9 @@ import { Editor } from "primereact/editor";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { useAddBlog } from "../../hooks/useBlog";
+
 import { toast } from "react-toastify";
+import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
 
 export default function WriteBlog() {
   const [title, setTitle] = useState("");
@@ -13,7 +14,9 @@ export default function WriteBlog() {
 
   const fileRef = useRef();
 
-  const { mutate, isPending } = useAddBlog();
+  const { mutate, isPending } = useUpdateOrDeleteContent({
+    keys: ["blog"],
+  });
 
   const handleSubmit = async () => {
     console.log(img, title, content);
@@ -22,20 +25,27 @@ export default function WriteBlog() {
     formData.append("title", title);
     formData.append("blogContent", content);
 
-    mutate(formData, {
-      onSuccess: (resp) => {
-        console.log(resp);
-        toast.success("Blog Added");
-        setTitle("");
-        setImg(null);
-        setContent("");
-        if (fileRef.current) fileRef.current.value = "";
+    mutate(
+      {
+        method: "post",
+        data: formData,
+        url: `create-blogs`,
       },
-      onError: (e) => {
-        console.log(e);
-        toast.error(e.response.data.message);
-      },
-    });
+      {
+        onSuccess: (resp) => {
+          console.log(resp);
+          toast.success("Blog Added");
+          setTitle("");
+          setImg(null);
+          setContent("");
+          if (fileRef.current) fileRef.current.value = "";
+        },
+        onError: (e) => {
+          console.log(e);
+          toast.error(e.response.data.message);
+        },
+      }
+    );
   };
 
   return (

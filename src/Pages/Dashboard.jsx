@@ -1,4 +1,4 @@
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DashCard from "../Component/Cards/DashCards";
 import { GiNotebook } from "react-icons/gi";
 import RecentItemsCard from "../Component/Cards/RecentAddedCard";
@@ -32,35 +32,30 @@ function Dashboard() {
       icon: <FaUsers />,
       title: "Mentors",
       count: dashboard.MentorsCount,
-      // path: "/users/retailers",
       bgColor: "bg-[var(--accent)]",
     },
     {
       icon: <MdHistory />,
       title: "PYQs",
       count: dashboard.PYQsCount,
-      // path: "/users/customers",
       bgColor: "bg-[var(--accent-dark)]",
     },
     {
       icon: <PiVideoBold />,
       title: "Courses",
       count: dashboard.CoursesCount,
-      // path: "/products",
       bgColor: "bg-[var(--success)]",
     },
     {
       icon: <PiChalkboardSimpleBold />,
       title: "Batches",
       count: dashboard.BatchesCount,
-      // path: "/messages",
       bgColor: "bg-[var(--warning)]",
     },
     {
       icon: <GiNotebook />,
       title: "Quizzes",
       count: dashboard.QuizzesCount,
-      // path: "/revenue",
     },
   ];
 
@@ -104,8 +99,6 @@ function Dashboard() {
         {CardsData.map(({ icon, title, count, path, bgColor }, idx) => (
           <div
             key={idx}
-            // className="cursor-pointer"
-            // onClick={() => navigate(path)}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => {

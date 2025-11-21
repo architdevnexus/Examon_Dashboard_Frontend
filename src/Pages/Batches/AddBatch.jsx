@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useAddBatch } from "../../hooks/useBatch.js";
+import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useUpdateOrDeleteContent } from "../../hooks/useHooks.js";
 
 const AddBatchForm = () => {
   const [formData, setFormData] = useState({
@@ -15,10 +15,14 @@ const AddBatchForm = () => {
     enrollLink: "",
   });
 
+  const imgRef = useRef();
+
   const Navigate = useNavigate();
   const [preview, setPreview] = useState(null);
 
-  const { mutate, isPending, isSuccess, isError, error } = useAddBatch();
+  const { mutate, isPending, isError, error } = useUpdateOrDeleteContent({
+    keys: ["batch"],
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,30 +42,41 @@ const AddBatchForm = () => {
     const formData1 = new FormData();
 
     for (const key in formData) {
+      if (formData.batchCategory.trim() === "") {
+        formData1.batchCategory = "Other";
+      }
       formData1.append(key, formData[key]);
     }
 
-    mutate(formData1, {
-      onSuccess: (resp) => {
-        setFormData({
-          image: null,
-          batchCategory: "",
-          batchName: "",
-          syllabus: "",
-          duration: "",
-          price: "",
-          teachers: "",
-          enrollLink: "",
-        });
-        setPreview(null);
-        toast.success("Batch Added");
-        Navigate("/batches");
+    mutate(
+      {
+        method: "post",
+        url: "/live/batches",
+        data: formData1,
       },
-      onError: (e) => {
-        console.log(e);
-        toast.error("error");
-      },
-    });
+      {
+        onSuccess: (resp) => {
+          setFormData({
+            image: null,
+            batchCategory: "",
+            batchName: "",
+            syllabus: "",
+            duration: "",
+            price: "",
+            teachers: "",
+            enrollLink: "",
+          });
+          imgRef.current.value = null;
+          setPreview(null);
+          toast.success("Batch Added");
+          Navigate("/batches");
+        },
+        onError: (e) => {
+          console.log(e);
+          toast.error("error");
+        },
+      }
+    );
   };
 
   return (
@@ -76,6 +91,7 @@ const AddBatchForm = () => {
             Batch Image
           </label>
           <input
+            ref={imgRef}
             type="file"
             name="image"
             accept="image/*"

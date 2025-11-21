@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
@@ -19,6 +19,7 @@ export default function AddMentorForm() {
   });
 
   const [preview, setPreview] = useState(null);
+  const imgRef = useRef(null);
 
   const { mutate, isPending, error } = useUpdateOrDeleteContent({
     keys: ["mentors"],
@@ -88,6 +89,8 @@ export default function AddMentorForm() {
             CoursesHandled: [],
           });
           setPreview(null);
+          imgRef.current.value = null;
+
           console.log(resp);
           toast.success("Mentor added");
           navigate("/mentors");
@@ -112,6 +115,7 @@ export default function AddMentorForm() {
             Upload Image
           </label>
           <input
+            ref={imgRef}
             type="file"
             // name="image"
             accept="image/*"

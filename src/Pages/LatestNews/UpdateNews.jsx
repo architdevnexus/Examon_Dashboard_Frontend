@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetNewsById, useUpdateNews } from "../../hooks/useLatestNews";
 import { toast } from "react-toastify";
 import Loader from "../../Component/Loader";
+import {
+  useGetContentById,
+  useUpdateOrDeleteContent,
+} from "../../hooks/useHooks";
 
 const UpdateNewsForm = () => {
   const { id } = useParams();
@@ -15,8 +17,16 @@ const UpdateNewsForm = () => {
   });
   const [preview, setPreview] = useState(null);
 
-  const { data, isLoading, isSuccess, isError, error } = useGetNewsById(id);
-  const { mutate, isPending } = useUpdateNews();
+  const { data, isLoading, isSuccess, isError, error } = useGetContentById({
+    id,
+    keys: ["news", id],
+    handlerProps: {
+      url: `/news/${id}`,
+    },
+  });
+  const { mutate, isPending } = useUpdateOrDeleteContent({
+    keys: ["news"],
+  });
 
   useEffect(() => {
     if (isSuccess && data.success) {
@@ -63,7 +73,11 @@ const UpdateNewsForm = () => {
     }
 
     mutate(
-      { id, formData1 },
+      {
+        method: "patch",
+        url: `/news/update/${id}`,
+        data: formData1,
+      },
       {
         onSuccess: (resp) => {
           console.log(resp);
@@ -103,7 +117,6 @@ const UpdateNewsForm = () => {
               accept="image/*"
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-2 cursor-pointer file:cursor-pointer  text-sm file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
-               
             />
             {preview && (
               <img

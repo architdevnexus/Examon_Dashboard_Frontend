@@ -1,7 +1,6 @@
 import { useState } from "react";
 import ListingPageHeader from "../Component/Header/ListingPageHeader";
 import Loader from "../Component/Loader.jsx";
-import { useGetReviews } from "../hooks/useReview.js";
 import ReviewCard from "../Component/Cards/ReviewCard.jsx";
 import { useGetContent } from "../hooks/useHooks.js";
 
@@ -26,8 +25,6 @@ export default function ReviewListPage() {
   if (isError) return <div>{error}</div>;
 
   const filteredReviews = reviews.data.filter((rev) => rev.status === active);
-
-  console.log(reviews);
 
   const headerProps = {
     heading: "All Reviews",

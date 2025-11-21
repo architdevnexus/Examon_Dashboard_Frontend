@@ -57,6 +57,4 @@ export const UpdateAchievement = async ({ id, update }) => {
   return data;
 };
 
-export const GetAchievement = async () => {
- 
-};
+export const GetAchievement = async () => {};

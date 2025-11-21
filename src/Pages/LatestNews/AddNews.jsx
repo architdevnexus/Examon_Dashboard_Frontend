@@ -1,8 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useAddNews } from "../../hooks/useLatestNews";
 import { toast } from "react-toastify";
+import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
 
 const AddNewsForm = () => {
   const Navigate = useNavigate();
@@ -12,7 +11,9 @@ const AddNewsForm = () => {
     description: "",
   });
   const [preview, setPreview] = useState(null);
-  const { mutate, isPending, error } = useAddNews();
+  const { mutate, isPending, error } = useUpdateOrDeleteContent({
+    keys: ["news"],
+  });
 
   //  Handle input changes
   const handleChange = (e) => {
@@ -37,22 +38,25 @@ const AddNewsForm = () => {
       formData1.append(key, formData[key]);
     }
 
-    mutate(formData1, {
-      onSuccess: (resp) => {
-        setFormData({
-          image: null,
-          title: "",
-          description: "",
-        });
-        setPreview(null);
-        toast.success("News Added");
-        Navigate("/news");
-      },
-      onError: (e) => {
-        console.log(e);
-        toast.error("error");
-      },
-    });
+    mutate(
+      { data: formData1, url: "/news/create", method: "post" },
+      {
+        onSuccess: (resp) => {
+          setFormData({
+            image: null,
+            title: "",
+            description: "",
+          });
+          setPreview(null);
+          toast.success("News Added");
+          Navigate("/news");
+        },
+        onError: (e) => {
+          console.log(e);
+          toast.error("error");
+        },
+      }
+    );
   };
 
   return (

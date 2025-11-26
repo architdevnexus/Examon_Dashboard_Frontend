@@ -43,12 +43,12 @@ function UpdateBlog() {
   }
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 
   const handleSubmit = async () => {
-    console.log(img, title, content);
+    //console.log(img, title, content);
     const formData = new FormData();
     formData.append("featuredImage", img);
     formData.append("title", title);
@@ -58,14 +58,14 @@ function UpdateBlog() {
       { id, data: formData, url: `/blogs/update/${id}` },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           setTitle("");
           setImg(null);
           setContent("");
           toast.success("Blog Updated");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error(e.response.data.message);
         },
       }

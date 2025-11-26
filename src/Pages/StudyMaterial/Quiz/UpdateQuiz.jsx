@@ -68,7 +68,7 @@ const UpdateQuizForm = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
   //   console.log(data);
@@ -139,7 +139,7 @@ const UpdateQuizForm = () => {
       formData1.append(key, formData[key]);
     }
 
-    // console.log("Final JSON:", formData);
+    //console.log("Final JSON:", formData);
     mutate(
       {
         method: "patch",
@@ -148,7 +148,7 @@ const UpdateQuizForm = () => {
       },
       {
         onSuccess: (resp) => {
-          console.log("response data", resp);
+          //console.log("response data", resp);
           toast.success("Quiz Updated");
           setFormData({
             id: "",
@@ -174,7 +174,7 @@ const UpdateQuizForm = () => {
           navigate("/studymaterial/quiz");
         },
         onError: (error) => {
-          console.log(error);
+          //console.log(error);
           toast.error(error.message);
         },
       }

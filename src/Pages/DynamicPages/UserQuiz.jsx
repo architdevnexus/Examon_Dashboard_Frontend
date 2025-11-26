@@ -131,7 +131,7 @@ const UserQuiz = () => {
       setLoading(true);
 
       const res = await fetch(
-        `http://194.238.18.1:3004/api/user/quizzes/${id}`,
+        `https://backend.palgharhome.com/api/user/quizzes/${id}`,
         {
           headers: {
             "Content-Type": "application/json",

@@ -96,11 +96,14 @@ const UserReview = () => {
     try {
       setLoading(true);
 
-      const res = await fetch(`http://194.238.18.1:3004/api/review/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `https://backend.palgharhome.com/api/review/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to fetch user reviews");
 

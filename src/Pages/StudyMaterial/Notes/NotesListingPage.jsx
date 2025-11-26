@@ -22,10 +22,10 @@ function NotesListingPage() {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
-  // console.log(data);
+  //console.log(data);
 
   const filteredNotes = notes.data
     .map((category) => ({

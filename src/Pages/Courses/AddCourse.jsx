@@ -74,11 +74,11 @@ const CourseFormPage = () => {
             amount: "",
           });
           imgRef.current.value = null;
-          console.log(resp);
+          //console.log(resp);
           toast.success("Course added");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error("error");
         },
       }

@@ -19,11 +19,11 @@ const PyqCard = ({ cid, pyq }) => {
       { url: `/pyq/delete/${cid}/${id}`, method: "delete" },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success(resp.message);
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error(e.response.data.message);
         },
       }

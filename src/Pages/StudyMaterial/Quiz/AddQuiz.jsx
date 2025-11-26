@@ -92,7 +92,7 @@ const AddNewQuiz = () => {
   // -------------------------------
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Final JSON:", formData);
+    //console.log("Final JSON:", formData);
     mutate(
       {
         method: "post",
@@ -101,7 +101,7 @@ const AddNewQuiz = () => {
       },
       {
         onSuccess: (d) => {
-          console.log("response data", d);
+          //console.log("response data", d);
           setFormData({
             id: "",
             title: "",
@@ -125,7 +125,7 @@ const AddNewQuiz = () => {
           toast.success("Quiz Created");
         },
         onError: (error) => {
-          console.log(error);
+          //console.log(error);
           toast.error(error.message);
         },
       }

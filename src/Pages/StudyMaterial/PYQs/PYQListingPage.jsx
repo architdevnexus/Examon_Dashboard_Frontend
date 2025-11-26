@@ -23,7 +23,7 @@ const PYQListingPage = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 
@@ -36,7 +36,7 @@ const PYQListingPage = () => {
     }))
     .filter((category) => category.questionspaper.length > 0);
 
-  // console.log(filteredPYQs);
+  //console.log(filteredPYQs);
 
   const headerProps = {
     heading: "All PYQs",

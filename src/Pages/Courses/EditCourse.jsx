@@ -77,7 +77,7 @@ const CourseUpdateForm = () => {
   if (isLoading) return <Loader />;
 
   if (isError || isError2) {
-    console.log(error, error2);
+    //console.log(error, error2);
     return;
   }
 
@@ -125,12 +125,12 @@ const CourseUpdateForm = () => {
             Discount: "true",
             amount: "",
           });
-          console.log(resp);
+          //console.log(resp);
           toast.success("Course Updated");
           navigate("/courses");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error("error");
         },
       }

@@ -36,11 +36,11 @@ function Mentors() {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 
-  console.log(mentors);
+  //console.log(mentors);
 
   const filteredMentors = mentors.data.filter((mentor) =>
     mentor.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -60,7 +60,7 @@ function Mentors() {
 
     if (!isConfirmed) return;
 
-    console.log(id);
+    //console.log(id);
     setDeletingId(id);
 
     mutate(
@@ -70,12 +70,12 @@ function Mentors() {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           setDeletingId(null);
           toast.success("Mentor deleted");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.success("error");
 
           setDeletingId(null);
@@ -85,7 +85,7 @@ function Mentors() {
   };
 
   const onEdit = ({ id }) => {
-    console.log("edit", id);
+    //console.log("edit", id);
     if (!id) {
       toast.error("Id not found");
       return;

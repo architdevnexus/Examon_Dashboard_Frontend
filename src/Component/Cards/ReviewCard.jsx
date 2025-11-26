@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
 import { MdDelete } from "react-icons/md";
 import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
-import profile_placeholder from "../../../public/Portrait_Placeholder.png";
+import profile_placeholder from "../../assets/Portrait_Placeholder.png";
 
 export default function ReviewCard({ review }) {
   const [hovered, setHoverd] = useState(false);
@@ -30,11 +30,11 @@ export default function ReviewCard({ review }) {
       { url: `/review/update/${id}`, data: { status }, method: "PATCH" },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success(status.toUpperCase());
         },
         onError: (error) => {
-          console.log(error);
+          //console.log(error);
           toast.error(error.response.data.message);
         },
       }
@@ -52,12 +52,12 @@ export default function ReviewCard({ review }) {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success("Review Deleted");
           setHoverd(false);
         },
         onError: (error) => {
-          console.log(error);
+          //console.log(error);
           toast.error(error.response.data.message);
         },
       }

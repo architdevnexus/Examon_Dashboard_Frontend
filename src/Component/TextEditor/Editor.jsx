@@ -19,7 +19,7 @@ export default function WriteBlog() {
   });
 
   const handleSubmit = async () => {
-    console.log(img, title, content);
+    //console.log(img, title, content);
     const formData = new FormData();
     formData.append("featuredImage", img);
     formData.append("title", title);
@@ -33,7 +33,7 @@ export default function WriteBlog() {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success("Blog Added");
           setTitle("");
           setImg(null);
@@ -41,7 +41,7 @@ export default function WriteBlog() {
           if (fileRef.current) fileRef.current.value = "";
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error(e.response.data.message);
         },
       }

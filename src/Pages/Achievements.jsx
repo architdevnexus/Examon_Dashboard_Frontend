@@ -35,7 +35,7 @@ const Achievements = () => {
   useEffect(() => {
     if (isSuccess && data.success) {
       const stats = data.data[0];
-      console.log(stats);
+      //console.log(stats);
       setFormData({
         id: stats._id,
         activeUser: stats.activeUser,
@@ -51,7 +51,7 @@ const Achievements = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 
@@ -66,18 +66,18 @@ const Achievements = () => {
 
   //  Submit form data to backend
   const handleSubmit = () => {
-    console.log(formData);
+    //console.log(formData);
 
     mutate(
       { url: `/achievement/update/${id}`, data: formData, method: "patch" },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success("Stats updated");
           setEditable(false);
         },
         onError: (error) => {
-          console.log(error);
+          //console.log(error);
           toast.error(error.response.data.message);
         },
       }

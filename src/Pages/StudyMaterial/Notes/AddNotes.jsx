@@ -48,7 +48,7 @@ const AddNotes = () => {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success(resp.message);
           setFormData({
             notesCategory: "",
@@ -60,7 +60,7 @@ const AddNotes = () => {
           fileRef.current = null;
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error(e.message);
         },
       }

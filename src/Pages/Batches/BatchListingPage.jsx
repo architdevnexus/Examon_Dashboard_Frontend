@@ -70,12 +70,12 @@ export default function BatchListingPage() {
       },
       {
         onSuccess: (data) => {
-          console.log(data);
+          //console.log(data);
           setDeletingId(null);
           toast.success("Batch deleted");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           setDeletingId(null);
           toast.error("Error");
         },
@@ -86,7 +86,7 @@ export default function BatchListingPage() {
   };
 
   const handleUpdate = ({ cid, id }) => {
-    console.log(id);
+    //console.log(id);
     if (!id) {
       alert("fd");
       toast.warn("Id is missing");
@@ -96,7 +96,7 @@ export default function BatchListingPage() {
   };
 
   const onDeleteCategory = (id) => {
-    console.log(id);
+    //console.log(id);
     const isConfirmed = confirm(
       "Deleting the category will also delete its batches."
     );
@@ -110,11 +110,11 @@ export default function BatchListingPage() {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success(resp.message);
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error(e.response.data.message);
         },
       }

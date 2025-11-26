@@ -72,7 +72,7 @@ const AddBatchForm = () => {
           Navigate("/batches");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error("error");
         },
       }

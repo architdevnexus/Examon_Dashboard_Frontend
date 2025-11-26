@@ -2,7 +2,7 @@ import RecentLiItem from "../RecentLiItem";
 
 export default function RecentItemsCard({ item }) {
   const { title, data } = item;
-  console.log(item);
+  //console.log(item);
   return (
     <div className="w-full px-3 py-2 bg-white rounded-xl hover:shadow-sm border border-gray-100 max-w-md">
       <h2 className="text-lg font-semibold mb-2">Recently Added {title}</h2>

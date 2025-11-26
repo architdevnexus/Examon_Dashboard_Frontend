@@ -62,7 +62,7 @@ export default function WriteBlog() {
           type="file"
           ref={fileRef}
           name="img"
-          accept="image/*"
+          accept="image/png, image/jpeg, image/jpg"
           onChange={(e) => setImg(e.target.files[0])}
           className="w-full border border-gray-300 rounded-lg p-1 cursor-pointer file:cursor-pointer  text-sm file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
           required

@@ -133,6 +133,7 @@ const UpdateNewsForm = () => {
               Title
             </label>
             <input
+              maxLength={100}
               type="text"
               name="title"
               placeholder="Enter news title"
@@ -150,6 +151,7 @@ const UpdateNewsForm = () => {
             </label>
             <textarea
               name="description"
+              maxLength={1000}
               placeholder="Enter description"
               rows={4}
               value={formData.description}

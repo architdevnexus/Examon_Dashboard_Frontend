@@ -4,6 +4,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import Loader from "../../../Component/Loader";
 import { toast } from "react-toastify";
 import { useUpdateOrDeleteContent } from "../../../hooks/useHooks";
+import MultipleValues from "../../../Component/Input/MultipleValues";
 
 const AddNewQuiz = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const AddNewQuiz = () => {
     duration: "",
     totalMarks: "",
     tags: [],
+    tagsInput: "",
     questions: [
       {
         id: "",
@@ -37,26 +39,6 @@ const AddNewQuiz = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // -------------------------------
-  // Handle tags
-  // -------------------------------
-
-  const addTag = () => {
-    const tag2add = prompt("Enter Tag value (1-20 characters)");
-    const trimmedTag = tag2add.trim();
-    if (trimmedTag && trimmedTag.length < 21) {
-      setFormData((prev) => ({ ...prev, tags: [...prev.tags, tag2add] }));
-    } else {
-      alert("Tag can have max 20 characters");
-    }
-  };
-
-  const removeTag = (tag2remove) => {
-    const remainingTags = formData.tags.filter((tag) => tag != tag2remove);
-
-    setFormData((prev) => ({ ...prev, tags: remainingTags }));
   };
 
   // -------------------------------
@@ -105,7 +87,6 @@ const AddNewQuiz = () => {
       ],
     }));
   };
-
   // -------------------------------
   // Handle form submit
   // -------------------------------
@@ -151,6 +132,19 @@ const AddNewQuiz = () => {
     );
   };
 
+  const multiValueProps = {
+    label: "Tags",
+    name: "tagInput",
+    placeholder: "add tag",
+    formData,
+    maxLength: 30,
+    valueArray: formData.tags,
+    valueArrayString: "tags",
+    valueInput: formData.tagInput,
+    setFormData,
+    onchange: handleChange,
+  };
+
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-md mt-8">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
@@ -163,6 +157,7 @@ const AddNewQuiz = () => {
           <input
             required
             type="text"
+            maxLength={100}
             name="title"
             disabled={isPending}
             value={formData.title}
@@ -174,6 +169,7 @@ const AddNewQuiz = () => {
             required
             type="text"
             name="exam"
+            maxLength={50}
             disabled={isPending}
             value={formData.exam}
             onChange={handleChange}
@@ -183,6 +179,8 @@ const AddNewQuiz = () => {
           <input
             required
             type="number"
+            min={1}
+            max={10000}
             name="duration"
             disabled={isPending}
             value={formData.duration}
@@ -193,6 +191,8 @@ const AddNewQuiz = () => {
           <input
             required
             type="number"
+            min={1}
+            max={10000}
             disabled={isPending}
             name="totalMarks"
             value={formData.totalMarks}
@@ -202,37 +202,7 @@ const AddNewQuiz = () => {
           />
         </div>
 
-        {/* Tags */}
-        <div>
-          <h3 className="font-semibold text-gray-700 mb-2">Tags</h3>
-          {formData.tags.map((tag, index) => (
-            <div
-              key={index}
-              className="pr-2 pl-3 inline py-1 m-1 rounded-2xl bg-blue-600 text-white"
-            >
-              {tag}
-              <span
-                onClick={() => {
-                  !isPending && removeTag(tag);
-                }}
-                className="text-lg ml-1 p-1 text-gray-100 cursor-pointer"
-              >
-                ×
-              </span>
-            </div>
-          ))}
-          <button
-            type="button"
-            disabled={isPending}
-            style={{
-              cursor: isPending ? "not-allowed" : "pointer",
-            }}
-            onClick={addTag}
-            className="px-3 py-1 cursor-pointer bg-green-600 text-white text-sm rounded-2xl"
-          >
-            + Add Tag
-          </button>
-        </div>
+        <MultipleValues {...multiValueProps} />
 
         {/* Questions */}
         <div>
@@ -254,6 +224,7 @@ const AddNewQuiz = () => {
               <input
                 required
                 type="text"
+                maxLength={300}
                 value={q.question}
                 onChange={(e) =>
                   handleQuestionChange(qIndex, "question", e.target.value)
@@ -268,6 +239,7 @@ const AddNewQuiz = () => {
                     required
                     key={oIndex}
                     type="text"
+                    maxLength={50}
                     value={opt}
                     onChange={(e) =>
                       handleOptionChange(qIndex, oIndex, e.target.value)
@@ -304,6 +276,8 @@ const AddNewQuiz = () => {
                 <input
                   required
                   type="number"
+                  min={1}
+                  max={100}
                   value={q.marks}
                   onChange={(e) =>
                     handleQuestionChange(qIndex, "marks", e.target.value)
@@ -314,6 +288,7 @@ const AddNewQuiz = () => {
                 <input
                   required
                   type="text"
+                  maxLength={50}
                   value={q.topic}
                   onChange={(e) =>
                     handleQuestionChange(qIndex, "topic", e.target.value)

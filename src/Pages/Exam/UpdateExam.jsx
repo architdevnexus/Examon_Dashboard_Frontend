@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Editor } from "primereact/editor";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../Component/Loader";
 import {
   useGetContentById,
@@ -14,10 +14,18 @@ import {
 export default function UpdateExamEditor() {
   const { id } = useParams();
 
+  const Navigate = useNavigate();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const { data, isLoading, isSuccess, isError, error } = useGetContentById({
+  const {
+    data: exam,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetContentById({
     id,
     keys: ["exams", id],
     handlerProps: {
@@ -30,11 +38,12 @@ export default function UpdateExamEditor() {
   }); // update exam
 
   useEffect(() => {
+    const data = exam?.data;
     if (isSuccess && data) {
       setTitle(data.title);
       setContent(data.Content);
     }
-  }, [isSuccess, data]);
+  }, [isSuccess, exam]);
 
   if (isLoading) return <Loader />;
 
@@ -66,17 +75,18 @@ export default function UpdateExamEditor() {
       {
         method: "patch",
         data: { title, Content: content },
-        url: `/exams/details/update/${id}`,
+        url: `/exams-details/update/${id}`,
       },
       {
         onSuccess: (resp) => {
           setTitle("");
           setContent("");
           toast.success("Exam updated");
+          Navigate("../exams");
         },
         onError: (error) => {
           console.log(error);
-          toast.error(error.response.data.message);
+          toast.error(error.response.statusText || error.response.data.message);
         },
       }
     );

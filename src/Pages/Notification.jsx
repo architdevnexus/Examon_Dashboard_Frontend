@@ -60,7 +60,7 @@ const NotificationForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    console.log(formData);
     mutate(
       {
         method: "post",
@@ -112,7 +112,8 @@ const NotificationForm = () => {
     );
   };
 
-  const inputClass = "w-full p-2 border border-gray-300 rounded mb-4";
+  const inputClass =
+    "w-full p-2 resize-none border border-gray-300 rounded mb-4";
 
   const headerProps = {
     heading: "Send Notification",
@@ -161,6 +162,7 @@ const NotificationForm = () => {
                   <input
                     type="text"
                     name="title"
+                    maxLength={50}
                     value={formData.title}
                     onChange={handleChange}
                     placeholder="Enter notification title"
@@ -176,6 +178,7 @@ const NotificationForm = () => {
                   <input
                     type="text"
                     name="subtitle"
+                    maxLength={80}
                     value={formData.subtitle}
                     onChange={handleChange}
                     placeholder="Enter short subtitle"
@@ -191,10 +194,11 @@ const NotificationForm = () => {
                   <textarea
                     name="description"
                     value={formData.description}
+                    maxLength={200}
+                    rows={4}
                     onChange={handleChange}
                     placeholder="Enter notification description"
                     className={inputClass}
-                    rows={3}
                     required
                   />
                 </div>
@@ -260,23 +264,46 @@ const NotificationForm = () => {
                     data.data.map((n, index) => (
                       <div
                         key={index}
+                        title={n.description}
                         className={`border relative border-gray-100 rounded-lg p-3 hover:bg-gray-50 transition
                             ${deletingId === n._id ? "animate-pulse" : ""}
                           `}
                       >
-                        <p className="text-xs text-blue-500 font-medium mb-1">
-                          {n.title}
-                        </p>
-                        <p className="text-sm font-semibold text-gray-800">
-                          {n.subtitle}
-                        </p>
-                        <a
-                          href={n.link}
-                          target="_blank"
-                          className="text-sm font-semibold text-blue-800 underline"
+                        <p
+                          title={n.title}
+                          className="text-xs text-blue-500 font-medium mb-1"
                         >
-                          Link
-                        </a>
+                          {n.title.length > 30
+                            ? n.title.slice(0, 30) + "..."
+                            : n.title}
+                        </p>
+                        <p
+                          title={n.subtitle}
+                          className="text-sm font-semibold text-gray-800"
+                        >
+                          {n.subtitle.length > 40
+                            ? n.subtitle.slice(0, 40) + "..."
+                            : n.subtitle}
+                        </p>
+                        <div className="flex justify-between">
+                          <a
+                            href={n.link}
+                            target="_blank"
+                            className="text-sm font-semibold text-blue-800 underline"
+                          >
+                            Link
+                          </a>
+                          {n.image && (
+                            <a
+                              href={n.image}
+                              target="_blank"
+                              className="text-sm font-semibold text-blue-800 underline"
+                            >
+                              Image
+                            </a>
+                          )}
+                        </div>
+
                         <p className="text-xs text-gray-500 mt-1">
                           {new Date(n.createdAt).toLocaleDateString("en-IN", {
                             day: "2-digit",

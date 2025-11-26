@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-
-import { useAddPYQ } from "../../../hooks/useStudyMaterial.js";
+ 
 import { toast } from "react-toastify";
+import { useUpdateOrDeleteContent } from "../../../hooks/useHooks.js";
 
 const AddPyqForm = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +13,9 @@ const AddPyqForm = () => {
 
   const fileRef = useRef(null);
   //  Mutation for form submission
-  const { mutate, isPending } = useAddPYQ();
+  const { mutate, isPending } = useUpdateOrDeleteContent({
+    keys: ["PYQ"],
+  });
 
   //   Handle input changes
   const handleChange = (e) => {

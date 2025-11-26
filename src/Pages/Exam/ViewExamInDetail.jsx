@@ -7,8 +7,6 @@ import { useGetContentById } from "../../hooks/useHooks";
 export default function ViewExamInDetail() {
   const { id } = useParams();
 
-  console.log(id);
-
   const {
     data: exam,
     isLoading,
@@ -16,6 +14,10 @@ export default function ViewExamInDetail() {
     error,
   } = useGetContentById({
     keys: ["exams", id],
+    id,
+    handlerProps: {
+      url: `/exams/details/${id}`,
+    },
   });
 
   if (isLoading) return <Loader />;
@@ -26,12 +28,14 @@ export default function ViewExamInDetail() {
     return;
   }
 
+  console.log(exam);
+
   return (
     <div className="min-h-screen font-sans px-4  md:px-10">
       {/* <div className="flex flex-co lg:flex-row "> */}
       {/* Main Blog */}
       <div className=" w-full rounded-xl shadow-lg overflow-hidden">
-        <BlogComponent {...exam} />
+        <BlogComponent {...exam.data} />
       </div>
       {/* </div> */}
     </div>

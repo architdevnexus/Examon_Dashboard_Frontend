@@ -1,10 +1,12 @@
 import { FaFilePdf, FaRegEye } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
-import { useDeleteNotes } from "../../hooks/useStudyMaterial";
 import { toast } from "react-toastify";
+import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
 
 const NotesCard = ({ note, cid }) => {
-  const { mutate, isPending } = useDeleteNotes();
+  const { mutate, isPending } = useUpdateOrDeleteContent({
+    keys: ["notes"],
+  }); // delete notes
 
   const onDelete = (id) => {
     if (!id) {
@@ -15,7 +17,10 @@ const NotesCard = ({ note, cid }) => {
     if (!isConfirmed) return;
 
     mutate(
-      { id, cid },
+      {
+        method: "delete",
+        url: `/notes/delete/${cid}/${id}`,
+      },
       {
         onSuccess: (resp) => {
           console.log(resp);

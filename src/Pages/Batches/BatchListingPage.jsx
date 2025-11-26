@@ -1,17 +1,13 @@
 import { useState } from "react";
 import BatchCard from "../../Component/Cards/BatchCard";
 import ListingPageHeader from "../../Component/Header/ListingPageHeader";
-import {
-  useDeleteBatch,
-  useDeleteBatchCategory,
-  useGetBatch,
-} from "../../hooks/useBatch";
+
 import Loader from "../../Component/Loader";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { MdDelete } from "react-icons/md";
 import { MoonLoader } from "react-spinners";
-import { useGetContent } from "../../hooks/useHooks";
+import { useGetContent, useUpdateOrDeleteContent } from "../../hooks/useHooks";
 
 export default function BatchListingPage() {
   const navigate = useNavigate();
@@ -30,9 +26,9 @@ export default function BatchListingPage() {
     },
   });
 
-  const { mutate } = useDeleteBatch();
-
-  const { mutate: deleteCategory, isPending } = useDeleteBatchCategory();
+  const { mutate, isPending } = useUpdateOrDeleteContent({
+    keys: ["batch"],
+  });
 
   if (isLoading) return <Loader />;
 
@@ -63,15 +59,15 @@ export default function BatchListingPage() {
   const handleDelete = ({ cid, id }) => {
     const isConfirmed = confirm("Confirm to Delete.");
 
-    if (!isConfirmed) {
-      toast.warn("Id not found");
-      return;
-    }
+    if (!isConfirmed) return;
 
     setDeletingId(id);
 
     mutate(
-      { cid, id },
+      {
+        url: `/live/batches/delete/${cid}/${id}`,
+        method: "delete",
+      },
       {
         onSuccess: (data) => {
           console.log(data);
@@ -107,16 +103,22 @@ export default function BatchListingPage() {
 
     if (!isConfirmed) return;
 
-    deleteCategory(id, {
-      onSuccess: (resp) => {
-        console.log(resp);
-        toast.success(resp.message);
+    mutate(
+      {
+        url: `/live/category/delete/${id}`,
+        method: "delete",
       },
-      onError: (e) => {
-        console.log(e);
-        toast.error(e.response.data.message);
-      },
-    });
+      {
+        onSuccess: (resp) => {
+          console.log(resp);
+          toast.success(resp.message);
+        },
+        onError: (e) => {
+          console.log(e);
+          toast.error(e.response.data.message);
+        },
+      }
+    );
   };
 
   return (
@@ -145,7 +147,7 @@ export default function BatchListingPage() {
                 )}
               </div>
             )}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 border-b pb-2 mb-2  lg:grid-cols-3 gap-6">
               {category.batches.map((batch, i) => (
                 <BatchCard
                   key={i}

@@ -85,10 +85,10 @@ const AddBatchForm = () => {
         Add New Batch
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Category */}
+        {/* image */}
         <div>
           <label className="block text-gray-700 font-semibold mb-2">
-            Batch Image
+            Batch Image*
           </label>
           <input
             ref={imgRef}
@@ -107,13 +107,17 @@ const AddBatchForm = () => {
             />
           )}
         </div>
+
+        {/* Category */}
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Batch Category
+            Batch Category*
           </label>
           <input
             type="text"
             name="batchCategory"
+            maxLength={25}
             value={formData.batchCategory}
             onChange={handleChange}
             placeholder="e.g. BEF"
@@ -124,11 +128,12 @@ const AddBatchForm = () => {
         {/* Batch Name */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Batch Name
+            Batch Name*
           </label>
           <input
             type="text"
             name="batchName"
+            maxLength={60}
             value={formData.batchName}
             onChange={handleChange}
             placeholder="e.g. All in One – Master Batch"
@@ -140,11 +145,13 @@ const AddBatchForm = () => {
         {/* Syllabus */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Syllabus
+            Syllabus*
           </label>
           <input
             type="text"
             name="syllabus"
+            maxLength={200}
+            required
             value={formData.syllabus}
             onChange={handleChange}
             placeholder="Tech + Non Tech covered"
@@ -155,10 +162,12 @@ const AddBatchForm = () => {
         {/* Duration */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Duration
+            Duration*
           </label>
           <input
             type="text"
+            maxLength={20}
+            required
             name="duration"
             value={formData.duration}
             onChange={handleChange}
@@ -170,10 +179,11 @@ const AddBatchForm = () => {
         {/* Price */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Price
+            Price*
           </label>
           <input
             type="number"
+            required
             name="price"
             min={0}
             max={500000}
@@ -192,6 +202,7 @@ const AddBatchForm = () => {
           <input
             type="text"
             name="teachers"
+            maxLength={100}
             value={formData.teachers}
             onChange={handleChange}
             placeholder="e.g. Shivam Sir, Gaurav Sir"
@@ -200,11 +211,12 @@ const AddBatchForm = () => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Enroll Link:
+            Enroll Link:*
           </label>
           <input
             type="url"
             name="enrollLink"
+            maxLength={100}
             value={formData.enrollLink}
             onChange={handleChange}
             placeholder="e.g. https://www.classplus.com/batch/..."

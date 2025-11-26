@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+
 import { MdEdit, MdSave } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import Loader from "../Component/Loader";
-import {
-  useGetAchievementStates,
-  useUpdateAchievementStates,
-} from "../hooks/useBatch";
 import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
 import { StatInput } from "../Component/Input/AchimentInput";
-import { useGetContent } from "../hooks/useHooks";
+import { useGetContent, useUpdateOrDeleteContent } from "../hooks/useHooks";
 
 const Achievements = () => {
   const [formData, setFormData] = useState({
@@ -32,7 +28,9 @@ const Achievements = () => {
     },
   });
 
-  const { mutate, isPending } = useUpdateAchievementStates();
+  const { mutate, isPending } = useUpdateOrDeleteContent({
+    keys: ["achievement"],
+  });
 
   useEffect(() => {
     if (isSuccess && data.success) {
@@ -71,7 +69,7 @@ const Achievements = () => {
     console.log(formData);
 
     mutate(
-      { id: formData.id, update: formData },
+      { url: `/achievement/update/${id}`, data: formData, method: "patch" },
       {
         onSuccess: (resp) => {
           console.log(resp);

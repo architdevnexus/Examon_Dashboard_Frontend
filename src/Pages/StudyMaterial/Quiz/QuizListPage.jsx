@@ -2,11 +2,14 @@ import { useState } from "react";
 
 import ListingPageHeader from "../../../Component/Header/ListingPageHeader";
 import QuizCard from "../../../Component/Cards/QuizCard";
-import { useDeleteQuiz } from "../../../hooks/useStudyMaterial.js";
+
 import Loader from "../../../Component/Loader";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useGetContent } from "../../../hooks/useHooks.js";
+import {
+  useGetContent,
+  useUpdateOrDeleteContent,
+} from "../../../hooks/useHooks.js";
 
 const QuizListPage = () => {
   const navigate = useNavigate();
@@ -26,7 +29,9 @@ const QuizListPage = () => {
     },
   });
 
-  const { mutate } = useDeleteQuiz();
+  const { mutate } = useUpdateOrDeleteContent({
+    keys: ["quiz"],
+  });
 
   // console.log(isLoading, isError);
 
@@ -63,19 +68,25 @@ const QuizListPage = () => {
 
     setDeletingId(id);
 
-    mutate(id, {
-      onSuccess: (resp) => {
-        console.log(resp);
-        setDeletingId(null);
-        toast.success("Quiz deleted");
+    mutate(
+      {
+        method: "delete",
+        url: `/quizzes/${id}`,
       },
-      onError: (e) => {
-        console.log(e);
-        toast.error(e.response.data.message);
+      {
+        onSuccess: (resp) => {
+          console.log(resp);
+          setDeletingId(null);
+          toast.success("Quiz deleted");
+        },
+        onError: (e) => {
+          console.log(e);
+          toast.error(e.response.data.message);
 
-        setDeletingId(null);
-      },
-    });
+          setDeletingId(null);
+        },
+      }
+    );
   };
   const onEdit = ({ id }) => {
     if (!id) {

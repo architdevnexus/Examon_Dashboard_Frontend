@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
-import { useGetBatchById, useUpdateBatch } from "../../hooks/useBatch.js";
+ 
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../Component/Loader.jsx";
 import { toast } from "react-toastify";
+import {
+  useGetContentById,
+  useUpdateOrDeleteContent,
+} from "../../hooks/useHooks.js";
 
 const BatchUpdateForm = () => {
   const { cid, id } = useParams();
@@ -28,9 +32,17 @@ const BatchUpdateForm = () => {
     isSuccess,
     isError,
     error,
-  } = useGetBatchById(ids);
+  } = useGetContentById({
+    keys: ["batches", id],
+    id,
+    handlerProps: {
+      url: `/live/batches/${cid}/${id}`,
+    },
+  });
 
-  const { mutate, isPending: isPending1, error: error2 } = useUpdateBatch();
+  const { mutate, isPending: isPending1 } = useUpdateOrDeleteContent({
+    keys: ["batches"],
+  });
 
   useEffect(() => {
     if (isSuccess && batch?.data) {
@@ -58,8 +70,6 @@ const BatchUpdateForm = () => {
     return;
   }
 
-  //   console.log(batch.data);
-
   // Handle file upload
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -84,7 +94,11 @@ const BatchUpdateForm = () => {
     }
 
     mutate(
-      { ids, formData1 },
+      {
+        method: "patch",
+        url: `/live/batches/update/${cid}/${id}`,
+        data: formData1,
+      },
       {
         onSuccess: (resp) => {
           setFormData({

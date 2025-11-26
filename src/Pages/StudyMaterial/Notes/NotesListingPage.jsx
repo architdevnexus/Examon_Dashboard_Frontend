@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ListingPageHeader from "../../../Component/Header/ListingPageHeader";
 import NotesCard from "../../../Component/Cards/NotesCard";
-import { useGetNotes } from "../../../hooks/useStudyMaterial";
+
 import Loader from "../../../Component/Loader";
 import { useGetContent } from "../../../hooks/useHooks";
 

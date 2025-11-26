@@ -1,7 +1,5 @@
-// Updated Mentor Form Component based on new data structure
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import Loader from "../../Component/Loader";
 import { toast } from "react-toastify";
 import {

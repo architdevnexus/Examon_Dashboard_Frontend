@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ListingPageHeader from "../../Component/Header/ListingPageHeader";
-import { useDeleteNews, useGetNews } from "../../hooks/useLatestNews";
 import Loader from "../../Component/Loader";
 import NewsCard from "../../Component/Cards/NewsCard";
 import { toast } from "react-toastify";
-import { useGetContent } from "../../hooks/useHooks";
+import { useGetContent, useUpdateOrDeleteContent } from "../../hooks/useHooks";
 
 const NewsList = () => {
   const navigate = useNavigate();
@@ -23,8 +22,10 @@ const NewsList = () => {
       url: "/news/all",
     },
   });
-  
-  const { mutate, isPending } = useDeleteNews();
+
+  const { mutate } = useUpdateOrDeleteContent({
+    keys: ["news"],
+  }); // delete news
 
   if (isLoading) return <Loader />;
 
@@ -54,19 +55,25 @@ const NewsList = () => {
     console.log(id);
     setDeletingId(id);
 
-    mutate(id, {
-      onSuccess: (resp) => {
-        console.log(resp);
-        setDeletingId(null);
-        toast.success("News deleted");
+    mutate(
+      {
+        method: "delete",
+        url: `/news/delete/${id}`,
       },
-      onError: (e) => {
-        console.log(e);
-        toast.success("error");
+      {
+        onSuccess: (resp) => {
+          console.log(resp);
+          setDeletingId(null);
+          toast.success("News deleted");
+        },
+        onError: (e) => {
+          console.log(e);
+          toast.success("error");
 
-        setDeletingId(null);
-      },
-    });
+          setDeletingId(null);
+        },
+      }
+    );
   };
 
   const onEdit = ({ id }) => {

@@ -222,6 +222,7 @@ export default function Sidebar({ user }) {
                 <NavLink
                   title={collapsed ? item.label : undefined}
                   to={item.route}
+                  onClick={() => toggleDropdown(item.label)}
                   className={({ isActive }) =>
                     `flex items-center  gap-2 px-3 py-2 rounded-md transition ${
                       isActive

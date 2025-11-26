@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import { useGetQuizById, useUpdateQuiz } from "../../../hooks/useStudyMaterial";
+
 import Loader from "../../../Component/Loader";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,6 +8,7 @@ import {
   useGetContentById,
   useUpdateOrDeleteContent,
 } from "../../../hooks/useHooks";
+import MultipleValues from "../../../Component/Input/MultipleValues";
 
 const UpdateQuizForm = () => {
   const { id } = useParams();
@@ -77,31 +78,6 @@ const UpdateQuizForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // -------------------------------
-  // Handle tags
-  // -------------------------------
-  const handleTagChange = (index, value) => {
-    const updatedTags = [...formData.tags];
-    updatedTags[index] = value;
-    setFormData((prev) => ({ ...prev, tags: updatedTags }));
-  };
-
-  const addTag = () => {
-    const tag2add = prompt("Enter Tag value (1-20 characters)");
-    const trimmedTag = tag2add.trim();
-    if (trimmedTag && trimmedTag.length < 21) {
-      setFormData((prev) => ({ ...prev, tags: [...prev.tags, tag2add] }));
-    } else {
-      alert("Tag can have max 20 characters");
-    }
-  };
-
-  const removeTag = (tag2remove) => {
-    const remainingTags = formData.tags.filter((tag) => tag != tag2remove);
-
-    setFormData((prev) => ({ ...prev, tags: remainingTags }));
   };
 
   // -------------------------------
@@ -205,6 +181,19 @@ const UpdateQuizForm = () => {
     );
   };
 
+  const multiValueProps = {
+    label: "Tags",
+    name: "tagInput",
+    placeholder: "add tag",
+    formData,
+    maxLength: 30,
+    valueArray: formData.tags,
+    valueArrayString: "tags",
+    valueInput: formData.tagInput,
+    setFormData,
+    onchange: handleChange,
+  };
+
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-md mt-8">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
@@ -257,36 +246,7 @@ const UpdateQuizForm = () => {
         </div>
 
         {/* Tags */}
-        <div>
-          <h3 className="font-semibold text-gray-700 mb-2">Tags</h3>
-          {formData.tags.map((tag, index) => (
-            <div
-              key={index}
-              className="pr-2 pl-3  inline py-1 m-1 rounded-2xl bg-blue-600 text-white"
-            >
-              {tag}
-              <span
-                onClick={() => {
-                  !isPending && removeTag(tag);
-                }}
-                className="text-lg ml-1 p-1 text-gray-100 cursor-pointer"
-              >
-                ×
-              </span>
-            </div>
-          ))}
-          <button
-            type="button"
-            disabled={isPending}
-            style={{
-              cursor: isPending ? "not-allowed" : "pointer",
-            }}
-            onClick={addTag}
-            className="px-3 py-1 my-2 cursor-pointer bg-green-600 text-white text-sm rounded-2xl"
-          >
-            + Add Tag
-          </button>
-        </div>
+        <MultipleValues {...multiValueProps} />
 
         {/* Questions */}
         <div>

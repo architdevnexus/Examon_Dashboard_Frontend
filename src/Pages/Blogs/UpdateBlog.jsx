@@ -105,6 +105,7 @@ function UpdateBlog() {
       {/* Title */}
       <input
         type="text"
+        maxLength={100}
         placeholder="Enter blog title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}

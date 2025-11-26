@@ -64,7 +64,7 @@ function ExamDetail() {
     mutate(
       {
         method: "delete",
-        url: `/exams/details/delete/${id}`,
+        url: `/exams-details/delete/${id}`,
       },
       {
         onSuccess: (resp) => {
@@ -81,6 +81,7 @@ function ExamDetail() {
       }
     );
   };
+
   const onEdit = (id) => {
     if (!id) {
       toast.error("Id not found");
@@ -89,6 +90,7 @@ function ExamDetail() {
 
     navigate(`/exams/update/${id}`);
   };
+
   const thClass = "py-3 px-4 text-sm font-bold text-gray-700";
 
   return (
@@ -117,8 +119,13 @@ function ExamDetail() {
                   <td className="py-3 px-4 text-gray-700 text-sm">
                     {index + 1}
                   </td>
-
-                  <td className="py-3 px-4 text-gray-800">{exam.title}</td>
+                  {exam.title.length > 200 ? (
+                    <td title={exam.title} className="py-3 px-4 text-gray-800">
+                      {exam.title.slice(0, 200)}...
+                    </td>
+                  ) : (
+                    <td className="py-3 px-4 text-gray-800">{exam.title}</td>
+                  )}
 
                   <td className="py-3 px-4 flex items-center justify-center gap-3">
                     {isPending && deletingId === exam._id ? (

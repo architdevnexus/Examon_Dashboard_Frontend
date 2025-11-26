@@ -11,7 +11,7 @@ export default function ContactDetailsPage() {
 
   const limit = 10; // items per page
 
-  const { data, isLoading, isError, error } = useGetContent({
+  const { data, isLoading, isError } = useGetContent({
     keys: ["contactUs", page],
     handlerProps: {
       url: `http://194.238.18.1:3004/api/contact-us?page=${page}&limit=${limit}`,

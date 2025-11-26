@@ -98,6 +98,7 @@ const AddNewsForm = () => {
               type="text"
               name="title"
               placeholder="Enter news title"
+              maxLength={100}
               value={formData.title}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-2 "
@@ -113,7 +114,8 @@ const AddNewsForm = () => {
             <textarea
               name="description"
               placeholder="Enter description"
-              rows={4}
+              rows={5}
+              maxLength={1000}
               value={formData.description}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-2 "

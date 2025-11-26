@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
 import { MdDelete } from "react-icons/md";
 import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
+import profile_placeholder from "../../../public/Portrait_Placeholder.png";
 
 export default function ReviewCard({ review }) {
   const [hovered, setHoverd] = useState(false);
@@ -26,11 +27,11 @@ export default function ReviewCard({ review }) {
   });
   const handleUpdate = (id, status) => {
     mutate(
-      { url: `/review/update/${id}`, data: status, method: "PATCH" },
+      { url: `/review/update/${id}`, data: { status }, method: "PATCH" },
       {
         onSuccess: (resp) => {
           console.log(resp);
-          toast.success(status);
+          toast.success(status.toUpperCase());
         },
         onError: (error) => {
           console.log(error);
@@ -74,7 +75,7 @@ export default function ReviewCard({ review }) {
       {/* Profile Image */}
       <div className="flex-shrink-0">
         <img
-          src={review.profilePicture}
+          src={review.profilePicture || profile_placeholder}
           alt={review.clientname}
           className="w-15 aspect-square rounded-full object-cover      r-gray-300"
         />
@@ -149,7 +150,7 @@ export default function ReviewCard({ review }) {
               cursor: isPending ? "not-allowed" : "pointer",
             }}
             onClick={() => {
-              handleUpdate(review._id, "active");
+              handleUpdate(review._id, "approved");
             }}
             className="flex items-center justify-center gap-1 bg-green-600 text-white p-1 rounded-lg hover:bg-green-700"
           >

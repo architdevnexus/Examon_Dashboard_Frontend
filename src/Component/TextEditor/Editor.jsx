@@ -81,6 +81,7 @@ export default function WriteBlog() {
         type="text"
         placeholder="Enter blog title"
         value={title}
+        maxLength={100}
         onChange={(e) => setTitle(e.target.value)}
         className="w-full p-2 border border-gray-300  rounded mb-4"
       />

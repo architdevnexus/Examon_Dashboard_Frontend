@@ -5,6 +5,7 @@ import ListingPageHeader from "../../Component/Header/ListingPageHeader";
 import Loader from "../../Component/Loader";
 import { MdDelete } from "react-icons/md";
 import { MoonLoader } from "react-spinners";
+import MultipleValues from "../../Component/Input/MultipleValues";
 
 export default function OfferForm() {
   const [formData, setFormData] = useState({
@@ -43,7 +44,6 @@ export default function OfferForm() {
     console.log(error2);
     return;
   }
-  // console.log(data);
 
   // Input change handler
   const handleChange = (e) => {
@@ -64,42 +64,16 @@ export default function OfferForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Add Tag
-  const addTag = () => {
-    const t = formData.tagInput.trim();
-    if (!t) return;
-
-    setFormData((prev) => ({
-      ...prev,
-      tags: [...prev.tags, t],
-      tagInput: "",
-    }));
-  };
-
-  // Remove Tag
-  const removeTag = (tag) => {
-    setFormData((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((t) => t !== tag),
-    }));
-  };
-
   // Submit form
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(formData);
-
-    const offer = new FormData();
-
-    for (const key in formData) {
-      offer.append(key, formData[key]);
-    }
+    // console.log(formData);
 
     mutate(
       {
         method: "post",
-        data: offer,
+        data: formData,
         url: "/notifications/push",
       },
       {
@@ -156,6 +130,18 @@ export default function OfferForm() {
     redirectURL: "/notification",
   };
 
+  const multiValueProps = {
+    label: "Tags",
+    name: "tagInput",
+    placeholder: "add tag",
+    formData,
+    valueArray: formData.tags,
+    valueArrayString: "tags",
+    valueInput: formData.tagInput,
+    setFormData,
+    onchange: handleChange,
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 font-sans">
@@ -168,10 +154,11 @@ export default function OfferForm() {
             >
               {/* Title */}
               <div>
-                <label className="font-medium">Title</label>
+                <label className="font-medium">Title*</label>
                 <input
                   type="text"
                   name="title"
+                  maxLength={60}
                   value={formData.title}
                   onChange={handleChange}
                   className="w-full mt-1 p-2 border rounded-lg"
@@ -182,13 +169,14 @@ export default function OfferForm() {
 
               {/* Description */}
               <div>
-                <label className="font-medium">Description</label>
+                <label className="font-medium">Description*</label>
                 <textarea
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
-                  rows={3}
-                  className="w-full mt-1 p-2 border rounded-lg"
+                  rows={4}
+                  maxLength={200}
+                  className="w-full resize-none mt-1 p-2 border rounded-lg"
                   placeholder="You just unlocked a special 35% discount..."
                   required
                 />
@@ -196,7 +184,7 @@ export default function OfferForm() {
 
               {/* Discount */}
               <div>
-                <label className="font-medium">Discount (%)</label>
+                <label className="font-medium">Discount (%)*</label>
                 <input
                   type="number"
                   name="discount"
@@ -212,7 +200,7 @@ export default function OfferForm() {
 
               {/* Banner */}
               <div>
-                <label className="font-medium">Banner</label>
+                <label className="font-medium">Banner*</label>
                 <select
                   name="banner"
                   value={formData.banner}
@@ -230,7 +218,7 @@ export default function OfferForm() {
               {/* CTA */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="font-medium">CTA Label</label>
+                  <label className="font-medium">CTA Label*</label>
                   <input
                     type="text"
                     name="ctaLabel"
@@ -242,7 +230,7 @@ export default function OfferForm() {
                   />
                 </div>
                 <div>
-                  <label className="font-medium">CTA URL</label>
+                  <label className="font-medium">CTA URL*</label>
                   <input
                     type="url"
                     name="ctaUrl"
@@ -255,50 +243,11 @@ export default function OfferForm() {
                 </div>
               </div>
 
-              {/* Tags */}
-              <div>
-                <label className="font-medium mb-2 block">Tags</label>
-
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    name="tagInput"
-                    value={formData.tagInput}
-                    onChange={handleChange}
-                    className="flex-1 p-2 border rounded-lg"
-                    placeholder="add tag"
-                  />
-                  <button
-                    type="button"
-                    onClick={addTag}
-                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-                  >
-                    Add
-                  </button>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {formData.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 rounded-full bg-indigo-600 text-white text-sm flex items-center gap-2"
-                    >
-                      {tag}
-                      <button
-                        type="button"
-                        onClick={() => removeTag(tag)}
-                        className="font-bold"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <MultipleValues {...multiValueProps} />
 
               {/* Expires In */}
               <div>
-                <label className="font-medium">Expires In</label>
+                <label className="font-medium">Expires In*</label>
                 <input
                   type="text"
                   name="expiresIn"
@@ -306,13 +255,14 @@ export default function OfferForm() {
                   onChange={handleChange}
                   className="w-full mt-1 p-2 border rounded-lg"
                   placeholder="6h"
+                  maxLength={20}
                   required
                 />
               </div>
 
               {/* Priority */}
               <div>
-                <label className="font-medium">Priority</label>
+                <label className="font-medium">Priority*</label>
                 <select
                   name="priority"
                   value={formData.priority}
@@ -363,6 +313,7 @@ export default function OfferForm() {
                   ) : (
                     data.data.map((n, index) => (
                       <div
+                        title={n.description}
                         key={index}
                         className={`border relative border-gray-100 rounded-lg p-3 hover:bg-gray-50 transition
                           ${deletingId === n._id ? "animate-pulse" : ""}
@@ -371,8 +322,11 @@ export default function OfferForm() {
                         <p className="text-xs text-blue-500 font-medium mb-1">
                           {n.discount}% OFF
                         </p>
-                        <p className="text-sm font-semibold text-gray-800">
-                          {n.title}
+                        <p
+                          title={n.title}
+                          className="text-sm font-semibold text-gray-800"
+                        >
+                          {n.title.slice(0, 40)}
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
                           {new Date(n.createdAt).toLocaleDateString("en-IN", {

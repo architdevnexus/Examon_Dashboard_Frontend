@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
+import MultipleValues from "../../Component/Input/MultipleValues";
 
 export default function AddMentorForm() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function AddMentorForm() {
     youtubeLink: "",
     coursesLink: "",
     CoursesHandled: [],
+    CourseInput: "",
   });
 
   const [preview, setPreview] = useState(null);
@@ -36,27 +38,6 @@ export default function AddMentorForm() {
       setMentor((prev) => ({ ...prev, image: file }));
       setPreview(URL.createObjectURL(file));
     }
-  };
-
-  const addCourse = () => {
-    const course2add = prompt("Enter Tag value (1-20 characters)");
-    const trimmedCourse = course2add.trim();
-    if (trimmedCourse && trimmedCourse.length < 21) {
-      setMentor((prev) => ({
-        ...prev,
-        CoursesHandled: [...prev.CoursesHandled, trimmedCourse],
-      }));
-    } else {
-      alert("Tag can have max 20 characters");
-    }
-  };
-
-  const removeCourse = (course2remove) => {
-    const remainingCourses = mentor.CoursesHandled.filter(
-      (course) => course != course2remove
-    );
-
-    setMentor((prev) => ({ ...prev, CoursesHandled: remainingCourses }));
   };
 
   const handleSubmit = (e) => {
@@ -101,6 +82,17 @@ export default function AddMentorForm() {
         },
       }
     );
+  };
+
+  const multiValueProps = {
+    label: "Courses Handled",
+    name: "CourseInput",
+    placeholder: "add Course",
+    formData: mentor,
+    valueArray: mentor.CoursesHandled,
+    valueArrayString: "CoursesHandled",
+    setFormData: setMentor,
+    onchange: handleChange,
   };
 
   return (
@@ -188,7 +180,9 @@ export default function AddMentorForm() {
           />
         </div>
 
-        <div>
+        <MultipleValues {...multiValueProps} />
+
+        {/* <div>
           <h3 className="font-semibold text-gray-700 mb-2">Courses Handled</h3>
           {mentor.CoursesHandled.map((course, index) => (
             <div
@@ -217,7 +211,7 @@ export default function AddMentorForm() {
           >
             + Add course
           </button>
-        </div>
+        </div> */}
 
         {/* Description */}
         <div>

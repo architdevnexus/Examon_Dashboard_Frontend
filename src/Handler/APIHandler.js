@@ -1,10 +1,9 @@
 import axios from "axios";
 
-const BASE_URL = "https://backend.palgharhome.com/api";
 const token = localStorage.getItem("token");
 
 const api = axios.create({
-  baseURL: BASE_URL,
+  baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     Authorization: `Bearer ${token}`,
   },

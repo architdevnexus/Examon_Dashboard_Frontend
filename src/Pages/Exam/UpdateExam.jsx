@@ -48,11 +48,11 @@ export default function UpdateExamEditor() {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 
-  // console.log(data);
+  //console.log(data);
   const handleImagePaste = async (e) => {
     const clipboardItems = e.clipboardData.items;
     for (let i = 0; i < clipboardItems.length; i++) {
@@ -85,7 +85,7 @@ export default function UpdateExamEditor() {
           Navigate("../exams");
         },
         onError: (error) => {
-          console.log(error);
+          //console.log(error);
           toast.error(error.response.statusText || error.response.data.message);
         },
       }

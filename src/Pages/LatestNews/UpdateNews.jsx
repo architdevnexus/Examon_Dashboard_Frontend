@@ -43,7 +43,7 @@ const UpdateNewsForm = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 
@@ -64,7 +64,7 @@ const UpdateNewsForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(formData);
+    //console.log(formData);
 
     const formData1 = new FormData();
 
@@ -80,7 +80,7 @@ const UpdateNewsForm = () => {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           setFormData({
             image: null,
             title: "",
@@ -91,7 +91,7 @@ const UpdateNewsForm = () => {
           Navigate("/news");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error(e.response.data.message);
         },
       }

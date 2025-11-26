@@ -41,7 +41,7 @@ export default function OfferForm() {
   if (isLoading) return <Loader />;
 
   if (isError2) {
-    console.log(error2);
+    //console.log(error2);
     return;
   }
 
@@ -68,7 +68,7 @@ export default function OfferForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // console.log(formData);
+    //console.log(formData);
 
     mutate(
       {
@@ -90,11 +90,11 @@ export default function OfferForm() {
             priority: "",
           });
 
-          console.log(resp);
+          //console.log(resp);
           toast.success("Offer added");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error("error");
         },
       }
@@ -102,7 +102,7 @@ export default function OfferForm() {
   };
 
   const onDelete = (id) => {
-    console.log(id);
+    //console.log(id);
     setDeletingId(id);
     mutate(
       {
@@ -111,12 +111,12 @@ export default function OfferForm() {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success("Notification deleted");
           setDeletingId(null);
         },
         onError: (err) => {
-          console.log(err);
+          //console.log(err);
           toast.error(err.response?.data?.message || "error");
           setDeletingId(null);
         },

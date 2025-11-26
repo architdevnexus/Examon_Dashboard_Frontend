@@ -18,7 +18,7 @@ const BlogPage = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 

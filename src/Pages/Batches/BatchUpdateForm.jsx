@@ -47,7 +47,7 @@ const BatchUpdateForm = () => {
   useEffect(() => {
     if (isSuccess && batch?.data) {
       const data = batch.data;
-      //   console.log(data);
+      //   //console.log(data);
       setFormData({
         image: data?.image,
         batchName: data?.batchName,
@@ -65,7 +65,7 @@ const BatchUpdateForm = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error.response.data.message);
+    //console.log(error.response.data.message);
     toast.error(error.response.data.message);
     return;
   }
@@ -89,7 +89,7 @@ const BatchUpdateForm = () => {
     const formData1 = new FormData();
 
     for (const key in formData) {
-      console.log(formData[key]);
+      //console.log(formData[key]);
       formData1.append(key, formData[key]);
     }
 
@@ -112,12 +112,12 @@ const BatchUpdateForm = () => {
           });
           setPreview(null);
 
-          console.log(resp);
+          //console.log(resp);
           toast.success("Batch Updated");
           navigate("/batches");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error("error");
         },
       }

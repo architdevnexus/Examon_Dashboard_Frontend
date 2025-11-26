@@ -40,10 +40,10 @@ const NotificationForm = () => {
   if (isLoading) return <Loader />;
 
   if (isError2) {
-    console.log(error2);
+    //console.log(error2);
     return;
   }
-  console.log(data);
+  //console.log(data);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,7 +60,7 @@ const NotificationForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    //console.log(formData);
     mutate(
       {
         method: "post",
@@ -69,7 +69,7 @@ const NotificationForm = () => {
       },
       {
         onSuccess: (d) => {
-          console.log("response data", d);
+          //console.log("response data", d);
           setFormData({
             image: null,
             title: "",
@@ -82,7 +82,7 @@ const NotificationForm = () => {
           toast.success(d.description);
         },
         onError: (err) => {
-          console.log(err);
+          //console.log(err);
           toast.error(err?.description || "Something went wrong");
         },
       }
@@ -90,7 +90,7 @@ const NotificationForm = () => {
   };
 
   const onDelete = (id) => {
-    console.log(id);
+    //console.log(id);
     setDeletingId(id);
     mutate(
       {
@@ -99,12 +99,12 @@ const NotificationForm = () => {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success("Notification deleted");
           setDeletingId(null);
         },
         onError: (err) => {
-          console.log(err);
+          //console.log(err);
           toast.error(err.response?.data?.message || "error");
           setDeletingId(null);
         },

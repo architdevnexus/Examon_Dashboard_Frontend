@@ -12,12 +12,12 @@ export default function UserManagement() {
   const { data, isLoading, isError, error } = useGetContent({
     keys: ["users", page],
     handlerProps: {
-      url: `http://194.238.18.1:3004/api/users/all?page=${page}`,
+      url: `https://backend.palgharhome.com/api/users/all?page=${page}`,
     },
   });
   const users = Array.isArray(data?.data) ? data.data : [];
   const totalPages = data?.totalPages || 1;
-  console.log(users);
+  //console.log(users);
 
   // Filtering only the current page data
   const filteredUsers = useMemo(() => {

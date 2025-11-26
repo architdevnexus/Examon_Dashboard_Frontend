@@ -43,7 +43,7 @@ export default function AddMentorForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(mentor);
+    //console.log(mentor);
     const formData1 = new FormData();
 
     for (const key in mentor) {
@@ -72,12 +72,12 @@ export default function AddMentorForm() {
           setPreview(null);
           imgRef.current.value = null;
 
-          console.log(resp);
+          //console.log(resp);
           toast.success("Mentor added");
           navigate("/mentors");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error("error");
         },
       }

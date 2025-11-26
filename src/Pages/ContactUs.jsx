@@ -14,7 +14,7 @@ export default function ContactDetailsPage() {
   const { data, isLoading, isError } = useGetContent({
     keys: ["contactUs", page],
     handlerProps: {
-      url: `http://194.238.18.1:3004/api/contact-us?page=${page}&limit=${limit}`,
+      url: `https://backend.palgharhome.com/api/contact-us?page=${page}&limit=${limit}`,
     },
   });
 

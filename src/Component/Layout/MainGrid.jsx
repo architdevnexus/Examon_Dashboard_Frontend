@@ -53,12 +53,12 @@ const MainGrid = ({ data, blog }) => {
       { method: "delete", url: `/blogs/delete/${id}` },
       {
         onSuccess: (data) => {
-          console.log(data);
+          //console.log(data);
           setDeletingId(null);
           toast.success("Batch deleted");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           setDeletingId(null);
           toast.error("Error");
         },
@@ -69,7 +69,7 @@ const MainGrid = ({ data, blog }) => {
   };
 
   const handleUpdate = ({ id }) => {
-    console.log(id);
+    //console.log(id);
     if (!id) {
       toast.warn("Id is missing");
       return;

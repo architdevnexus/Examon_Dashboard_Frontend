@@ -24,12 +24,12 @@ const Login = () => {
       fullname: FullName,
     };
 
-    console.log(FullName, email, password);
+    //console.log(FullName, email, password);
 
     try {
       const data = await CheckIn(url, credentials);
 
-      console.log(data);
+      //console.log(data);
 
       if (!data.user) {
         setError(data.message || "Invalid credentials. Try again.");
@@ -49,7 +49,7 @@ const Login = () => {
         window.location.href = "/"; // redirect after success
       }
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       setError(err.response.data.msg);
     } finally {
       setLoading(false);

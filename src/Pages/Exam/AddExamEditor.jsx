@@ -42,14 +42,14 @@ export default function AddExamEditor() {
 
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success("Exam Added");
           setTitle("");
           setContent("");
           setCategory("");
         },
         onError: (error) => {
-          console.log(error);
+          //console.log(error);
           toast.error(error.response.data.message);
         },
       }

@@ -37,7 +37,7 @@ const CourseList = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 
@@ -77,12 +77,12 @@ const CourseList = () => {
       },
       {
         onSuccess: (data) => {
-          console.log(data);
+          //console.log(data);
           setDeletingId(null);
           toast.success("Course deleted");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           setDeletingId(null);
           toast.error(e.response.data.error);
         },

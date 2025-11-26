@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 export default function RecentLiItem({ itm, title, link }) {
   let name = "";
   let category = "";
-  console.log(title);
+  //console.log(title);
 
   switch (title) {
     case "Mentors":

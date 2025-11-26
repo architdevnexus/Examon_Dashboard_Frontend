@@ -52,7 +52,7 @@ const AddNewsForm = () => {
           Navigate("/news");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error("error");
         },
       }

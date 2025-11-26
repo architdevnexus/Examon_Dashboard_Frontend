@@ -23,11 +23,11 @@ const NotesCard = ({ note, cid }) => {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success(resp.message);
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error(e.response.data.message);
         },
       }

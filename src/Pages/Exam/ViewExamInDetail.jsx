@@ -23,12 +23,12 @@ export default function ViewExamInDetail() {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     toast.error(error.response.data.message);
     return;
   }
 
-  console.log(exam);
+  //console.log(exam);
 
   return (
     <div className="min-h-screen font-sans px-4  md:px-10">

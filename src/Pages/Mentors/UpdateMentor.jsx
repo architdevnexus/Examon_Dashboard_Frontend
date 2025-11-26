@@ -60,7 +60,7 @@ export default function UpdateMentorForm() {
       });
 
       setPreview(data?.imageUrl || null);
-      console.log(data);
+      //console.log(data);
     }
   }, [isSuccess, mentor]);
 
@@ -107,7 +107,7 @@ export default function UpdateMentorForm() {
     for (const key in mentorData) {
       formData.append(key, mentorData[key]);
     }
-    console.log(mentorData);
+    //console.log(mentorData);
     mutate(
       {
         method: "patch",
@@ -116,7 +116,7 @@ export default function UpdateMentorForm() {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           toast.success("Mentor Updated Successfully");
           setMentorData({
             name: "",
@@ -132,7 +132,7 @@ export default function UpdateMentorForm() {
           navigate("/mentors");
         },
         onError: (err) => {
-          console.log(err);
+          //console.log(err);
           toast.error(err?.response?.data?.message || "Update failed");
         },
       }

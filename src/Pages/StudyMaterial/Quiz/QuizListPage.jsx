@@ -33,16 +33,16 @@ const QuizListPage = () => {
     keys: ["quiz"],
   });
 
-  // console.log(isLoading, isError);
+  //console.log(isLoading, isError);
 
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 
-  // console.log(QuizData);
+  //console.log(QuizData);
 
   // Filter by search
   const filteredQuizzes = QuizData.quizzes.filter(
@@ -75,12 +75,12 @@ const QuizListPage = () => {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           setDeletingId(null);
           toast.success("Quiz deleted");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.error(e.response.data.message);
 
           setDeletingId(null);

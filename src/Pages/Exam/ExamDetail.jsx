@@ -33,7 +33,7 @@ function ExamDetail() {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 
@@ -58,7 +58,7 @@ function ExamDetail() {
 
     if (!isConfirmed) return;
 
-    console.log(id);
+    //console.log(id);
     setDeletingId(id);
 
     mutate(
@@ -68,13 +68,13 @@ function ExamDetail() {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           setDeletingId(null);
           toast.success("Exam  deleted");
         },
         onError: (e) => {
           setDeletingId(null);
-          console.log(e);
+          //console.log(e);
           toast.success("error");
           // isPending = false;
         },

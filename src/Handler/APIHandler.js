@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://194.238.18.1:3004/api";
+const BASE_URL = "https://backend.palgharhome.com/api";
 const token = localStorage.getItem("token");
 
 const api = axios.create({

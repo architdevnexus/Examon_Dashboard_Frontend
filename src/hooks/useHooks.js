@@ -10,7 +10,7 @@ export const useUpdateOrDeleteContent = ({ keys }) => {
       queryClient.invalidateQueries({ queryKey: keys });
     },
     onError: (e) => {
-      console.log(keys[0], e);
+      //console.log(keys[0], e);
     },
   });
 };

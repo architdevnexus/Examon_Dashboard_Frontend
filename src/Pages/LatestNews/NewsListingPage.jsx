@@ -30,7 +30,7 @@ const NewsList = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    console.log(error);
+    //console.log(error);
     return;
   }
 
@@ -52,7 +52,7 @@ const NewsList = () => {
 
     if (!isConfirmed) return;
 
-    console.log(id);
+    //console.log(id);
     setDeletingId(id);
 
     mutate(
@@ -62,12 +62,12 @@ const NewsList = () => {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          //console.log(resp);
           setDeletingId(null);
           toast.success("News deleted");
         },
         onError: (e) => {
-          console.log(e);
+          //console.log(e);
           toast.success("error");
 
           setDeletingId(null);

@@ -182,37 +182,7 @@ export default function AddMentorForm() {
 
         <MultipleValues {...multiValueProps} />
 
-        {/* <div>
-          <h3 className="font-semibold text-gray-700 mb-2">Courses Handled</h3>
-          {mentor.CoursesHandled.map((course, index) => (
-            <div
-              key={index}
-              className="pr-2 pl-3 inline py-2 m-1 rounded-md bg-blue-600 text-white"
-            >
-              {course}
-              <span
-                onClick={() => {
-                  !isPending && removeCourse(course);
-                }}
-                className="text-lg ml-1 p-1 text-gray-100 cursor-pointer"
-              >
-                ×
-              </span>
-            </div>
-          ))}
-          <button
-            type="button"
-            disabled={isPending}
-            style={{
-              cursor: isPending ? "not-allowed" : "pointer",
-            }}
-            onClick={addCourse}
-            className="px-3 py-2 cursor-pointer bg-green-600 text-white text-sm rounded-lg"
-          >
-            + Add course
-          </button>
-        </div> */}
-
+       
         {/* Description */}
         <div>
           <label className="block text-gray-700 font-medium">Description</label>

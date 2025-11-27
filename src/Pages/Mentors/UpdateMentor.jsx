@@ -6,6 +6,7 @@ import {
   useGetContentById,
   useUpdateOrDeleteContent,
 } from "../../hooks/useHooks";
+import MultipleValues from "../../Component/Input/MultipleValues";
 
 export default function UpdateMentorForm() {
   const { id } = useParams();
@@ -23,6 +24,7 @@ export default function UpdateMentorForm() {
     youtubeLink: "",
     coursesLink: "",
     CoursesHandled: [], // updated field name
+    CourseInput: "",
   });
 
   const {
@@ -83,23 +85,6 @@ export default function UpdateMentorForm() {
     }
   };
 
-  const addCourse = () => {
-    const course = prompt("Enter course name:");
-    if (course && course.trim() !== "") {
-      setMentorData((prev) => ({
-        ...prev,
-        CoursesHandled: [...prev.CoursesHandled, course],
-      }));
-    }
-  };
-
-  const removeCourse = (course) => {
-    setMentorData((prev) => ({
-      ...prev,
-      CoursesHandled: prev.CoursesHandled.filter((c) => c !== course),
-    }));
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -137,6 +122,17 @@ export default function UpdateMentorForm() {
         },
       }
     );
+  };
+
+  const multiValueProps = {
+    label: "Courses Handled",
+    name: "CourseInput",
+    placeholder: "add Course",
+    formData: mentorData,
+    valueArray: mentorData.CoursesHandled,
+    valueArrayString: "CoursesHandled",
+    setFormData: setMentorData,
+    onchange: handleChange,
   };
 
   return (
@@ -216,35 +212,7 @@ export default function UpdateMentorForm() {
           />
         </div>
 
-        <div>
-          <label className="block text-gray-700 font-medium">
-            Courses Handled
-          </label>
-          <div className="flex flex-wrap gap-2 mb-2">
-            {mentorData?.CoursesHandled.map((course, index) => (
-              <span
-                key={index}
-                className="bg-indigo-600 text-white px-3 py-1 rounded-md flex items-center gap-1"
-              >
-                {course}
-                <button
-                  type="button"
-                  onClick={() => removeCourse(course)}
-                  className="text-white font-bold"
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
-          <button
-            type="button"
-            onClick={addCourse}
-            className="px-3 py-1 bg-green-600 text-white rounded-md"
-          >
-            + Add Course
-          </button>
-        </div>
+        <MultipleValues {...multiValueProps} />
 
         <div>
           <label className="block text-gray-700 font-medium">Description</label>

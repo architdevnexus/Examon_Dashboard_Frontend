@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CheckIn } from "../Handler/Authentication";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({setAuthUser}) => {
   const [email, setEmail] = useState("");
   const [FullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLogging, setIsLogging] = useState(true);
-
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  // If user already logged in, don’t allow staying on /login
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const authUser = localStorage.getItem("authUser");
+
+    if (token && authUser) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,19 +29,14 @@ const Login = () => {
     setLoading(true);
 
     const url = isLogging ? "signin" : "signup";
-
     const credentials = {
       email,
       password,
       fullname: FullName,
     };
 
-    //console.log(FullName, email, password);
-
     try {
       const data = await CheckIn(url, credentials);
-
-      //console.log(data);
 
       if (!data.user) {
         setError(data.message || "Invalid credentials. Try again.");
@@ -40,17 +47,20 @@ const Login = () => {
           setEmail("");
           setFullName("");
           setIsLogging(true);
-
           return;
         }
+
         const user = JSON.stringify(data.user);
+
+        setAuthUser(data.user);
+
+        // Then sync to localStorage
         localStorage.setItem("token", data.accessToken);
-        localStorage.setItem("authUser", user);
-        window.location.href = "/"; // redirect after success
+        localStorage.setItem("authUser", JSON.stringify(data.user));
+        navigate("/", { replace: true });
       }
     } catch (err) {
-      //console.log(err);
-      setError(err.response.data.msg);
+      setError(err?.response?.data?.msg || "Something went wrong");
     } finally {
       setLoading(false);
     }

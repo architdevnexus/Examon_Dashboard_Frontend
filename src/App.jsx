@@ -1,5 +1,10 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import Navbar from "./Component/Navbar/Navbar";
 import { SidebarProvider, useSidebar } from "./Component/Navbar/SidebarContext";
 import { ToastContainer } from "react-toastify";
@@ -77,19 +82,25 @@ function AppContent() {
   });
 
   const { collapsed } = useSidebar();
+  const location = useLocation();
+  const isLoginRoute = location.pathname === "/login";
 
   return (
-    <div className="flex   w-auto">
-      {authUser && <Navbar user={authUser} />}
+    <div className="flex w-auto">
+      {/*  Hide navbar on /login even if authUser exists */}
+      {authUser && !isLoginRoute && <Navbar user={authUser} />}
 
-      {/* Dynamic margin left based on collapse */}
       <main
         className={`transition-all duration-300 w-full min-h-screen bg-gray-50 ${
-          authUser && (collapsed ? "ml-20" : "ml-72")
+          authUser && !isLoginRoute ? (collapsed ? "ml-20" : "ml-72") : ""
         }`}
       >
         <Routes>
-          <Route path="/login" index element={<Login />} />
+          <Route
+            path="/login"
+            index
+            element={<Login setAuthUser={setAuthUser} />}
+          />
 
           <Route
             path="/*"

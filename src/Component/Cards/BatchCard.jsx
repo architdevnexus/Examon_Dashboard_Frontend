@@ -3,7 +3,7 @@ import ActionBtns from "../ActionBtns";
 
 const BatchCard = ({ batch, onDelete, onEdit, isDeleting, cId = null }) => {
   const [hovered, setHovered] = useState(false);
-
+  console.log(batch.image);
   return (
     <div
       key={batch.id}

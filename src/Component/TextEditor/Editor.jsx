@@ -14,7 +14,7 @@ export default function WriteBlog() {
 
   const fileRef = useRef();
 
-  const { mutate, isPending } = useUpdateOrDeleteContent({
+  const { mutate, isPending, isError, error } = useUpdateOrDeleteContent({
     keys: ["blog"],
   });
 
@@ -42,7 +42,7 @@ export default function WriteBlog() {
         },
         onError: (e) => {
           //console.log(e);
-          toast.error(e.response.data.message);
+          toast.error(e.message);
         },
       }
     );
@@ -96,11 +96,11 @@ export default function WriteBlog() {
       <button
         onClick={handleSubmit}
         style={{
-          cursor: isPending ? "not-allowed" : "pointer",
+          cursor: isError || isPending ? "not-allowed" : "pointer",
         }}
         className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition mt-4"
       >
-        {isPending ? "Adding..." : "Add Blog"}
+        {isError || isPending ? "Adding..." : "Add Blog"}
       </button>
     </div>
   );

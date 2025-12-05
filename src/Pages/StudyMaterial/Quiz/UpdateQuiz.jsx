@@ -220,7 +220,7 @@ const UpdateQuizForm = () => {
             disabled={isPending}
             value={formData.exam}
             onChange={handleChange}
-            placeholder="Exam Type"
+            placeholder="Exam"
             className="border p-2 rounded w-full"
           />
           <input
@@ -238,6 +238,7 @@ const UpdateQuizForm = () => {
             type="number"
             disabled={isPending}
             name="totalMarks"
+            min={0}
             value={formData.totalMarks}
             onChange={handleChange}
             placeholder="Total Marks"

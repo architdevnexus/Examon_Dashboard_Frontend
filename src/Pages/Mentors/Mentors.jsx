@@ -97,7 +97,7 @@ function Mentors() {
   const onView = (mentor) => setSelectedMentor(mentor);
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-6 font-sans">
+    <div className=" min-h-screen mx-auto p-6  font-sans">
       {/* Header */}
       <ListingPageHeader props={headerProps} />
       {/* Grid of mentor Cards */}

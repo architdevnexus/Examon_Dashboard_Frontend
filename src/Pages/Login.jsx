@@ -3,7 +3,7 @@ import { CheckIn } from "../Handler/Authentication";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({setAuthUser}) => {
+const Login = ({ setAuthUser }) => {
   const [email, setEmail] = useState("");
   const [FullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +13,6 @@ const Login = ({setAuthUser}) => {
 
   const navigate = useNavigate();
 
-  // If user already logged in, don’t allow staying on /login
   useEffect(() => {
     const token = localStorage.getItem("token");
     const authUser = localStorage.getItem("authUser");
@@ -49,8 +48,6 @@ const Login = ({setAuthUser}) => {
           setIsLogging(true);
           return;
         }
-
-        const user = JSON.stringify(data.user);
 
         setAuthUser(data.user);
 

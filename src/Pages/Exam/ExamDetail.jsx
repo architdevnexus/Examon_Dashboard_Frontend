@@ -94,7 +94,7 @@ function ExamDetail() {
   const thClass = "py-3 px-4 text-sm font-bold text-gray-700";
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-6 font-sans">
+    <div className="min-h-screen p-6 font-sans">
       {/* Header */}
       <ListingPageHeader props={headerProps} />
 

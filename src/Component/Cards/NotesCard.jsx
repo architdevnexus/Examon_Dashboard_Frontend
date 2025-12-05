@@ -23,11 +23,9 @@ const NotesCard = ({ note, cid }) => {
       },
       {
         onSuccess: (resp) => {
-          //console.log(resp);
           toast.success(resp.message);
         },
         onError: (e) => {
-          //console.log(e);
           toast.error(e.response.data.message);
         },
       }
@@ -37,7 +35,7 @@ const NotesCard = ({ note, cid }) => {
   return (
     <div
       style={{
-        cursor: isPending ? "not-allowed" : "pointer",
+        cursor: isPending ? "not-allowed" : "",
       }}
       className={`bg-white shadow-md   rounded-2xl p-5 transition border border-gray-100 flex flex-col justify-between
         ${isPending && "animate-pulse"}

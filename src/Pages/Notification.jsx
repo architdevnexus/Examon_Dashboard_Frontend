@@ -123,8 +123,8 @@ const NotificationForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 font-sans">
+    <div className="min-h-screen p-6 bg-gray-50">
+      {/* <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 font-sans"> */}
         <ListingPageHeader props={headerProps} />
 
         {/* 2-column layout: 3/5 form + 2/5 side list */}
@@ -331,7 +331,7 @@ const NotificationForm = () => {
             )}
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 };

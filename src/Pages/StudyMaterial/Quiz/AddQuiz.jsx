@@ -173,7 +173,7 @@ const AddNewQuiz = () => {
             disabled={isPending}
             value={formData.exam}
             onChange={handleChange}
-            placeholder="Quiz Type"
+            placeholder="Exam"
             className="border p-2 rounded w-full"
           />
           <input
@@ -286,7 +286,6 @@ const AddNewQuiz = () => {
                   className="border p-2 rounded"
                 />
                 <input
-                  required
                   type="text"
                   maxLength={50}
                   value={q.topic}

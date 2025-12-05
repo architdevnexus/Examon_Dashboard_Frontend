@@ -22,7 +22,21 @@ const AddNotes = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "pdf") {
-      setFormData((prev) => ({ ...prev, pdf: files[0] }));
+      const file = files[0];
+
+      if (file.type !== "application/pdf") {
+        toast.error("Please select a valid PDF file");
+        e.target.value = null;
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("PDF must be less than 10MB");
+        e.target.value = null;
+        return;
+      }
+
+      setFormData((prev) => ({ ...prev, pdf: file }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -49,7 +63,9 @@ const AddNotes = () => {
       {
         onSuccess: (resp) => {
           //console.log(resp);
-          toast.success(resp.message);
+          toast.success(
+            resp?.response?.data.message || "Notes uploaded successfully"
+          );
           setFormData({
             notesCategory: "",
             title: "",
@@ -57,10 +73,10 @@ const AddNotes = () => {
             level: "",
             pdf: null,
           });
-          fileRef.current = null;
+          fileRef.current.value = null;
         },
         onError: (e) => {
-          //console.log(e);
+          // console.log(e);
           toast.error(e.message);
         },
       }

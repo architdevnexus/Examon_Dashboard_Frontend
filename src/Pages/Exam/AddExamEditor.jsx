@@ -50,7 +50,7 @@ export default function AddExamEditor() {
         },
         onError: (error) => {
           //console.log(error);
-          toast.error(error.response.data.message);
+          toast.error(error.message);
         },
       }
     );

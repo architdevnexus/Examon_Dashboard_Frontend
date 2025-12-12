@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { CheckIn } from "../Handler/Authentication";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,8 @@ const Login = ({ setAuthUser }) => {
   const [email, setEmail] = useState("");
   const [FullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
+  const [subuser, setSubuser] = useState(false);
+
   const [error, setError] = useState("");
   const [isLogging, setIsLogging] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -23,6 +25,7 @@ const Login = ({ setAuthUser }) => {
   }, [navigate]);
 
   const handleSubmit = async (e) => {
+    console.log(subuser);
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -35,10 +38,14 @@ const Login = ({ setAuthUser }) => {
     };
 
     try {
-      const data = await CheckIn(url, credentials);
+      const data = await CheckIn({
+        url,
+        subuser: subuser,
+        credentials,
+      });
 
       if (!data.user) {
-        setError(data.message || "Invalid credentials. Try again.");
+        setError(data.message || data.msg || "Invalid credentials. Try again.");
       } else {
         if (!isLogging) {
           toast.success("Profile created. Please login");
@@ -51,13 +58,17 @@ const Login = ({ setAuthUser }) => {
 
         setAuthUser(data.user);
 
+        console.log(data);
         // Then sync to localStorage
         localStorage.setItem("token", data.accessToken);
         localStorage.setItem("authUser", JSON.stringify(data.user));
         navigate("/", { replace: true });
       }
     } catch (err) {
-      setError(err?.response?.data?.msg || "Something went wrong");
+      console.log(err);
+      setError(
+        err?.response?.data?.msg || err?.message || "Something went wrong"
+      );
     } finally {
       setLoading(false);
     }
@@ -72,6 +83,7 @@ const Login = ({ setAuthUser }) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email Field */}
+
           {!isLogging && (
             <div>
               <label
@@ -133,7 +145,21 @@ const Login = ({ setAuthUser }) => {
 
           {/* Error Message */}
           {error && <p className="text-red-500 text-sm">{error}</p>}
-
+          <div className="flex gap-2">
+            <label
+              htmlFor="role"
+              className="block text-sm font-medium text-gray-600 mb-1"
+            >
+              loggin as a Subuser:
+            </label>
+            <input
+              disabled={loading}
+              onChange={(e) => setSubuser(e.target.value)}
+              type="checkbox"
+              name="role"
+              id=""
+            />
+          </div>
           {/* Submit Button */}
           <button
             type="submit"

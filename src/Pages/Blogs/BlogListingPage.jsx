@@ -42,7 +42,7 @@ const BlogPage = () => {
       {/* Blog Content */}
       <div>
         {filteredBlogs.length === 0 ? (
-          <div className="text-center text-yellow-600 text-xl py-10">
+          <div className="text-center text-gray-500  ">
             No blog posts found.
           </div>
         ) : (

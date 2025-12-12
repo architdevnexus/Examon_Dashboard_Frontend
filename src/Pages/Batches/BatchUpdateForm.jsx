@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
- 
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../Component/Loader.jsx";
 import { toast } from "react-toastify";
@@ -7,24 +6,31 @@ import {
   useGetContentById,
   useUpdateOrDeleteContent,
 } from "../../hooks/useHooks.js";
+import InputField from "../../Component/Input/InputField.jsx";
 
 const BatchUpdateForm = () => {
   const { cid, id } = useParams();
   const navigate = useNavigate();
 
-  const ids = { cid, id };
-
   const [preview, setPreview] = useState(null);
+  const [preview2, setPreview2] = useState(null);
 
   const [formData, setFormData] = useState({
     image: null,
+    image2: null,
     batchName: "",
     syllabus: "",
+    description: "",
+    perks: "",
     duration: "",
     price: "",
     teachers: "",
     enrollLink: "",
   });
+
+  // keep refs for current objectURLs so we can revoke them
+  const currentPreviewRef = useRef(null);
+  const currentPreview2Ref = useRef(null);
 
   const {
     data: batch,
@@ -40,213 +46,351 @@ const BatchUpdateForm = () => {
     },
   });
 
-  const { mutate, isPending: isPending1 } = useUpdateOrDeleteContent({
+  const { mutate, isPending } = useUpdateOrDeleteContent({
     keys: ["batches"],
   });
 
   useEffect(() => {
     if (isSuccess && batch?.data) {
       const data = batch.data;
-      //   //console.log(data);
+
       setFormData({
-        image: data?.image,
-        batchName: data?.batchName,
-        syllabus: data?.syllabus,
-        duration: data?.duration,
-        price: data?.price,
-        teachers: data?.teachers,
-        enrollLink: data?.enrollLink,
+        image: null, // keep null for file inputs; we'll show existing images via preview URLs
+        image2: null,
+        batchName: data?.batchName ?? "",
+        syllabus: data?.syllabus ?? "",
+        description: data?.description ?? "",
+        perks: data?.perks ?? "",
+        duration: data?.duration ?? "",
+        price: data?.price ?? "",
+        teachers: data?.teachers ?? "",
+        enrollLink: data?.enrollLink ?? "",
       });
 
-      setPreview(data.image || null);
+      // preview existing images (server-provided URLs). Use data.images[] if present, else fallback to fields you had.
+      // Revoke any previous object URLs (defensive)
+      if (
+        currentPreviewRef.current &&
+        currentPreviewRef.current.startsWith("blob:")
+      ) {
+        URL.revokeObjectURL(currentPreviewRef.current);
+      }
+      if (
+        currentPreview2Ref.current &&
+        currentPreview2Ref.current.startsWith("blob:")
+      ) {
+        URL.revokeObjectURL(currentPreview2Ref.current);
+      }
+
+      // Prefer data.images array (you were using that earlier); fallback to single image fields
+      const existing1 = Array.isArray(data?.images)
+        ? data.images[0]
+        : data?.image ?? null;
+      const existing2 = Array.isArray(data?.images)
+        ? data.images[1]
+        : data?.image2 ?? null;
+
+      setPreview(existing1 ?? null);
+      setPreview2(existing2 ?? null);
+
+      currentPreviewRef.current = existing1 ?? null;
+      currentPreview2Ref.current = existing2 ?? null;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, batch]);
+
+  // cleanup object URLs on unmount
+  useEffect(() => {
+    return () => {
+      if (
+        currentPreviewRef.current &&
+        currentPreviewRef.current.startsWith("blob:")
+      ) {
+        URL.revokeObjectURL(currentPreviewRef.current);
+      }
+      if (
+        currentPreview2Ref.current &&
+        currentPreview2Ref.current.startsWith("blob:")
+      ) {
+        URL.revokeObjectURL(currentPreview2Ref.current);
+      }
+    };
+  }, []);
 
   if (isLoading) return <Loader />;
 
   if (isError) {
-    //console.log(error.response.data.message);
-    toast.error(error.response.data.message);
-    return;
+    // show toast once and render nothing (keeps previous behavior but safe)
+    toast.error(error?.message ?? "Failed to load batch");
+    return null;
   }
 
-  // Handle file upload
+  // Handle file upload for image1
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0] ?? null;
+
+    // revoke previous objectURL if it was a blob
+    if (
+      currentPreviewRef.current &&
+      currentPreviewRef.current.startsWith("blob:")
+    ) {
+      URL.revokeObjectURL(currentPreviewRef.current);
+    }
+
     if (file) {
+      const url = URL.createObjectURL(file);
+      currentPreviewRef.current = url;
+      setPreview(url);
       setFormData((prev) => ({ ...prev, image: file }));
-      setPreview(URL.createObjectURL(file));
+    } else {
+      currentPreviewRef.current = null;
+      setPreview(null);
+      setFormData((prev) => ({ ...prev, image: null }));
     }
   };
 
+  // Handle file upload for image2
+  const handleFileChange2 = (e) => {
+    const file = e.target.files?.[0] ?? null;
+
+    // revoke previous objectURL if it was a blob
+    if (
+      currentPreview2Ref.current &&
+      currentPreview2Ref.current.startsWith("blob:")
+    ) {
+      URL.revokeObjectURL(currentPreview2Ref.current);
+    }
+
+    if (file) {
+      const url = URL.createObjectURL(file);
+      currentPreview2Ref.current = url;
+      setPreview2(url);
+      setFormData((prev) => ({ ...prev, image2: file }));
+    } else {
+      currentPreview2Ref.current = null;
+      setPreview2(null);
+      setFormData((prev) => ({ ...prev, image2: null }));
+    }
+  };
+
+  // generic change handler for text/number/select/textarea
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, type, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "number" ? value : value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const formData1 = new FormData();
+    const payload = new FormData();
 
+    // append all non-file fields
+    const skip = new Set(["image", "image2"]);
     for (const key in formData) {
-      //console.log(formData[key]);
-      formData1.append(key, formData[key]);
+      if (
+        Object.prototype.hasOwnProperty.call(formData, key) &&
+        !skip.has(key)
+      ) {
+        payload.append(key, formData[key] ?? "");
+      }
     }
+
+    // append files if provided (file objects) — server expects image1 & image2 (matching your previous code)
+    if (formData.image) payload.append("image1", formData.image);
+    if (formData.image2) payload.append("image2", formData.image2);
 
     mutate(
       {
         method: "patch",
         url: `/live/batches/update/${cid}/${id}`,
-        data: formData1,
+        data: payload,
       },
       {
         onSuccess: (resp) => {
+          // cleanup object URLs we created
+          if (
+            currentPreviewRef.current &&
+            currentPreviewRef.current.startsWith("blob:")
+          ) {
+            URL.revokeObjectURL(currentPreviewRef.current);
+            currentPreviewRef.current = null;
+          }
+          if (
+            currentPreview2Ref.current &&
+            currentPreview2Ref.current.startsWith("blob:")
+          ) {
+            URL.revokeObjectURL(currentPreview2Ref.current);
+            currentPreview2Ref.current = null;
+          }
+
+          // reset local state (keep UX simple)
           setFormData({
             image: null,
+            image2: null,
             batchName: "",
             syllabus: "",
+            description: "",
+            perks: "",
             duration: "",
             price: "",
             teachers: "",
             enrollLink: "",
           });
           setPreview(null);
+          setPreview2(null);
 
-          //console.log(resp);
           toast.success("Batch Updated");
           navigate("/batches");
         },
         onError: (e) => {
-          //console.log(e);
-          toast.error("error");
+          console.error("Update error:", e);
+          toast.error("Failed to update batch");
         },
       }
     );
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-white shadow-lg rounded-2xl p-6 my-8">
+    <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-2xl p-6 my-8">
       <h2 className="text-2xl font-semibold mb-4 text-gray-800">
         Update Batch
       </h2>
+
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-gray-700 font-semibold mb-2">
-            Batch Image
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="border border-gray-300 p-2 rounded w-full"
-          />
-          {preview && (
-            <img
-              src={preview}
-              alt="Preview"
-              className="mt-4 w-40 h-40 object-cover rounded-lg  "
+        <div className="flex gap-4">
+          <div className="flex-1">
+            <InputField
+              disabled={isPending}
+              label="Batch Image1"
+              name="image1"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              inputClassName="border p-2 rounded w-full"
+              helpText="Recommended: 400x400"
             />
-          )}
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                className="mt-4 w-40 h-40 object-cover rounded-lg"
+              />
+            )}
+          </div>
+
+          <div className="flex-1">
+            <InputField
+              disabled={isPending}
+              label="Batch Image2*"
+              name="image2"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange2}
+              inputClassName="border p-2 rounded w-full"
+              helpText="This image is required for listings"
+            />
+            {preview2 && (
+              <img
+                src={preview2}
+                alt="Preview"
+                className="mt-4 w-40 h-40 object-cover rounded-lg"
+              />
+            )}
+          </div>
         </div>
 
-        {/* Batch Name */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Batch Name
-          </label>
-          <input
-            type="text"
-            name="batchName"
-            value={formData.batchName}
-            onChange={handleChange}
-            placeholder="e.g. All in One – Master Batch"
-            className="w-full border border-gray-300 rounded-lg p-2"
-            required
-          />
-        </div>
+        <InputField
+          disabled={isPending}
+          maxLength={60}
+          label="Batch Name"
+          name="batchName"
+          value={formData.batchName}
+          onChange={handleChange}
+          placeholder="e.g. All in One – Master Batch"
+          required
+        />
 
-        {/* Syllabus */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Syllabus
-          </label>
-          <input
-            type="text"
-            name="syllabus"
-            value={formData.syllabus}
-            onChange={handleChange}
-            placeholder="Tech + Non Tech covered"
-            className="w-full border border-gray-300 rounded-lg p-2"
-          />
-        </div>
+        <InputField
+          disabled={isPending}
+          maxLength={200}
+          label="Syllabus"
+          name="syllabus"
+          value={formData.syllabus}
+          onChange={handleChange}
+          placeholder="Tech + Non Tech covered"
+        />
 
-        {/* Duration */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Duration
-          </label>
-          <input
-            type="text"
-            name="duration"
-            value={formData.duration}
-            onChange={handleChange}
-            placeholder="e.g. 2 Years"
-            className="w-full border border-gray-300 rounded-lg p-2"
-          />
-        </div>
+        <InputField
+          disabled={isPending}
+          label="Duration"
+          maxLength={20}
+          name="duration"
+          value={formData.duration}
+          onChange={handleChange}
+          placeholder="e.g. 2 Years"
+        />
 
-        {/* Price */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Price
-          </label>
-          <input
-            type="number"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            placeholder="e.g. 5999"
-            className="w-full border border-gray-300 rounded-lg p-2"
-          />
-        </div>
+        <InputField
+          disabled={isPending}
+          label="Description"
+          name="description"
+          type="textarea"
+          value={formData.description}
+          onChange={handleChange}
+          rows={5}
+          placeholder="Brief batch description..."
+          inputClassName=" resize-none"
+        />
 
-        {/* Teachers */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Teachers
-          </label>
-          <input
-            type="text"
-            name="teachers"
-            value={formData.teachers}
-            onChange={handleChange}
-            placeholder="e.g. Shivam Sir, Gaurav Sir"
-            className="w-full border border-gray-300 rounded-lg p-2"
-          />
-        </div>
+        <InputField
+          disabled={isPending}
+          label="Perks"
+          name="perks"
+          value={formData.perks}
+          onChange={handleChange}
+          placeholder="e.g. RECORDED, PYQs, LIVE TESTS"
+        />
 
-        {/* Enroll link */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Enroll link
-          </label>
-          <input
-            type="text"
-            name="enrollLink"
-            value={formData.enrollLink}
-            onChange={handleChange}
-            placeholder="e.g. Shivam Sir, Gaurav Sir"
-            className="w-full border border-gray-300 rounded-lg p-2"
-          />
-        </div>
+        <InputField
+          disabled={isPending}
+          max={500000}
+          label="Price"
+          name="price"
+          type="number"
+          value={formData.price}
+          onChange={handleChange}
+          placeholder="e.g. 5999"
+        />
 
-        {/* Submit Button */}
+        <InputField
+          disabled={isPending}
+          maxLength={100}
+          label="Teachers"
+          name="teachers"
+          value={formData.teachers}
+          onChange={handleChange}
+          placeholder="e.g. Shivam Sir, Gaurav Sir"
+        />
+
+        <InputField
+          disabled={isPending}
+          maxLength={100}
+          label="Enroll link"
+          name="enrollLink"
+          value={formData.enrollLink}
+          onChange={handleChange}
+          placeholder="e.g. https://example.com/enroll"
+        />
+
         <button
           type="submit"
-          disabled={isPending1}
+          disabled={isPending}
           className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 transition"
         >
-          {isPending1 ? "Updating..." : "Update Batch"}
+          {isPending ? "Updating..." : "Update Batch"}
         </button>
       </form>
     </div>

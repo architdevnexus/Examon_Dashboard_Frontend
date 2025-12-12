@@ -90,7 +90,7 @@ const NewsList = () => {
       {/* Header */}
       <ListingPageHeader props={headerProps} />
       {filteredNews.length === 0 ? (
-        <p className="text-center text-gray-500 mt-10">No news found.</p>
+        <p className="text-center text-gray-500 ">No news found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredNews.map((news_item, i) => (

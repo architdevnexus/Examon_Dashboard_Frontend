@@ -13,7 +13,7 @@ export default function OfferForm() {
     description: "",
     discount: "",
     banner: "",
-    cta: { label: "", url: "" },
+    batch: "",
     tags: [],
     tagInput: "",
     expiresIn: "",
@@ -34,11 +34,25 @@ export default function OfferForm() {
     },
   });
 
+  const {
+    data: batchNames,
+    isLoading: batchesLoading,
+    isError,
+    error,
+  } = useGetContent({
+    keys: ["batch"],
+    handlerProps: {
+      url: "/live/batches/name",
+    },
+  });
+
   const { mutate, isPending } = useUpdateOrDeleteContent({
     keys: ["offer"],
   });
 
   if (isLoading) return <Loader />;
+
+  // if (!batchesLoading && !isError) console.log(batchNames);
 
   if (isError2) {
     //console.log(error2);
@@ -48,18 +62,6 @@ export default function OfferForm() {
   // Input change handler
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // For nested CTA fields
-    if (name === "ctaLabel" || name === "ctaUrl") {
-      setFormData((prev) => ({
-        ...prev,
-        cta: {
-          ...prev.cta,
-          [name === "ctaLabel" ? "label" : "url"]: value,
-        },
-      }));
-      return;
-    }
 
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -156,6 +158,7 @@ export default function OfferForm() {
               <div>
                 <label className="font-medium">Title*</label>
                 <input
+                  disabled={isPending}
                   type="text"
                   name="title"
                   maxLength={60}
@@ -171,6 +174,7 @@ export default function OfferForm() {
               <div>
                 <label className="font-medium">Description*</label>
                 <textarea
+                  disabled={isPending}
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
@@ -186,6 +190,7 @@ export default function OfferForm() {
               <div>
                 <label className="font-medium">Discount (%)*</label>
                 <input
+                  disabled={isPending}
                   type="number"
                   name="discount"
                   value={formData.discount}
@@ -202,6 +207,7 @@ export default function OfferForm() {
               <div>
                 <label className="font-medium">Banner*</label>
                 <select
+                  disabled={isPending}
                   name="banner"
                   value={formData.banner}
                   onChange={handleChange}
@@ -216,31 +222,28 @@ export default function OfferForm() {
               </div>
 
               {/* CTA */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="font-medium">CTA Label*</label>
-                  <input
-                    type="text"
-                    name="ctaLabel"
-                    value={formData.cta.label}
-                    onChange={handleChange}
-                    className="w-full mt-1 p-2 border rounded-lg"
-                    placeholder="Enroll Now"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="font-medium">CTA URL*</label>
-                  <input
-                    type="url"
-                    name="ctaUrl"
-                    value={formData.cta.url}
-                    onChange={handleChange}
-                    className="w-full mt-1 p-2 border rounded-lg"
-                    placeholder="/course/full-stack?discount=35"
-                    required
-                  />
-                </div>
+
+              <div>
+                <label className="font-medium">Batch*</label>
+                <select
+                  disabled={isPending}
+                  name="batch"
+                  value={formData.batch}
+                  onChange={handleChange}
+                  className="w-full mt-1 p-2 border rounded-lg"
+                  required
+                >
+                  <option value="">Select batch</option>
+                  {batchesLoading ? (
+                    <option value="">Fetching Batches...</option>
+                  ) : (
+                    batchNames?.batchNames.map((name, i) => (
+                      <option key={i} value={name}>
+                        {name}
+                      </option>
+                    ))
+                  )}
+                </select>
               </div>
 
               <MultipleValues {...multiValueProps} />
@@ -249,6 +252,7 @@ export default function OfferForm() {
               <div>
                 <label className="font-medium">Expires In*</label>
                 <input
+                  disabled={isPending}
                   type="text"
                   name="expiresIn"
                   value={formData.expiresIn}
@@ -265,6 +269,7 @@ export default function OfferForm() {
                 <label className="font-medium">Priority*</label>
                 <select
                   name="priority"
+                  disabled={isPending}
                   value={formData.priority}
                   onChange={handleChange}
                   className="w-full mt-1 p-2 border rounded-lg"

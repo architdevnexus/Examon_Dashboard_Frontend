@@ -55,7 +55,7 @@ const MainGrid = ({ data, blog }) => {
         onSuccess: (data) => {
           //console.log(data);
           setDeletingId(null);
-          toast.success("Batch deleted");
+          toast.success("Blog deleted");
         },
         onError: (e) => {
           //console.log(e);

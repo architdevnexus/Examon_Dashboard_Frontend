@@ -14,7 +14,9 @@ export default function ContactDetailsPage() {
   const { data, isLoading, isError } = useGetContent({
     keys: ["contactUs", page],
     handlerProps: {
-      url: `https://backend.palgharhome.com/api/contact-us?page=${page}&limit=${limit}`,
+      url: `${
+        import.meta.env.VITE_BASE_URL
+      }/contact-us?page=${page}&limit=${limit}`,
     },
   });
 

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
 import { StatInput } from "../Component/Input/AchimentInput";
 import { useGetContent, useUpdateOrDeleteContent } from "../hooks/useHooks";
+import InputField from "../Component/Input/InputField";
 
 const Achievements = () => {
   const [formData, setFormData] = useState({
@@ -129,13 +130,17 @@ const Achievements = () => {
         </div>
         <form className="grid grid-cols-1 md:grid-cols-2 gap-6 place-items-center">
           {fields.map((f) => (
-            <StatInput
+            <InputField
               key={f.name}
-              label={f.label}
               name={f.name}
+              label={f.label}
+              disabled={Editable}
+              type="number"
+              min={0}
               value={formData[f.name]}
-              editable={Editable}
               onChange={handleChange}
+              placeholder="e.g. PYQ"
+              required
             />
           ))}
         </form>

@@ -105,7 +105,7 @@ const QuizListPage = () => {
 
       {/* Quizzes */}
       {filteredQuizzes.length === 0 && (
-        <p className="text-gray-500 text-center mt-10">No quizzes found.</p>
+        <p className="text-gray-500 text-center ">No quizzes found.</p>
       )}
 
       {filteredQuizzes.length > 0 && (

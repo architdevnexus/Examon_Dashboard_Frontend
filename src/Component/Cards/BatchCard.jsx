@@ -3,7 +3,7 @@ import ActionBtns from "../ActionBtns";
 
 const BatchCard = ({ batch, onDelete, onEdit, isDeleting, cId = null }) => {
   const [hovered, setHovered] = useState(false);
-  console.log(batch.image);
+  // console.log(batch);
   return (
     <div
       key={batch.id}
@@ -15,7 +15,7 @@ const BatchCard = ({ batch, onDelete, onEdit, isDeleting, cId = null }) => {
       onMouseLeave={() => setHovered(false)}
     >
       <img
-        src={batch.image}
+        src={batch?.images[0]}
         alt={batch.batchName}
         className="w-full h-48 object-cover"
       />

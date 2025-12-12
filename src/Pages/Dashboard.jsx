@@ -78,7 +78,7 @@ function Dashboard() {
     {
       title: "Batches",
       link: "/batches",
-      data: dashboard.Batches[0].batches?.slice(0, 3),
+      data: dashboard?.Batches[0].batches?.slice(0, 3),
     },
     {
       title: "Quizzes",

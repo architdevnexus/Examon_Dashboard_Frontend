@@ -44,15 +44,15 @@ export default function ReviewListPage() {
     <div className="min-h-screen bg-gray-50 p-6">
       <ListingPageHeader props={headerProps} />
 
-      <div className="grid md:grid-cols-2 gap-6">
-        {filteredReviews.length === 0 ? (
-          <p>No review found</p>
-        ) : (
-          filteredReviews.map((rev, index) => (
+      {filteredReviews.length === 0 ? (
+        <div className="text-center text-gray-500  ">No review found</div>
+      ) : (
+        <div className="grid md:grid-cols-2 gap-6">
+          {filteredReviews.map((rev, index) => (
             <ReviewCard key={index} review={rev} />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

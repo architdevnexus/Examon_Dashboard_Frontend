@@ -51,7 +51,7 @@ function NotesListingPage() {
       <ListingPageHeader props={headerProps} />
 
       {filteredNotes.length === 0 ? (
-        <p className="text-center text-gray-500 mt-10">Notes not found.</p>
+        <p className="text-center text-gray-500 ">Notes not found.</p>
       ) : (
         filteredNotes.map((note, index) => (
           <div key={index}>

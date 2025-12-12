@@ -323,7 +323,7 @@ const AddNewQuiz = () => {
           type="submit"
           className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
-          {isPending ? <Loader /> : "Submit"}
+          {isPending ? <Loader className="h-10" /> : "Submit"}
         </button>
         {isError && <p>{error}</p>}
       </form>

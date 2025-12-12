@@ -1,117 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSidebar } from "./SidebarContext";
-import {
-  FaTachometerAlt,
-  FaUsers,
-  FaBoxOpen,
-  FaSignOutAlt,
-  FaChevronLeft,
-  FaChevronRight,
-} from "react-icons/fa";
+import { FaSignOutAlt, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { CiCircleChevDown, CiCircleChevUp } from "react-icons/ci";
 import { NavLink, useLocation } from "react-router-dom";
-// import Data from "../../DataStore/DataStore.json";
-import { GiAchievement, GiNotebook } from "react-icons/gi";
-import { MdHistory, MdOutlineReviews } from "react-icons/md";
-import { IoNewspaperOutline } from "react-icons/io5";
-import { LuNotebookPen } from "react-icons/lu";
-import { RiBloggerLine, RiContactsBook3Line } from "react-icons/ri";
-import { FaUserGear } from "react-icons/fa6";
-import { IoIosNotifications } from "react-icons/io";
-import {
-  PiChalkboardSimpleBold,
-  PiExamBold,
-  PiVideoBold,
-} from "react-icons/pi";
-
-const navItems = [
-  {
-    label: "Dashboard",
-    icon: <FaTachometerAlt />,
-    route: "/dashboard",
-  },
-  {
-    label: "Notification",
-    icon: <IoIosNotifications />,
-    route: "/notification",
-  },
-  {
-    label: "User Management",
-    icon: <FaUserGear />,
-    route: "/user-management",
-  },
-  {
-    label: "Mentors",
-    icon: <FaUsers />,
-    route: "/mentors",
-  },
-  {
-    label: "Study Material",
-    icon: <FaBoxOpen />,
-    subMenu: [
-      {
-        label: "Quiz",
-        route: "/studymaterial/quiz",
-        icon: <GiNotebook />,
-      },
-      {
-        label: "PYQs",
-        route: "/studymaterial/pyq",
-        icon: <MdHistory />,
-      },
-      {
-        label: "Notes",
-        route: "/studymaterial/notes",
-        icon: <LuNotebookPen />,
-      },
-    ],
-  },
-  {
-    label: "Courses",
-    icon: <PiVideoBold />,
-    route: "/courses",
-  },
-  {
-    label: "Batches",
-    icon: <PiChalkboardSimpleBold />,
-    route: "/batches",
-  },
-  {
-    label: "Achievements",
-    icon: <GiAchievement />,
-    route: "/achievements",
-  },
-  {
-    label: "Exam Details",
-    icon: <PiExamBold />,
-    route: "/exams",
-  },
-  {
-    label: "Latest News",
-    icon: <IoNewspaperOutline />,
-    route: "/news",
-  },
-  {
-    label: "Reviews",
-    icon: <MdOutlineReviews />,
-    route: "/reviews",
-  },
-  {
-    label: "Blogs",
-    icon: <RiBloggerLine />,
-    route: "/blogs",
-  },
-  {
-    label: "Contact Us",
-    icon: <RiContactsBook3Line />,
-    route: "/contact-us",
-  },
-];
+import { navItems } from "./SidebarTabs";
 
 export default function Sidebar({ user }) {
   const location = useLocation();
   const [activeDropdown, setActiveDropdown] = useState(null);
   const { collapsed, toggleCollapse } = useSidebar();
+  const [filteredTabs, setFilteredTabs] = useState([]);
 
   const toggleDropdown = (label) => {
     setActiveDropdown((prev) => (prev === label ? null : label));
@@ -120,7 +18,15 @@ export default function Sidebar({ user }) {
   const isSubActive = (subMenu) =>
     subMenu?.some((item) => location.pathname.startsWith(item.route));
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    const allowedtbs = JSON.parse(localStorage.getItem("authUser")).allowedTabs;
+    // console.log(allowedtbs);
+    if (allowedtbs) {
+      setFilteredTabs(navItems.filter((tab) => allowedtbs.includes(tab.label)));
+    } else {
+      setFilteredTabs([...navItems]);
+    }
+  }, [user]);
 
   if (!user) return;
 
@@ -171,7 +77,7 @@ export default function Sidebar({ user }) {
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto p-2 space-y-1">
-        {navItems.map((item, idx) => {
+        {filteredTabs.map((item, idx) => {
           const isActiveParent =
             activeDropdown === item.label || isSubActive(item.subMenu);
           return (

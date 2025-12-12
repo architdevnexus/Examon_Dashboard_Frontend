@@ -12,7 +12,7 @@ export default function UserManagement() {
   const { data, isLoading, isError, error } = useGetContent({
     keys: ["users", page],
     handlerProps: {
-      url: `https://backend.palgharhome.com/api/users/all?page=${page}`,
+      url: `/users/all?page=${page}`,
     },
   });
   const users = Array.isArray(data?.data) ? data.data : [];

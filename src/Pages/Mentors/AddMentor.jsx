@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
 import MultipleValues from "../../Component/Input/MultipleValues";
+import InputField from "../../Component/Input/InputField.jsx"; // <- reusable component
 
 export default function AddMentorForm() {
   const navigate = useNavigate();
@@ -33,21 +34,39 @@ export default function AddMentorForm() {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0] ?? null;
     if (file) {
       setMentor((prev) => ({ ...prev, image: file }));
       setPreview(URL.createObjectURL(file));
+    } else {
+      setMentor((prev) => ({ ...prev, image: null }));
+      setPreview(null);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    //console.log(mentor);
     const formData1 = new FormData();
 
+    // append fields — handle files and arrays safely
     for (const key in mentor) {
-      formData1.append(key, mentor[key]);
+      if (!Object.prototype.hasOwnProperty.call(mentor, key)) continue;
+      const val = mentor[key];
+
+      if (key === "image") {
+        if (val) formData1.append("image", val); // file object
+        continue;
+      }
+
+      if (Array.isArray(val)) {
+        // backend may expect CSV or JSON; JSON is safer
+        formData1.append(key, JSON.stringify(val));
+        continue;
+      }
+
+      // append primitive values (coerce null/undefined -> empty string)
+      formData1.append(key, val ?? "");
     }
 
     mutate(
@@ -68,16 +87,15 @@ export default function AddMentorForm() {
             youtubeLink: "",
             coursesLink: "",
             CoursesHandled: [],
+            CourseInput: "",
           });
           setPreview(null);
-          imgRef.current.value = null;
+          if (imgRef.current) imgRef.current.value = null;
 
-          //console.log(resp);
           toast.success("Mentor added");
           navigate("/mentors");
         },
         onError: (e) => {
-          //console.log(e);
           toast.error("error");
         },
       }
@@ -97,135 +115,107 @@ export default function AddMentorForm() {
 
   return (
     <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 border border-gray-200">
-      <h2 className="text-2xl font-semibold text-indigo-600 mb-6 text-center">
+      <h2 className="text-2xl font-semibold   mb-6 text-center">
         Add New Mentor
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Image upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Upload Image
-          </label>
-          <input
-            ref={imgRef}
+          <InputField
+            label="Upload Image"
+            name="image"
             type="file"
-            // name="image"
             accept="image/*"
             onChange={handleFileChange}
-            className="w-full border border-gray-300 rounded-lg p-2 cursor-pointer file:cursor-pointer  text-sm file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
-            // required
+            ref={imgRef}
+            inputClassName="w-full"
+            helpText="Profile image for mentor"
           />
 
           {preview && (
             <img
               src={preview}
               alt="Preview"
-              className="mt-4 w-40 h-40 object-cover rounded-lg  "
+              className="mt-4 w-40 h-40 object-cover rounded-lg"
             />
           )}
         </div>
 
         {/* Name */}
-        <div>
-          <label className="block text-gray-700 font-medium">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={mentor.name}
-            onChange={handleChange}
-            required
-            className="w-full mt-1 border border-gray-300 rounded-md px-4 py-2"
-            placeholder="Enter mentor name"
-          />
-        </div>
+        <InputField
+          label="Name"
+          name="name"
+          type="text"
+          value={mentor.name}
+          onChange={handleChange}
+          required
+          placeholder="Enter mentor name"
+        />
 
-        {/* subject */}
-        <div>
-          <label className="block text-gray-700 font-medium">Subject</label>
-          <input
-            type="text"
-            name="subjectTaught"
-            value={mentor.subjectTaught}
-            onChange={handleChange}
-            className="w-full mt-1 border border-gray-300 rounded-md px-4 py-2 "
-            placeholder="e.g., Hindi, English"
-          />
-        </div>
+        {/* Subject */}
+        <InputField
+          label="Subject"
+          name="subjectTaught"
+          type="text"
+          value={mentor.subjectTaught}
+          onChange={handleChange}
+          placeholder="e.g., Hindi, English"
+        />
 
         {/* Experience */}
-        <div>
-          <label className="block text-gray-700 font-medium">Experience</label>
-          <input
-            type="text"
-            name="experience"
-            value={mentor.experience}
-            onChange={handleChange}
-            className="w-full mt-1 border border-gray-300 rounded-md px-4 py-2 "
-            placeholder="e.g., 4"
-          />
-        </div>
+        <InputField
+          label="Experience"
+          name="experience"
+          type="text"
+          value={mentor.experience}
+          onChange={handleChange}
+          placeholder="e.g., 4"
+        />
 
         {/* Specialization */}
-        <div>
-          <label className="block text-gray-700 font-medium">
-            Specialization
-          </label>
-          <input
-            type="text"
-            name="specialization"
-            value={mentor.specialization}
-            onChange={handleChange}
-            className="w-full mt-1 border border-gray-300 rounded-md px-4 py-2 "
-            placeholder="e.g., Mathematics"
-          />
-        </div>
+        <InputField
+          label="Specialization"
+          name="specialization"
+          type="text"
+          value={mentor.specialization}
+          onChange={handleChange}
+          placeholder="e.g., Mathematics"
+        />
 
         <MultipleValues {...multiValueProps} />
 
-       
         {/* Description */}
-        <div>
-          <label className="block text-gray-700 font-medium">Description</label>
-          <textarea
-            name="description"
-            maxLength={200}
-            value={mentor.description}
-            onChange={handleChange}
-            className="w-full mt-1 resize-none border border-gray-300 rounded-md px-4 py-2 "
-            placeholder="Short bio or role description"
-            rows="3"
-          ></textarea>
-        </div>
+        <InputField
+          label="Description"
+          name="description"
+          type="textarea"
+          value={mentor.description}
+          onChange={handleChange}
+          maxLength={200}
+          placeholder="Short bio or role description"
+          inputClassName="h-20 resize-none"
+        />
 
-        {/* youtube channel link */}
-        <div>
-          <label className="block text-gray-700 font-medium">
-            Youtube Channel
-          </label>
-          <input
-            type="url"
-            name="youtubeLink"
-            value={mentor.youtubeLink}
-            onChange={handleChange}
-            className="w-full mt-1 border border-gray-300 rounded-md px-4 py-2 "
-            placeholder="https://www.youtube.com/@chnanelname"
-          />
-        </div>
+        {/* Youtube Channel */}
+        <InputField
+          label="Youtube Channel"
+          name="youtubeLink"
+          type="url"
+          value={mentor.youtubeLink}
+          onChange={handleChange}
+          placeholder="https://www.youtube.com/@channelname"
+        />
 
         {/* Courses Link */}
-        <div>
-          <label className="block text-gray-700 font-medium">
-            Courses Link
-          </label>
-          <input
-            type="url"
-            name="coursesLink"
-            value={mentor.coursesLink}
-            onChange={handleChange}
-            className="w-full mt-1 border border-gray-300 rounded-md px-4 py-2 "
-            placeholder="https://your-website.com/instructor/mentor-name"
-          />
-        </div>
+        <InputField
+          label="Courses Link"
+          name="coursesLink"
+          type="url"
+          value={mentor.coursesLink}
+          onChange={handleChange}
+          placeholder="https://your-website.com/instructor/mentor-name"
+        />
 
         {error && (
           <p className="text-red-600 text-center font-medium">{error}</p>

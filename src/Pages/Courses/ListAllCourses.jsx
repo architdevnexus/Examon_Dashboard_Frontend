@@ -107,7 +107,7 @@ const CourseList = () => {
       <ListingPageHeader props={headerProps} />
 
       {filteredCourses.length === 0 ? (
-        <p className="text-center text-gray-500 mt-10">No courses found.</p>
+        <p className="text-center text-gray-500  ">No courses found.</p>
       ) : (
         filteredCourses.map((courses1, index) => (
           <div key={index}>

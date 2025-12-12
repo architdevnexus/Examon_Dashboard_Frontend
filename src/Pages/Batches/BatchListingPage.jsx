@@ -126,15 +126,15 @@ export default function BatchListingPage() {
       <ListingPageHeader props={headerProps} />
 
       {filteredCourses.length === 0 ? (
-        <p className="text-center text-gray-500 col-span-full">
-          No batches available.
-        </p>
+        <p className="text-center text-gray-500  ">No batches available.</p>
       ) : (
         filteredCourses.map((category, index) => (
           <div key={index}>
             {category?.batchCategory && (
               <div className="flex justify-between px-2 border-b   items-center my-2">
-                <h3 className="text-2xl py-2">{category.batchCategory}</h3>
+                <h3 className="text-2xl uppercase py-2">
+                  {category.batchCategory}
+                </h3>
                 {!isPending ? (
                   <MdDelete
                     size={30}

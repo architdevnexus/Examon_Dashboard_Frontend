@@ -53,11 +53,13 @@ const PYQListingPage = () => {
       <ListingPageHeader props={headerProps} />
 
       {filteredPYQs.length === 0 ? (
-        <p className="text-center text-gray-500 mt-10">No PYQs found.</p>
+        <p className="text-center text-gray-500  ">No PYQs found.</p>
       ) : (
         filteredPYQs.map((pyq, index) => (
           <div key={index}>
-            <h3 className="text-2xl py-2 border-b my-2">{pyq.pyqCategory}</h3>
+            <h3 className="text-2xl py-2 uppercase border-b my-2">
+              {pyq.pyqCategory}
+            </h3>
             {/* pyq Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {pyq.questionspaper.map((item, i) => (

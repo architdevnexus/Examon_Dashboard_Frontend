@@ -74,6 +74,7 @@ import UserReview from "./Pages/DynamicPages/UserReview";
 import UserQuiz from "./Pages/DynamicPages/UserQuiz";
 import Notification from "./Pages/Notification";
 import OfferForm from "./Pages/Notification/CreateNotification";
+import AdminAddSubUser from "./Pages/User/AddUser";
 
 function AppContent() {
   const [authUser, setAuthUser] = useState(() => {
@@ -115,6 +116,8 @@ function AppContent() {
                   />
 
                   <Route path="/mentors" element={<Mentors />} />
+
+                  <Route path="/add-subuser" element={<AdminAddSubUser />} />
 
                   <Route path="/mentors/add" element={<AddMentorForm />} />
 

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-
 import { toast } from "react-toastify";
 import { useUpdateOrDeleteContent } from "../../../hooks/useHooks.js";
+import InputField from "../../../Component/Input/InputField.jsx"; // adjust path if needed
 
 const AddNotes = () => {
   const [formData, setFormData] = useState({
@@ -13,36 +13,41 @@ const AddNotes = () => {
   });
 
   const fileRef = useRef(null);
-  //  Mutation for form submission
+  // Mutation for form submission
   const { mutate, isPending } = useUpdateOrDeleteContent({
     keys: ["notes"],
   });
 
-  //   Handle input changes
+  // Handle input changes (text/select)
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "pdf") {
-      const file = files[0];
-
-      if (file.type !== "application/pdf") {
-        toast.error("Please select a valid PDF file");
-        e.target.value = null;
-        return;
-      }
-
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error("PDF must be less than 10MB");
-        e.target.value = null;
-        return;
-      }
-
-      setFormData((prev) => ({ ...prev, pdf: file }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  //   Handle form submit
+  // Handle PDF selection and validation
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0] ?? null;
+    if (!file) {
+      setFormData((prev) => ({ ...prev, pdf: null }));
+      return;
+    }
+
+    if (file.type !== "application/pdf") {
+      toast.error("Please select a valid PDF file");
+      if (fileRef.current) fileRef.current.value = null;
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("PDF must be less than 10MB");
+      if (fileRef.current) fileRef.current.value = null;
+      return;
+    }
+
+    setFormData((prev) => ({ ...prev, pdf: file }));
+  };
+
+  // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.pdf) return alert("Please select a PDF file!");
@@ -57,14 +62,13 @@ const AddNotes = () => {
     mutate(
       {
         url: "/notes/add",
-        data: data,
+        data,
         method: "POST",
       },
       {
         onSuccess: (resp) => {
-          //console.log(resp);
           toast.success(
-            resp?.response?.data.message || "Notes uploaded successfully"
+            resp?.response?.data?.message || "Notes uploaded successfully"
           );
           setFormData({
             notesCategory: "",
@@ -73,10 +77,9 @@ const AddNotes = () => {
             level: "",
             pdf: null,
           });
-          fileRef.current.value = null;
+          if (fileRef.current) fileRef.current.value = null;
         },
         onError: (e) => {
-          // console.log(e);
           toast.error(e.message);
         },
       }
@@ -90,84 +93,67 @@ const AddNotes = () => {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* PYQ Category */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Notes Category
-          </label>
-          <input
-            type="text"
-            name="notesCategory"
-            value={formData.notesCategory}
-            onChange={handleChange}
-            placeholder="e.g. Reasoning, Quantitative Aptitude"
-            className="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-200"
-            required
-          />
-        </div>
-        {/* Title */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Title
-          </label>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="e.g. English"
-            className="w-full border border-gray-300 rounded-lg p-2"
-            required
-          />
-        </div>
-        {/* Language */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Medium
-          </label>
-          <input
-            type="text"
-            name="language"
-            value={formData.language}
-            onChange={handleChange}
-            placeholder="e.g. English, Hindi"
-            className="w-full border border-gray-300 rounded-lg p-2"
-            required
-          />
-        </div>
+        {/* Notes Category */}
+        <InputField
+          label="Notes Category"
+          name="notesCategory"
+          type="text"
+          value={formData.notesCategory}
+          onChange={handleChange}
+          placeholder="e.g. Reasoning, Quantitative Aptitude"
+          required
+        />
 
-        {/*  level */}
-        <div>
-          <label className="font-medium">Level*</label>
-          <select
-            name="level"
-            value={formData.level}
-            onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-lg"
-            required
-          >
-            <option value="">Select level</option>
-            <option value="limited_offer">Easy</option>
-            <option value="flash_banner">Medium</option>
-            <option value="premium_banner">Hard</option>
-          </select>
-        </div>
+        {/* Title */}
+        <InputField
+          label="Title"
+          name="title"
+          type="text"
+          value={formData.title}
+          onChange={handleChange}
+          placeholder="e.g. English"
+          required
+        />
+
+        {/* Language / Medium */}
+        <InputField
+          label="Medium"
+          name="language"
+          type="text"
+          value={formData.language}
+          onChange={handleChange}
+          placeholder="e.g. English, Hindi"
+          required
+        />
+
+        {/* Level (select) */}
+        <InputField
+          label="Level"
+          name="level"
+          type="select"
+          value={formData.level}
+          onChange={handleChange}
+          options={[
+            { value: "", label: "Select level", disabled: true },
+            { value: "limited_offer", label: "Easy" },
+            { value: "flash_banner", label: "Medium" },
+            { value: "premium_banner", label: "Hard" },
+          ]}
+          required
+        />
+
         {/* PDF Upload */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Upload PDF
-          </label>
-          <input
-            type="file"
-            name="pdf"
-            id="pdf"
-            ref={fileRef}
-            accept="application/pdf"
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-2 cursor-pointer"
-            required
-          />
-        </div>
+        <InputField
+          label="Upload PDF"
+          name="pdf"
+          type="file"
+          ref={fileRef}
+          accept="application/pdf"
+          onChange={handleFileChange}
+          inputClassName="w-full"
+          required
+        />
+
         {/* Submit */}
         <button
           type="submit"

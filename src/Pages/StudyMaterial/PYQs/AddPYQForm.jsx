@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
- 
 import { toast } from "react-toastify";
 import { useUpdateOrDeleteContent } from "../../../hooks/useHooks.js";
+import InputField from "../../../Component/Input/InputField.jsx"; // adjust path if needed
 
 const AddPyqForm = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +21,8 @@ const AddPyqForm = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "pdf") {
-      setFormData((prev) => ({ ...prev, pdf: files[0] }));
+      const file = files?.[0] ?? null;
+      setFormData((prev) => ({ ...prev, pdf: file }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -35,27 +36,36 @@ const AddPyqForm = () => {
     const data = new FormData();
     data.append("pyqCategory", formData.pyqCategory);
     data.append("title", formData.title);
-    data.append("year", formData.year);
+    data.append("year", String(formData.year));
     data.append("pdf", formData.pdf);
 
-    mutate(data, {
-      onSuccess: (resp) => {
-        //console.log(resp);
-        toast.success(resp.message);
-        setFormData({
-          pyqCategory: "",
-          title: "",
-          year: "",
-          pdf: null,
-        });
-        fileRef.current = null;
+    mutate(
+      {
+        url: "/pyq/add",
+        data,
+        method: "POST",
       },
-      onError: (e) => {
-        //console.log(e);
-        toast.error(e.message);
-      },
-    });
+      {
+        onSuccess: (resp) => {
+          console.log(resp);
+          toast.success(resp?.message || "PYQ uploaded successfully");
+          setFormData({
+            pyqCategory: "",
+            title: "",
+            year: "",
+            pdf: null,
+          });
+          if (fileRef.current) fileRef.current.value = null;
+        },
+        onError: (e) => {
+          //console.log(e);
+          toast.error(e.message);
+        },
+      }
+    );
   };
+
+  const Year = new Date().getFullYear();
 
   return (
     <div className="max-w-xl mx-auto bg-white shadow-lg rounded-2xl p-6 mt-10">
@@ -65,69 +75,53 @@ const AddPyqForm = () => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* PYQ Category */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            PYQ Category
-          </label>
-          <input
-            type="text"
-            name="pyqCategory"
-            value={formData.pyqCategory}
-            onChange={handleChange}
-            placeholder="e.g. PYQ"
-            className="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-200"
-            required
-          />
-        </div>
+        <InputField
+          label="PYQ Category"
+          name="pyqCategory"
+          type="text"
+          maxLength={25}
+          value={formData.pyqCategory}
+          onChange={handleChange}
+          placeholder="e.g. PYQ"
+          required
+        />
 
         {/* Title */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Title
-          </label>
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="e.g. English"
-            className="w-full border border-gray-300 rounded-lg p-2"
-            required
-          />
-        </div>
+        <InputField
+          label="Title"
+          name="title"
+          maxLength={80}
+          type="text"
+          value={formData.title}
+          onChange={handleChange}
+          placeholder="e.g. English"
+          required
+        />
 
         {/* Year */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Year
-          </label>
-          <input
-            type="number"
-            name="year"
-            value={formData.year}
-            onChange={handleChange}
-            placeholder="e.g. 2026"
-            className="w-full border border-gray-300 rounded-lg p-2"
-            required
-          />
-        </div>
-
+        <InputField
+          label="Year"
+          name="year"
+          type="number"
+          min={2000}
+          max={Year}
+          value={formData.year}
+          onChange={handleChange}
+          placeholder="e.g. 2026"
+          required
+        />
         {/* PDF Upload */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Upload PDF
-          </label>
-          <input
-            type="file"
-            name="pdf"
-            id="pdf"
-            ref={fileRef}
-            accept="application/pdf"
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded-lg p-2 cursor-pointer"
-            required
-          />
-        </div>
+        <InputField
+          label="Upload PDF"
+          name="pdf"
+          type="file"
+          id="pdf"
+          ref={fileRef}
+          accept="application/pdf"
+          onChange={handleChange}
+          inputClassName="w-full"
+          required
+        />
 
         {/* Submit */}
         <button

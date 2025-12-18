@@ -92,7 +92,7 @@ export default function UpdateMentorForm() {
     for (const key in mentorData) {
       formData.append(key, mentorData[key]);
     }
-    //console.log(mentorData);
+    console.log(mentorData);
     mutate(
       {
         method: "patch",

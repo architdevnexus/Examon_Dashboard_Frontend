@@ -85,9 +85,9 @@ const Achievements = () => {
 
   const fields = [
     { label: "Active Users (in Million)", name: "activeUser" },
-    { label: "Customer Satisfaction (%)", name: "satisfyUser" },
+    { label: "Students Satisfaction (%)", name: "satisfyUser" },
     { label: "Courses", name: "courses" },
-    { label: "Passing Rate (%)", name: "passingRate" },
+    { label: "Our selection", name: "passingRate" },
     { label: "No. of Alumni", name: "alumni" },
     { label: "No. of Instructors", name: "Instructors" },
   ];
@@ -134,7 +134,7 @@ const Achievements = () => {
               key={f.name}
               name={f.name}
               label={f.label}
-              disabled={Editable}
+              disabled={!Editable}
               type="number"
               min={0}
               value={formData[f.name]}

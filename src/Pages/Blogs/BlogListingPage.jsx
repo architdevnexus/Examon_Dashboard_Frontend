@@ -22,6 +22,8 @@ const BlogPage = () => {
     return;
   }
 
+  console.log(data);
+
   const headerProps = {
     heading: " News, Media Gallery & Insights",
     btnText: "+ Add Blog",
@@ -31,9 +33,14 @@ const BlogPage = () => {
     redirectURL: "/blog/add",
   };
 
-  const filteredBlogs = data.filter((blog) =>
-    blog.title.toLowerCase().includes(searchTerm?.trim()?.toLowerCase())
-  );
+  const filteredBlogs = data.categories
+    .map((category) => ({
+      ...category,
+      blogs: category.blogs.filter((blog) =>
+        blog.title.toLowerCase().includes(searchTerm?.trim()?.toLowerCase())
+      ),
+    }))
+    .filter((category) => category.blogs.length > 0);
 
   return (
     <div className="min-h-screen   bg-gray-50 p-6">

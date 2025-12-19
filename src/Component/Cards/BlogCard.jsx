@@ -56,7 +56,7 @@ const BlogCard = ({
         {/* Snippet */}
         <p
           dangerouslySetInnerHTML={{
-            __html: blogContent.slice(0, 500),
+            __html: blogContent?.slice(0, 500),
           }}
           className="text-sm px-2 text-gray-600"
         ></p>

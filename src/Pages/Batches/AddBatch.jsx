@@ -1,289 +1,213 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useUpdateOrDeleteContent } from "../../hooks/useHooks.js";
 import InputField from "../../Component/Input/InputField.jsx";
 
+const INITIAL_STATE = {
+  image: null,
+  image2: null,
+  batchCategory: "",
+  batchName: "",
+  syllabus: "",
+  description: "",
+  perks: "",
+  duration: "",
+  price: "",
+  finalPrice: "",
+  teachers: "",
+  enrollLink: "",
+};
+
 const AddBatchForm = () => {
-  const [formData, setFormData] = useState({
-    image: null,
-    image2: null,
-    batchCategory: "",
-    batchName: "",
-    syllabus: "",
-    description: "",
-    perks: "",
-    duration: "",
-    price: "",
-    teachers: "",
-    enrollLink: "",
-  });
-
-  const imgRef1 = useRef();
-  const imgRef2 = useRef();
-
-  const navigate = useNavigate();
-
-  const [preview, setPreview] = useState(null);
+  const [formData, setFormData] = useState(INITIAL_STATE);
+  const [preview1, setPreview1] = useState(null);
   const [preview2, setPreview2] = useState(null);
+  const [priceError, setPriceError] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
+
+  const imgRef1 = useRef(null);
+  const imgRef2 = useRef(null);
+  const navigate = useNavigate();
 
   const { mutate, isPending, isError, error } = useUpdateOrDeleteContent({
     keys: ["batch"],
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  /* ------------------ AUTO DISCOUNT % ------------------ */
+  const discountPercent = useMemo(() => {
+    const price = Number(formData.price);
+    const final = Number(formData.finalPrice);
+
+    if (!price || !final || final > price) return 0;
+
+    return Number((((price - final) / price) * 100).toFixed(2));
+  }, [formData.price, formData.finalPrice]);
+
+  /* ------------------ HANDLERS ------------------ */
+  const handleChange = ({ target: { name, value } }) => {
+    setPriceError("");
+
+    if (
+      name === "finalPrice" &&
+      Number(formData.price) &&
+      Number(value) > Number(formData.price)
+    ) {
+      setPriceError("After discount price cannot be greater than original price");
+      return;
+    }
+
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files?.[0] ?? null;
-    if (file) {
-      setFormData((p) => ({ ...p, image: file }));
-      setPreview(URL.createObjectURL(file));
-    } else setPreview(null);
+  const handleImage = (e, key, setPreview) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setFormData((p) => ({ ...p, [key]: file }));
+    setPreview(URL.createObjectURL(file));
   };
 
-  const handleFileChange2 = (e) => {
-    const file = e.target.files?.[0] ?? null;
-    if (file) {
-      setFormData((p) => ({ ...p, image2: file }));
-      setPreview2(URL.createObjectURL(file));
-    } else setPreview2(null);
-  };
-
+  /* ------------------ SUBMIT ------------------ */
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (!formData.price || !formData.finalPrice) {
+      setPriceError("Price and after discount price are required");
+      return;
+    }
+
     const fd = new FormData();
 
-    for (const key in formData) {
-      if (key === "image") fd.append("image1", formData.image);
-      else if (key === "image2") fd.append("image2", formData.image2);
-      else if (key === "batchCategory" && !formData.batchCategory.trim())
-        fd.append("batchCategory", "Other");
-      else fd.append(key, formData[key]);
+    Object.entries(formData).forEach(([key, value]) => {
+      if (!value) return;
+
+      if (key === "image") fd.append("image1", value);
+      else if (key === "image2") fd.append("image2", value);
+      else if (key === "batchCategory")
+        fd.append("batchCategory", value.trim() || "Other");
+      else fd.append(key, value);
+    });
+
+    // ✅ Explicit backend key
+    fd.append("discountPercent", discountPercent);
+
+    /* 🔍 Console payload */
+    console.group("📦 Add Batch Payload");
+    for (let pair of fd.entries()) {
+      console.log(pair[0], ":", pair[1]);
     }
+    console.groupEnd();
 
     mutate(
       {
         method: "post",
         url: "/live/batches",
         data: fd,
+        onUploadProgress: (e) => {
+          if (!e.total) return;
+          setUploadProgress(Math.round((e.loaded * 100) / e.total));
+        },
       },
       {
-        onSuccess: (resp) => {
-          setFormData({
-            image: null,
-            image2: null,
-            batchCategory: "",
-            batchName: "",
-            syllabus: "",
-            description: "",
-            perks: "",
-            duration: "",
-            price: "",
-            teachers: "",
-            enrollLink: "",
-          });
+        onSuccess: () => {
+          toast.success("Batch added successfully");
+          setFormData(INITIAL_STATE);
+          setPreview1(null);
+          setPreview2(null);
+          setUploadProgress(0);
           imgRef1.current.value = null;
           imgRef2.current.value = null;
-          setPreview(null);
-          setPreview2(null);
-
-          toast.success(
-            resp.response?.data?.message ||
-              resp.response?.data?.msg ||
-              "Batch Added"
-          );
-
           navigate("/batches");
         },
-        onError: (e) => {
-          toast.error(e.message);
-        },
+        onError: (e) => toast.error(e.message),
       }
     );
   };
 
+  /* ------------------ UI ------------------ */
   return (
-    <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-2xl p-6 my-8">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+    <div className="max-w-3xl mx-auto my-10 bg-white rounded-2xl shadow-xl p-8">
+      <h2 className="text-3xl font-semibold text-gray-800 mb-6">
         Add New Batch
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-8">
         {/* Images */}
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <InputField
-              disabled={isPending}
-              label="Batch Image"
-              name="image"
-              type="file"
-              accept="image/*"
-              required
-              ref={imgRef1}
-              onChange={handleFileChange}
-            />
-
-            {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="mt-4 w-40 h-40 object-cover rounded-lg"
-              />
+        <section>
+          <h3 className="text-lg font-medium mb-3">Batch Images</h3>
+          <div className="grid grid-cols-2 gap-6">
+            {[["image", imgRef1, preview1, setPreview1, "Primary Image"],
+              ["image2", imgRef2, preview2, setPreview2, "Secondary Image"]].map(
+              ([key, ref, preview, setPreview, label]) => (
+                <div key={key}>
+                  <InputField
+                    ref={ref}
+                    label={label}
+                    type="file"
+                    accept="image/*"
+                    required
+                    onChange={(e) => handleImage(e, key, setPreview)}
+                  />
+                  {preview && (
+                    <img
+                      src={preview}
+                      className="mt-3 h-36 w-full rounded-lg object-cover"
+                    />
+                  )}
+                </div>
+              )
             )}
           </div>
+        </section>
 
-          <div className="flex-1">
-            <InputField
-              disabled={isPending}
-              label="Batch Image 2"
-              name="image2"
-              type="file"
-              accept="image/*"
-              required
-              ref={imgRef2}
-              onChange={handleFileChange2}
-            />
+        {/* Details */}
+        <section className="grid grid-cols-2 gap-6">
+          <InputField label="Batch Category" name="batchCategory" value={formData.batchCategory} onChange={handleChange} />
+          <InputField label="Batch Name" name="batchName" required value={formData.batchName} onChange={handleChange} />
+          <InputField label="Syllabus" name="syllabus" required value={formData.syllabus} onChange={handleChange} />
+          <InputField label="Duration" name="duration" required value={formData.duration} onChange={handleChange} />
+        </section>
 
-            {preview2 && (
-              <img
-                src={preview2}
-                alt="Preview2"
-                className="mt-4 w-40 h-40 object-cover rounded-lg"
-              />
-            )}
+        <InputField label="Description" name="description" type="textarea" rows={4} value={formData.description} onChange={handleChange} inputClassName="resize-none" />
+        <InputField label="Perks" name="perks" value={formData.perks} onChange={handleChange} />
+
+        {/* Pricing */}
+        <section className="bg-gray-50 p-6 rounded-xl border">
+          <h3 className="text-lg font-medium mb-4">Pricing</h3>
+
+          <div className="grid grid-cols-3 gap-6">
+            <InputField label="Original Price (₹)" name="price" type="number" required value={formData.price} onChange={handleChange} />
+            <InputField label="After Discount Price (₹)" name="finalPrice" type="number" required value={formData.finalPrice} onChange={handleChange} />
+            <InputField label="Discount % (Auto)" type="number" value={discountPercent} disabled />
           </div>
-        </div>
 
-        {/* Category */}
-        <InputField
-          disabled={isPending}
-          label="Batch Category"
-          name="batchCategory"
-          type="text"
-          maxLength={25}
-          value={formData.batchCategory}
-          onChange={handleChange}
-          placeholder="e.g. BEF"
-        />
+          {priceError && (
+            <p className="text-red-600 text-sm mt-2">{priceError}</p>
+          )}
+        </section>
 
-        {/* Batch Name */}
-        <InputField
-          disabled={isPending}
-          label="Batch Name"
-          name="batchName"
-          type="text"
-          maxLength={60}
-          required
-          value={formData.batchName}
-          onChange={handleChange}
-          placeholder="e.g. Master Batch"
-        />
+        <InputField label="Teachers" name="teachers" value={formData.teachers} onChange={handleChange} />
+        <InputField label="Enroll Link" name="enrollLink" type="url" required value={formData.enrollLink} onChange={handleChange} />
 
-        {/* Syllabus */}
-        <InputField
-          disabled={isPending}
-          label="Syllabus"
-          name="syllabus"
-          type="text"
-          maxLength={200}
-          required
-          value={formData.syllabus}
-          onChange={handleChange}
-          placeholder="Tech + Non Tech covered"
-        />
+        {uploadProgress > 0 && (
+          <div className="w-full bg-gray-200 h-2 rounded-full">
+            <div
+              className="bg-blue-600 h-full transition-all"
+              style={{ width: `${uploadProgress}%` }}
+            />
+          </div>
+        )}
 
-        {/* Duration */}
-        <InputField
-          disabled={isPending}
-          label="Duration"
-          name="duration"
-          type="text"
-          maxLength={20}
-          required
-          value={formData.duration}
-          onChange={handleChange}
-          placeholder="e.g. 2 Years"
-        />
-
-        {/* Description */}
-        <InputField
-          disabled={isPending}
-          label="Description"
-          name="description"
-          type="textarea"
-          rows={5}
-          value={formData.description}
-          onChange={handleChange}
-          placeholder="Brief batch description..."
-          inputClassName=" resize-none"
-        />
-
-        {/* Perks */}
-        <InputField
-          disabled={isPending}
-          label="Perks"
-          name="perks"
-          type="text"
-          value={formData.perks}
-          onChange={handleChange}
-          placeholder="e.g. RECORDED, PYQs, LIVE TESTS"
-        />
-
-        {/* Price */}
-        <InputField
-          disabled={isPending}
-          label="Price"
-          name="price"
-          type="number"
-          required
-          min={0}
-          max={500000}
-          value={formData.price}
-          onChange={handleChange}
-          placeholder="e.g. 5999"
-        />
-
-        {/* Teachers */}
-        <InputField
-          disabled={isPending}
-          label="Teachers"
-          name="teachers"
-          type="text"
-          maxLength={100}
-          value={formData.teachers}
-          onChange={handleChange}
-          placeholder="e.g. Shivam Sir, Gaurav Sir"
-        />
-
-        {/* Enroll Link */}
-        <InputField
-          disabled={isPending}
-          label="Enroll Link"
-          name="enrollLink"
-          type="url"
-          maxLength={100}
-          required
-          value={formData.enrollLink}
-          onChange={handleChange}
-          placeholder="e.g. https://www.classplus.com/batch/..."
-        />
-
-        {/* Submit */}
         <button
           type="submit"
           disabled={isPending}
-          className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-400 transition"
-          style={{ cursor: isPending ? "not-allowed" : "pointer" }}
+          className="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 disabled:bg-gray-400"
         >
-          {isPending ? "Adding..." : "Add Batch"}
+          {isPending ? "Uploading..." : "Add Batch"}
         </button>
 
-        {isError && (
-          <p className="text-red-600 font-medium mt-2">{error.message}</p>
-        )}
+        {isError && <p className="text-red-600">{error.message}</p>}
       </form>
     </div>
   );

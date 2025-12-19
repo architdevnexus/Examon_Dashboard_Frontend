@@ -264,7 +264,7 @@ const BatchUpdateForm = () => {
           <div className="flex-1">
             <InputField
               disabled={isPending}
-              label="Batch Image1"
+              label="Banner Image"
               name="image1"
               type="file"
               accept="image/*"
@@ -284,7 +284,7 @@ const BatchUpdateForm = () => {
           <div className="flex-1">
             <InputField
               disabled={isPending}
-              label="Batch Image2*"
+              label="Thumbnail Image*"
               name="image2"
               type="file"
               accept="image/*"

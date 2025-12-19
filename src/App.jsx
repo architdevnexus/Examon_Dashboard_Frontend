@@ -75,6 +75,7 @@ import UserQuiz from "./Pages/DynamicPages/UserQuiz";
 import Notification from "./Pages/Notification";
 import OfferForm from "./Pages/Notification/CreateNotification";
 import AdminAddSubUser from "./Pages/User/AddUser";
+import HomeQuiz from "./Pages/Exam/HomeQuiz";
 
 function AppContent() {
   const [authUser, setAuthUser] = useState(() => {
@@ -214,6 +215,7 @@ function AppContent() {
                   <Route path="/batch/add" element={<AddBatchForm />} />
 
                   <Route path="/contact-us" element={<ContactDetailsPage />} />
+                  <Route path="/home-quiz" element={<HomeQuiz/>}/>
 
                   <Route
                     path="/batch/update/:cid/:id"

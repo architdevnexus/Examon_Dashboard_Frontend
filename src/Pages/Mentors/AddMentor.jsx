@@ -3,10 +3,11 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
 import MultipleValues from "../../Component/Input/MultipleValues";
-import InputField from "../../Component/Input/InputField.jsx"; // <- reusable component
+import InputField from "../../Component/Input/InputField.jsx";
 
 export default function AddMentorForm() {
   const navigate = useNavigate();
+  const imgRef = useRef(null);
 
   const [mentor, setMentor] = useState({
     image: null,
@@ -22,7 +23,6 @@ export default function AddMentorForm() {
   });
 
   const [preview, setPreview] = useState(null);
-  const imgRef = useRef(null);
 
   const { mutate, isPending, error } = useUpdateOrDeleteContent({
     keys: ["mentors"],
@@ -34,78 +34,64 @@ export default function AddMentorForm() {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files?.[0] ?? null;
-    if (file) {
-      setMentor((prev) => ({ ...prev, image: file }));
-      setPreview(URL.createObjectURL(file));
-    } else {
-      setMentor((prev) => ({ ...prev, image: null }));
-      setPreview(null);
-    }
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setMentor((prev) => ({ ...prev, image: file }));
+    setPreview(URL.createObjectURL(file));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = (e) => {
+  e.preventDefault();
+  const formData = new FormData();
 
-    const formData1 = new FormData();
+  if (mentor.image) formData.append("image", mentor.image);
 
-    // append fields — handle files and arrays safely
-    for (const key in mentor) {
-      if (!Object.prototype.hasOwnProperty.call(mentor, key)) continue;
-      const val = mentor[key];
+  formData.append("name", mentor.name);
+  formData.append("subjectTaught", mentor.subjectTaught);
+  formData.append("experience", mentor.experience);
+  formData.append("specialization", mentor.specialization);
+  formData.append("description", mentor.description);
+  formData.append("youtubeLink", mentor.youtubeLink);
+  formData.append("coursesLink", mentor.coursesLink);
 
-      if (key === "image") {
-        if (val) formData1.append("image", val); // file object
-        continue;
-      }
+  // ✅ REAL ARRAY: append each course individually
+  mentor.CoursesHandled.forEach((course) => {
+    formData.append("CoursesHandled", course); // backend receives array
+  });
 
-      if (Array.isArray(val)) {
-        // backend may expect CSV or JSON; JSON is safer
-        formData1.append(key, JSON.stringify(val));
-        continue;
-      }
+  mutate(
+    { method: "post", url: "/mentors/create", data: formData },
+    {
+      onSuccess: () => {
+        toast.success("Mentor added");
+        navigate("/mentors");
 
-      // append primitive values (coerce null/undefined -> empty string)
-      formData1.append(key, val ?? "");
-    }
+        setMentor({
+          image: null,
+          name: "",
+          subjectTaught: "",
+          experience: "",
+          specialization: "",
+          description: "",
+          youtubeLink: "",
+          coursesLink: "",
+          CoursesHandled: [],
+          CourseInput: "",
+        });
 
-    mutate(
-      {
-        method: "post",
-        data: formData1,
-        url: "/mentors/create",
+        if (imgRef.current) imgRef.current.value = null;
+        setPreview(null);
       },
-      {
-        onSuccess: (resp) => {
-          setMentor({
-            image: null,
-            name: "",
-            subjectTaught: "",
-            experience: "",
-            specialization: "",
-            description: "",
-            youtubeLink: "",
-            coursesLink: "",
-            CoursesHandled: [],
-            CourseInput: "",
-          });
-          setPreview(null);
-          if (imgRef.current) imgRef.current.value = null;
-
-          toast.success("Mentor added");
-          navigate("/mentors");
-        },
-        onError: (e) => {
-          toast.error("error");
-        },
-      }
-    );
-  };
+      onError: () => toast.error("Something went wrong"),
+    }
+  );
+};
 
   const multiValueProps = {
     label: "Courses Handled",
     name: "CourseInput",
-    placeholder: "add Course",
+    placeholder: "Add course",
     formData: mentor,
     valueArray: mentor.CoursesHandled,
     valueArrayString: "CoursesHandled",
@@ -114,120 +100,52 @@ export default function AddMentorForm() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8 mt-10 border border-gray-200">
-      <h2 className="text-2xl font-semibold   mb-6 text-center">
+    <div className="max-w-3xl mx-auto bg-white p-8 shadow-lg rounded-lg mt-10">
+      <h2 className="text-2xl font-semibold text-center mb-6">
         Add New Mentor
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Image upload */}
-        <div>
-          <InputField
-            label="Upload Image"
-            name="image"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            ref={imgRef}
-            inputClassName="w-full"
-            helpText="Profile image for mentor"
+        <InputField
+          label="Upload Image"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          ref={imgRef}
+        />
+
+        {preview && (
+          <img
+            src={preview}
+            alt="Preview"
+            className="w-40 h-40 object-cover rounded-lg mt-3"
           />
+        )}
 
-          {preview && (
-            <img
-              src={preview}
-              alt="Preview"
-              className="mt-4 w-40 h-40 object-cover rounded-lg"
-            />
-          )}
-        </div>
-
-        {/* Name */}
-        <InputField
-          label="Name"
-          name="name"
-          type="text"
-          value={mentor.name}
-          onChange={handleChange}
-          required
-          placeholder="Enter mentor name"
-        />
-
-        {/* Subject */}
-        <InputField
-          label="Subject"
-          name="subjectTaught"
-          type="text"
-          value={mentor.subjectTaught}
-          onChange={handleChange}
-          placeholder="e.g., Hindi, English"
-        />
-
-        {/* Experience */}
-        <InputField
-          label="Experience"
-          name="experience"
-          type="text"
-          value={mentor.experience}
-          onChange={handleChange}
-          placeholder="e.g., 4"
-        />
-
-        {/* Specialization */}
-        <InputField
-          label="Specialization"
-          name="specialization"
-          type="text"
-          value={mentor.specialization}
-          onChange={handleChange}
-          placeholder="e.g., Mathematics"
-        />
+        <InputField label="Name" name="name" value={mentor.name} onChange={handleChange} required />
+        <InputField label="Subject" name="subjectTaught" value={mentor.subjectTaught} onChange={handleChange} />
+        <InputField label="Experience" name="experience" value={mentor.experience} onChange={handleChange} />
+        <InputField label="Specialization" name="specialization" value={mentor.specialization} onChange={handleChange} />
 
         <MultipleValues {...multiValueProps} />
 
-        {/* Description */}
         <InputField
           label="Description"
-          name="description"
           type="textarea"
+          name="description"
           value={mentor.description}
           onChange={handleChange}
-          maxLength={200}
-          placeholder="Short bio or role description"
-          inputClassName="h-20 resize-none"
         />
 
-        {/* Youtube Channel */}
-        <InputField
-          label="Youtube Channel"
-          name="youtubeLink"
-          type="url"
-          value={mentor.youtubeLink}
-          onChange={handleChange}
-          placeholder="https://www.youtube.com/@channelname"
-        />
+        <InputField label="Youtube Link" name="youtubeLink" value={mentor.youtubeLink} onChange={handleChange} />
+        <InputField label="Courses Link" name="coursesLink" value={mentor.coursesLink} onChange={handleChange} />
 
-        {/* Courses Link */}
-        <InputField
-          label="Courses Link"
-          name="coursesLink"
-          type="url"
-          value={mentor.coursesLink}
-          onChange={handleChange}
-          placeholder="https://your-website.com/instructor/mentor-name"
-        />
+        {error && <p className="text-red-600 text-center">{error}</p>}
 
-        {error && (
-          <p className="text-red-600 text-center font-medium">{error}</p>
-        )}
-
-        {/* Submit button */}
         <button
           type="submit"
           disabled={isPending}
-          className={`w-full bg-indigo-600 text-white py-2 rounded-md font-medium hover:bg-indigo-700 transition ${
-            isPending ? "opacity-70 cursor-not-allowed" : ""
-          }`}
+          className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700"
         >
           {isPending ? "Adding..." : "Add Mentor"}
         </button>

@@ -253,23 +253,24 @@ const AddNewQuiz = () => {
               <div className="flex gap-3 items-center mb-2">
                 <label className="text-gray-600 text-sm">Correct Answer:</label>
                 <select
-                  required
-                  value={q.correctAnswerIndex}
-                  onChange={(e) =>
-                    handleQuestionChange(
-                      qIndex,
-                      "correctAnswerIndex",
-                      Number(e.target.value)
-                    )
-                  }
-                  className="border rounded p-1"
-                >
-                  {q.options.map((_, idx) => (
-                    <option key={idx} value={idx + 1}>
-                      Option {idx + 1}
-                    </option>
-                  ))}
-                </select>
+  required
+  value={q.correctAnswerIndex}
+  onChange={(e) =>
+    handleQuestionChange(
+      qIndex,
+      "correctAnswerIndex",
+      Number(e.target.value)
+    )
+  }
+  className="border rounded p-1"
+>
+  {q.options.map((_, idx) => (
+    <option key={idx} value={idx}>
+      Option {idx + 1}
+    </option>
+  ))}
+</select>
+
               </div>
 
               <div className="grid grid-cols-3 gap-2">

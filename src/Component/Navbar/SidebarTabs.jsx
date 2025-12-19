@@ -44,6 +44,11 @@ export const navItems = [
     route: "/mentors",
   },
   {
+    label:"Home Quiz",
+    icon:<FaBoxOpen/>,
+    route:"/home-quiz"
+  },
+  {
     label: "Study Material",
     icon: <FaBoxOpen />,
     subMenu: [

@@ -3,8 +3,9 @@ import DashCard from "../Component/Cards/DashCards";
 import { GiNotebook } from "react-icons/gi";
 import RecentItemsCard from "../Component/Cards/RecentAddedCard";
 import Loader from "../Component/Loader";
-import { PiChalkboardSimpleBold, PiVideoBold } from "react-icons/pi";
+import { PiChalkboardSimpleBold } from "react-icons/pi";
 import { FaUsers } from "react-icons/fa";
+import { FaUserGroup } from "react-icons/fa6";
 import { MdHistory } from "react-icons/md";
 import { useGetContent } from "../hooks/useHooks";
 import { useEffect } from "react";
@@ -45,12 +46,12 @@ function Dashboard() {
       count: dashboard.PYQsCount,
       bgColor: "bg-[var(--accent-dark)]",
     },
-    // {
-    //   icon: <PiVideoBold />,
-    //   title: "Courses",
-    //   count: dashboard.CoursesCount,
-    //   bgColor: "bg-[var(--success)]",
-    // },
+    {
+      icon: <FaUserGroup />,
+      title: "Subusers",
+      count: dashboard.subUserCount,
+      bgColor: "bg-[var(--success)]",
+    },
     {
       icon: <PiChalkboardSimpleBold />,
       title: "Batches",

@@ -197,7 +197,7 @@ const UpdateQuizForm = () => {
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-md mt-8">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-        UPSC Exam Form
+        Update Quiz
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">

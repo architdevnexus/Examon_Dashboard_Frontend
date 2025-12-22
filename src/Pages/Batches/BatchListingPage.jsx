@@ -34,8 +34,6 @@ export default function BatchListingPage() {
 
   if (isError) return <div>{error}</div>;
 
-  console.log(BatchResp)
-
   const filteredCourses = BatchResp.categories
     .map((category) => ({
       ...category,

@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 
 import Loader from "../../../Component/Loader";
 import { toast } from "react-toastify";
-import { useUpdateOrDeleteContent } from "../../../hooks/useHooks";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useGetContentById,
+  useUpdateOrDeleteContent,
+} from "../../../hooks/useHooks";
 import MultipleValues from "../../../Component/Input/MultipleValues";
 
-const AddNewQuiz = ({ url, queryKey }) => {
+const UpdateHomeQuizForm = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     id: "",
     title: "",
@@ -14,7 +21,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
     duration: "",
     totalMarks: "",
     tags: [],
-    tagsInput: "",
     questions: [
       {
         id: "",
@@ -29,10 +35,43 @@ const AddNewQuiz = ({ url, queryKey }) => {
     ],
   });
 
-  const { mutate, isPending, isError, error } = useUpdateOrDeleteContent({
-    keys: [queryKey || "quiz"],
+  const { data, isPending, isLoading, isSuccess, error } = useGetContentById({
+    id,
+    keys: ["homeQuiz", id],
+    handlerProps: {
+      url: `/home/quizzes/${id}`,
+    },
   });
 
+  const {
+    mutate,
+    isPending: isPending2,
+    isError,
+  } = useUpdateOrDeleteContent({
+    keys: ["homeQuiz"],
+  }); // update quiz
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      setFormData({
+        id: data._id,
+        title: data.title,
+        exam: data.exam,
+        duration: data.duration,
+        totalMarks: data.totalMarks,
+        tags: data.tags,
+        questions: data.questions,
+      });
+    }
+  }, [isSuccess, data]);
+
+  if (isLoading) return <Loader />;
+
+  if (isError) {
+    //console.log(error);
+    return;
+  }
+  //   console.log(data);
   // -------------------------------
   // Handle input changes
   // -------------------------------
@@ -87,21 +126,30 @@ const AddNewQuiz = ({ url, queryKey }) => {
       ],
     }));
   };
+
   // -------------------------------
   // Handle form submit
   // -------------------------------
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const formData1 = new FormData();
+
+    for (const key in formData) {
+      formData1.append(key, formData[key]);
+    }
+
     //console.log("Final JSON:", formData);
     mutate(
       {
-        method: "post",
-        url: url || `/quizzes/upload`,
+        method: "patch",
+        url: `/home/quizzes/update/${id}`,
         data: formData,
       },
       {
-        onSuccess: (d) => {
-          //console.log("response data", d);
+        onSuccess: (resp) => {
+          //console.log("response data", resp);
+          toast.success("Quiz Updated");
           setFormData({
             id: "",
             title: "",
@@ -122,7 +170,8 @@ const AddNewQuiz = ({ url, queryKey }) => {
               },
             ],
           });
-          toast.success("Quiz Created");
+
+          navigate("/home-quiz");
         },
         onError: (error) => {
           //console.log(error);
@@ -140,7 +189,7 @@ const AddNewQuiz = ({ url, queryKey }) => {
     maxLength: 30,
     valueArray: formData.tags,
     valueArrayString: "tags",
-    valueInput: formData.tagsInput,
+    valueInput: formData.tagInput,
     setFormData,
     onchange: handleChange,
   };
@@ -148,7 +197,7 @@ const AddNewQuiz = ({ url, queryKey }) => {
   return (
     <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl shadow-md mt-8">
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-        Add Quiz
+        Update Quiz
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -157,19 +206,17 @@ const AddNewQuiz = ({ url, queryKey }) => {
           <input
             required
             type="text"
-            maxLength={100}
             name="title"
             disabled={isPending}
             value={formData.title}
             onChange={handleChange}
-            placeholder="Quiz Title"
+            placeholder="Exam Title"
             className="border p-2 rounded w-full"
           />
           <input
             required
             type="text"
             name="exam"
-            maxLength={50}
             disabled={isPending}
             value={formData.exam}
             onChange={handleChange}
@@ -179,8 +226,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
           <input
             required
             type="number"
-            min={1}
-            max={10000}
             name="duration"
             disabled={isPending}
             value={formData.duration}
@@ -191,10 +236,9 @@ const AddNewQuiz = ({ url, queryKey }) => {
           <input
             required
             type="number"
-            min={1}
-            max={10000}
             disabled={isPending}
             name="totalMarks"
+            min={0}
             value={formData.totalMarks}
             onChange={handleChange}
             placeholder="Total Marks"
@@ -202,6 +246,7 @@ const AddNewQuiz = ({ url, queryKey }) => {
           />
         </div>
 
+        {/* Tags */}
         <MultipleValues {...multiValueProps} />
 
         {/* Questions */}
@@ -224,7 +269,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
               <input
                 required
                 type="text"
-                maxLength={300}
                 value={q.question}
                 onChange={(e) =>
                   handleQuestionChange(qIndex, "question", e.target.value)
@@ -239,7 +283,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
                     required
                     key={oIndex}
                     type="text"
-                    maxLength={50}
                     value={opt}
                     onChange={(e) =>
                       handleOptionChange(qIndex, oIndex, e.target.value)
@@ -265,7 +308,7 @@ const AddNewQuiz = ({ url, queryKey }) => {
                   className="border rounded p-1"
                 >
                   {q.options.map((_, idx) => (
-                    <option key={idx} value={idx}>
+                    <option key={idx} value={idx + 1}>
                       Option {idx + 1}
                     </option>
                   ))}
@@ -276,8 +319,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
                 <input
                   required
                   type="number"
-                  min={1}
-                  max={100}
                   value={q.marks}
                   onChange={(e) =>
                     handleQuestionChange(qIndex, "marks", e.target.value)
@@ -287,7 +328,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
                 />
                 <input
                   type="text"
-                  maxLength={50}
                   value={q.topic}
                   onChange={(e) =>
                     handleQuestionChange(qIndex, "topic", e.target.value)
@@ -323,7 +363,7 @@ const AddNewQuiz = ({ url, queryKey }) => {
           type="submit"
           className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
-          {isPending ? <Loader className="h-10" /> : "Submit"}
+          {isPending2 ? "Updating..." : "Update"}
         </button>
         {isError && <p>{error}</p>}
       </form>
@@ -331,4 +371,4 @@ const AddNewQuiz = ({ url, queryKey }) => {
   );
 };
 
-export default AddNewQuiz;
+export default UpdateHomeQuizForm;

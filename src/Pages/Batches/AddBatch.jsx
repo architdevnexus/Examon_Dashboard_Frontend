@@ -53,7 +53,9 @@ const AddBatchForm = () => {
       Number(formData.price) &&
       Number(value) > Number(formData.price)
     ) {
-      setPriceError("After discount price cannot be greater than original price");
+      setPriceError(
+        "After discount price cannot be greater than original price"
+      );
       return;
     }
 
@@ -89,11 +91,8 @@ const AddBatchForm = () => {
       else fd.append(key, value);
     });
 
-    // ✅ Explicit backend key
+    //  Explicit backend key
     fd.append("discountPercent", discountPercent);
-
-    /* 🔍 Console payload */
-    console.group("📦 Add Batch Payload");
     for (let pair of fd.entries()) {
       console.log(pair[0], ":", pair[1]);
     }
@@ -136,50 +135,130 @@ const AddBatchForm = () => {
         {/* Images */}
         <section>
           <h3 className="text-lg font-medium mb-3">Batch Images</h3>
-          <div className="grid grid-cols-2 gap-6">
-            {[["image", imgRef1, preview1, setPreview1, "Primary Image"],
-              ["image2", imgRef2, preview2, setPreview2, "Secondary Image"]].map(
-              ([key, ref, preview, setPreview, label]) => (
-                <div key={key}>
-                  <InputField
-                    ref={ref}
-                    label={label}
-                    type="file"
-                    accept="image/*"
-                    required
-                    onChange={(e) => handleImage(e, key, setPreview)}
+          <div className=" gap-6">
+            {[
+              [
+                "image",
+                imgRef1,
+                preview1,
+                setPreview1,
+                "Banner Image",
+                "aspect-video",
+              ],
+              [
+                "image2",
+                imgRef2,
+                preview2,
+                setPreview2,
+                "Thumbnail Image",
+                "aspect-square h-90",
+              ],
+            ].map(([key, ref, preview, setPreview, label, className]) => (
+              <div key={key}>
+                <InputField
+                  ref={ref}
+                  label={label}
+                  type="file"
+                  disabled={isPending}
+                  accept="image/*"
+                  required
+                  onChange={(e) => handleImage(e, key, setPreview)}
+                />
+                {preview && (
+                  <img
+                    src={preview}
+                    className={`mt-3 rounded-lg object-contain ${className}`}
                   />
-                  {preview && (
-                    <img
-                      src={preview}
-                      className="mt-3 h-36 w-full rounded-lg object-cover"
-                    />
-                  )}
-                </div>
-              )
-            )}
+                )}
+              </div>
+            ))}
           </div>
         </section>
 
         {/* Details */}
         <section className="grid grid-cols-2 gap-6">
-          <InputField label="Batch Category" name="batchCategory" value={formData.batchCategory} onChange={handleChange} />
-          <InputField label="Batch Name" name="batchName" required value={formData.batchName} onChange={handleChange} />
-          <InputField label="Syllabus" name="syllabus" required value={formData.syllabus} onChange={handleChange} />
-          <InputField label="Duration" name="duration" required value={formData.duration} onChange={handleChange} />
+          <InputField
+            disabled={isPending}
+            label="Batch Category"
+            name="batchCategory"
+            value={formData.batchCategory}
+            onChange={handleChange}
+          />
+          <InputField
+            disabled={isPending}
+            label="Batch Name"
+            name="batchName"
+            required
+            value={formData.batchName}
+            onChange={handleChange}
+          />
+          <InputField
+            disabled={isPending}
+            label="Syllabus"
+            name="syllabus"
+            required
+            value={formData.syllabus}
+            onChange={handleChange}
+          />
+          <InputField
+            disabled={isPending}
+            label="Duration"
+            name="duration"
+            required
+            value={formData.duration}
+            onChange={handleChange}
+          />
         </section>
 
-        <InputField label="Description" name="description" type="textarea" rows={4} value={formData.description} onChange={handleChange} inputClassName="resize-none" />
-        <InputField label="Perks" name="perks" value={formData.perks} onChange={handleChange} />
+        <InputField
+          label="Description"
+          name="description"
+          disabled={isPending}
+          type="textarea"
+          rows={4}
+          value={formData.description}
+          onChange={handleChange}
+          inputClassName="resize-none"
+        />
+        <InputField
+          label="Perks"
+          name="perks"
+          value={formData.perks}
+          disabled={isPending}
+          onChange={handleChange}
+        />
 
         {/* Pricing */}
         <section className="bg-gray-50 p-6 rounded-xl border">
           <h3 className="text-lg font-medium mb-4">Pricing</h3>
 
           <div className="grid grid-cols-3 gap-6">
-            <InputField label="Original Price (₹)" name="price" type="number" required value={formData.price} onChange={handleChange} />
-            <InputField label="After Discount Price (₹)" name="finalPrice" type="number" required value={formData.finalPrice} onChange={handleChange} />
-            <InputField label="Discount % (Auto)" type="number" value={discountPercent} disabled />
+            <InputField
+              label="Original Price (₹)"
+              name="price"
+              type="number"
+              required
+              min={0}
+              disabled={isPending}
+              value={formData.price}
+              onChange={handleChange}
+            />
+            <InputField
+              label="After Discount Price (₹)"
+              name="finalPrice"
+              type="number"
+              min={0}
+              disabled={isPending}
+              required
+              value={formData.finalPrice}
+              onChange={handleChange}
+            />
+            <InputField
+              label="Discount % (Auto)"
+              type="number"
+              value={discountPercent}
+              disabled
+            />
           </div>
 
           {priceError && (
@@ -187,8 +266,22 @@ const AddBatchForm = () => {
           )}
         </section>
 
-        <InputField label="Teachers" name="teachers" value={formData.teachers} onChange={handleChange} />
-        <InputField label="Enroll Link" name="enrollLink" type="url" required value={formData.enrollLink} onChange={handleChange} />
+        <InputField
+          label="Teachers"
+          name="teachers"
+          value={formData.teachers}
+          onChange={handleChange}
+          disabled={isPending}
+        />
+        <InputField
+          label="Enroll Link"
+          name="enrollLink"
+          type="url"
+          required
+          value={formData.enrollLink}
+          disabled={isPending}
+          onChange={handleChange}
+        />
 
         {uploadProgress > 0 && (
           <div className="w-full bg-gray-200 h-2 rounded-full">

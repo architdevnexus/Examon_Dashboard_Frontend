@@ -16,7 +16,7 @@ function UpdateBlog() {
   const [title, setTitle] = useState("");
   const [img, setImg] = useState(null);
   const [content, setContent] = useState("");
-  //   const [preview, setpreview] = useState(null);
+  const [preview, setpreview] = useState(null);
 
   const { data, isLoading, isError, isSuccess, error } = useGetContentById({
     keys: ["blog", id],
@@ -32,7 +32,7 @@ function UpdateBlog() {
 
   useEffect(() => {
     if ((isSuccess, data)) {
-      setImg(data.featuredImg);
+      setpreview(data.featuredImage);
       setTitle(data.title);
       setContent(data.blogContent);
     }
@@ -55,7 +55,7 @@ function UpdateBlog() {
     formData.append("blogContent", content);
 
     mutate(
-      { id, data: formData, url: `/blogs/update/${id}` },
+      { id, method: "patch", data: formData, url: `/blogs/update/${id}` },
       {
         onSuccess: (resp) => {
           //console.log(resp);
@@ -65,7 +65,7 @@ function UpdateBlog() {
           toast.success("Blog Updated");
         },
         onError: (e) => {
-          //console.log(e);
+          console.log(e);
           toast.error(e.response.data.message);
         },
       }
@@ -84,27 +84,25 @@ function UpdateBlog() {
         </label>
         <input
           type="file"
+          disabled={isPending}
           name="img"
           accept="image/*"
-          onChange={
-            (e) => setImg(e.target.files[0])
-            // setpreview(URL.createObjectURL(img));
-          }
+          onChange={(e) => {
+            setImg(e.target.files[0]);
+            setpreview(URL.createObjectURL(e.target.files[0]));
+          }}
           className="w-full border border-gray-300 rounded-lg p-1 cursor-pointer file:cursor-pointer  text-sm file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
           required
         />
       </div>
-      {img && (
-        <img
-          src={URL.createObjectURL(img)}
-          alt="Featured"
-          className="mb-4 max-h-40 rounded"
-        />
+      {preview && (
+        <img src={preview} alt="Featured" className="mb-4 max-h-40 rounded" />
       )}
 
       {/* Title */}
       <input
         type="text"
+        disabled={isPending}
         maxLength={100}
         placeholder="Enter blog title"
         value={title}
@@ -114,13 +112,15 @@ function UpdateBlog() {
 
       {/* Editor */}
       <Editor
+        disabled={isPending}
         value={content}
         onTextChange={(e) => setContent(e.htmlValue)}
-        style={{ height: "300px" }}
+        style={{ height: "400px" }}
       />
 
       <button
         onClick={handleSubmit}
+        disabled={isPending}
         style={{
           cursor: isPending ? "not-allowed" : "pointer",
         }}

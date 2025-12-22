@@ -34,7 +34,7 @@ export default function UserManagement() {
     heading: "All Users",
     searchTerm,
     setSearchTerm,
-    hideBtn: true,
+    hideButton: true,
     placeholder: "Search Name, Email, Ph...",
   };
 

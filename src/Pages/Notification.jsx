@@ -60,16 +60,19 @@ const NotificationForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //console.log(formData);
+    const FD = new FormData();
+    for (const key in formData) {
+      FD.append(key, formData[key]);
+    }
+ 
     mutate(
       {
         method: "post",
         url: "notification/create",
-        data: formData,
+        data: FD,
       },
       {
         onSuccess: (d) => {
-          //console.log("response data", d);
           setFormData({
             image: null,
             title: "",
@@ -79,11 +82,11 @@ const NotificationForm = () => {
           });
           setPreview(null);
           if (imgRef.current) imgRef.current.value = null;
-          toast.success(d.description);
+          toast.success(d.message);
         },
         onError: (err) => {
           //console.log(err);
-          toast.error(err?.description || "Something went wrong");
+          toast.error(err?.message || "Something went wrong");
         },
       }
     );
@@ -119,7 +122,7 @@ const NotificationForm = () => {
     heading: "Send Notification",
     hideSearch: true,
     btnText: "+ Add Offer",
-    redirectURL: "/offer",
+    redirectURL: "/notification/offer",
   };
 
   return (
@@ -144,7 +147,7 @@ const NotificationForm = () => {
                   accept="image/*"
                   onChange={handleFileChange}
                   className="w-full border border-gray-300 rounded-lg p-2 cursor-pointer file:cursor-pointer text-sm file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
-                  // required 
+                  // required
                 />
 
                 {preview && (

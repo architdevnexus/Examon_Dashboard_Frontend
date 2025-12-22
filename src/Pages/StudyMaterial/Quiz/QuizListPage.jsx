@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import ListingPageHeader from "../../../Component/Header/ListingPageHeader";
 import QuizCard from "../../../Component/Cards/QuizCard";
 
@@ -11,7 +10,7 @@ import {
   useUpdateOrDeleteContent,
 } from "../../../hooks/useHooks.js";
 
-const QuizListPage = () => {
+const QuizListPage = ({ cls, urls, queryKey, hideButton = false }) => {
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
@@ -23,14 +22,14 @@ const QuizListPage = () => {
     isError,
     error,
   } = useGetContent({
-    keys: ["quiz"],
+    keys: [queryKey || "quiz"],
     handlerProps: {
-      url: "/quizzes",
+      url: urls?.get || "/quizzes",
     },
   });
 
   const { mutate } = useUpdateOrDeleteContent({
-    keys: ["quiz"],
+    keys: [queryKey || "quiz"],
   });
 
   //console.log(isLoading, isError);
@@ -38,11 +37,11 @@ const QuizListPage = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    //console.log(error);
+    toast.error(error?.message);
+
+    console.error(error);
     return;
   }
-
-  //console.log(QuizData);
 
   // Filter by search
   const filteredQuizzes = QuizData.quizzes.filter(
@@ -53,6 +52,7 @@ const QuizListPage = () => {
   );
 
   const headerProps = {
+    hideButton,
     heading: "All Quizzes",
     placeholder: "Search Quiz",
     btnText: "+ Add Quiz",
@@ -71,7 +71,7 @@ const QuizListPage = () => {
     mutate(
       {
         method: "delete",
-        url: `/quizzes/${id}`,
+        url: urls?.delete + id || `/quizzes/${id}`,
       },
       {
         onSuccess: (resp) => {
@@ -88,13 +88,16 @@ const QuizListPage = () => {
       }
     );
   };
+
   const onEdit = ({ id }) => {
     if (!id) {
       toast.error("Id not found");
       return;
     }
 
-    navigate(`/studymaterial/update-quiz/${id}`);
+    navigate(
+      urls?.update ? urls.update + id : `/studymaterial/update-quiz/${id}`
+    );
   };
 
   return (
@@ -109,7 +112,11 @@ const QuizListPage = () => {
       )}
 
       {filteredQuizzes.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div
+          className={
+            cls || "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+          }
+        >
           {filteredQuizzes.map((quiz, i) => (
             <QuizCard
               key={i}

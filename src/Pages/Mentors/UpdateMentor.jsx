@@ -149,6 +149,7 @@ export default function UpdateMentorForm() {
           <input
             type="file"
             name="image"
+            disabled={isPending}
             accept="image/*"
             onChange={handleFileChange}
             className="w-full border border-gray-300 rounded-lg p-2 file:bg-blue-600 file:text-white file:px-4 file:py-2 file:border-0 file:rounded cursor-pointer"
@@ -168,6 +169,7 @@ export default function UpdateMentorForm() {
           <input
             type="text"
             name="name"
+            disabled={isPending}
             value={mentorData.name}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md px-4 py-2 mt-1"
@@ -181,6 +183,7 @@ export default function UpdateMentorForm() {
           </label>
           <input
             type="text"
+            disabled={isPending}
             name="subjectTaught"
             value={mentorData.subjectTaught}
             onChange={handleChange}
@@ -194,6 +197,7 @@ export default function UpdateMentorForm() {
             type="text"
             name="experience"
             value={mentorData.experience}
+            disabled={isPending}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md px-4 py-2 mt-1"
           />
@@ -207,6 +211,7 @@ export default function UpdateMentorForm() {
             type="text"
             name="specialization"
             value={mentorData.specialization}
+            disabled={isPending}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md px-4 py-2 mt-1"
           />
@@ -219,6 +224,7 @@ export default function UpdateMentorForm() {
           <textarea
             name="description"
             value={mentorData.description}
+            disabled={isPending}
             onChange={handleChange}
             rows="3"
             className="w-full border border-gray-300 rounded-md px-4 py-2 mt-1 resize-none"
@@ -233,6 +239,7 @@ export default function UpdateMentorForm() {
             type="url"
             name="youtubeLink"
             value={mentorData.youtubeLink}
+            disabled={isPending}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md px-4 py-2 mt-1"
           />
@@ -246,6 +253,7 @@ export default function UpdateMentorForm() {
             type="url"
             name="coursesLink"
             value={mentorData.coursesLink}
+            disabled={isPending}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md px-4 py-2 mt-1"
           />

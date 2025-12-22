@@ -105,6 +105,7 @@ export default function UpdateExamEditor() {
         type="text"
         placeholder="Enter Exam title"
         value={title}
+        disabled={isPending}
         onChange={(e) => setTitle(e.target.value)}
         className="w-full p-2 border border-gray-300  rounded mb-4"
       />
@@ -112,6 +113,7 @@ export default function UpdateExamEditor() {
       {/* Editor */}
       <Editor
         value={content}
+        disabled={isPending}
         onTextChange={(e) => setContent(e.htmlValue)}
         onPasteCapture={handleImagePaste}
         style={{ height: "300px" }}

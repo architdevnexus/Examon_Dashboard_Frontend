@@ -140,13 +140,13 @@ export default function OfferForm() {
     valueArray: formData.tags,
     valueArrayString: "tags",
     valueInput: formData.tagInput,
-    setFormData,
+    setFormData,  
     onchange: handleChange,
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 font-sans">
+    <div className="min-h-screen p-6 bg-gray-50">
+      {/* <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 font-sans"> */}
         <ListingPageHeader props={headerProps} />
         <div className="grid gap-6 md:grid-cols-5">
           <div className="md:col-span-3">
@@ -360,7 +360,7 @@ export default function OfferForm() {
             )}
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 }

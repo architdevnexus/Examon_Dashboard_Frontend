@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../Component/Loader.jsx";
 import { toast } from "react-toastify";
@@ -14,6 +14,7 @@ const BatchUpdateForm = () => {
 
   const [preview, setPreview] = useState(null);
   const [preview2, setPreview2] = useState(null);
+  const [priceError, setPriceError] = useState("");
 
   const [formData, setFormData] = useState({
     image: null,
@@ -24,6 +25,7 @@ const BatchUpdateForm = () => {
     perks: "",
     duration: "",
     price: "",
+    finalPrice: "",
     teachers: "",
     enrollLink: "",
   });
@@ -50,10 +52,19 @@ const BatchUpdateForm = () => {
     keys: ["batches"],
   });
 
+  const discountPercent = useMemo(() => {
+    const price = Number(formData.price);
+    const final = Number(formData.finalPrice);
+
+    if (!price || !final || final > price) return 0;
+
+    return Number((((price - final) / price) * 100).toFixed(2));
+  }, [formData.price, formData.finalPrice]);
+
   useEffect(() => {
     if (isSuccess && batch?.data) {
       const data = batch.data;
-
+      console.log(data);
       setFormData({
         image: null, // keep null for file inputs; we'll show existing images via preview URLs
         image2: null,
@@ -63,6 +74,7 @@ const BatchUpdateForm = () => {
         perks: data?.perks ?? "",
         duration: data?.duration ?? "",
         price: data?.price ?? "",
+        finalPrice: data?.finalPrice ?? "",
         teachers: data?.teachers ?? "",
         enrollLink: data?.enrollLink ?? "",
       });
@@ -176,6 +188,20 @@ const BatchUpdateForm = () => {
   // generic change handler for text/number/select/textarea
   const handleChange = (e) => {
     const { name, type, value } = e.target;
+
+    setPriceError("");
+
+    if (
+      name === "finalPrice" &&
+      Number(formData.price) &&
+      Number(value) > Number(formData.price)
+    ) {
+      setPriceError(
+        "After discount price cannot be greater than original price"
+      );
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "number" ? value : value,
@@ -254,13 +280,13 @@ const BatchUpdateForm = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-2xl p-6 my-8">
+    <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-6 my-8">
       <h2 className="text-2xl font-semibold mb-4 text-gray-800">
         Update Batch
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="flex gap-4">
+        <div className="  gap-4">
           <div className="flex-1">
             <InputField
               disabled={isPending}
@@ -270,13 +296,13 @@ const BatchUpdateForm = () => {
               accept="image/*"
               onChange={handleFileChange}
               inputClassName="border p-2 rounded w-full"
-              helpText="Recommended: 400x400"
+              // helpText="Recommended: 400x400"
             />
             {preview && (
               <img
                 src={preview}
                 alt="Preview"
-                className="mt-4 w-40 h-40 object-cover rounded-lg"
+                className="mt-4 object-contain aspect-video  rounded-lg"
               />
             )}
           </div>
@@ -289,14 +315,14 @@ const BatchUpdateForm = () => {
               type="file"
               accept="image/*"
               onChange={handleFileChange2}
-              inputClassName="border p-2 rounded w-full"
+              inputClassName="border p-2  rounded w-full"
               helpText="This image is required for listings"
             />
             {preview2 && (
               <img
                 src={preview2}
                 alt="Preview"
-                className="mt-4 w-40 h-40 object-cover rounded-lg"
+                className="mt-4 aspect-square h-90 object-contain  rounded-lg"
               />
             )}
           </div>
@@ -364,6 +390,43 @@ const BatchUpdateForm = () => {
           onChange={handleChange}
           placeholder="e.g. 5999"
         />
+
+        <section className="bg-gray-50 p-6 rounded-xl border">
+          <h3 className="text-lg font-medium mb-4">Pricing</h3>
+
+          <div className="grid grid-cols-3 gap-6">
+            <InputField
+              label="Original Price (₹)"
+              name="price"
+              type="number"
+              required
+              min={0}
+              disabled={isPending}
+              value={formData.price}
+              onChange={handleChange}
+            />
+            <InputField
+              label="After Discount Price (₹)"
+              name="finalPrice"
+              type="number"
+              min={0}
+              disabled={isPending}
+              required
+              value={formData.finalPrice}
+              onChange={handleChange}
+            />
+            <InputField
+              label="Discount % (Auto)"
+              type="number"
+              value={discountPercent}
+              disabled
+            />
+          </div>
+
+          {priceError && (
+            <p className="text-red-600 text-sm mt-2">{priceError}</p>
+          )}
+        </section>
 
         <InputField
           disabled={isPending}

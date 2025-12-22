@@ -5,7 +5,7 @@ const ListingPageHeader = ({
     heading,
     searchTerm,
     hideSearch = false,
-    hideBtn = false,
+    hideButton = false,
     reviewBtns = false,
     active = null,
     setActive = false,
@@ -18,7 +18,7 @@ const ListingPageHeader = ({
   const navigate = useNavigate();
 
   return (
-    <div className="flex   items-center border-b justify-between mb-6 pb-2 ">
+    <div className="flex items-center border-b justify-between mb-6 pb-2 ">
       <h1 className="text-2xl font-semibold text-gray-800">{heading}</h1>
 
       <div className="flex items-center gap-3">
@@ -33,7 +33,7 @@ const ListingPageHeader = ({
         {reviewBtns ? (
           <div className="flex gap-3">
             <button
-              onClick={() => setActive("active")}
+              onClick={() => setActive("approved")}
               className="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg  hover:bg-green-700"
             >
               Approved
@@ -53,7 +53,7 @@ const ListingPageHeader = ({
           </div>
         ) : (
           <button
-            hidden={hideBtn}
+            hidden={hideButton}
             onClick={() => {
               navigate(redirectURL);
             }}

@@ -7,9 +7,14 @@ import { PiChalkboardSimpleBold, PiVideoBold } from "react-icons/pi";
 import { FaUsers } from "react-icons/fa";
 import { MdHistory } from "react-icons/md";
 import { useGetContent } from "../hooks/useHooks";
+import { useEffect } from "react";
 
 function Dashboard() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/dashboard", { replace: true });
+  }, []);
 
   const {
     data: dashboard,
@@ -40,12 +45,12 @@ function Dashboard() {
       count: dashboard.PYQsCount,
       bgColor: "bg-[var(--accent-dark)]",
     },
-    {
-      icon: <PiVideoBold />,
-      title: "Courses",
-      count: dashboard.CoursesCount,
-      bgColor: "bg-[var(--success)]",
-    },
+    // {
+    //   icon: <PiVideoBold />,
+    //   title: "Courses",
+    //   count: dashboard.CoursesCount,
+    //   bgColor: "bg-[var(--success)]",
+    // },
     {
       icon: <PiChalkboardSimpleBold />,
       title: "Batches",
@@ -70,11 +75,11 @@ function Dashboard() {
       link: "/studymaterial/pyq",
       data: dashboard?.PYQs[0]?.questionspaper || [],
     },
-    {
-      title: "Courses",
-      link: "/courses",
-      data: dashboard?.Courses[0]?.courses || [],
-    },
+    // {
+    //   title: "Courses",
+    //   link: "/courses",
+    //   data: dashboard?.Courses[0]?.courses || [],
+    // },
     {
       title: "Batches",
       link: "/batches",

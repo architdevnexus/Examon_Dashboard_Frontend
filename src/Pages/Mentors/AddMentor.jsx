@@ -41,52 +41,52 @@ export default function AddMentorForm() {
     setPreview(URL.createObjectURL(file));
   };
 
- const handleSubmit = (e) => {
-  e.preventDefault();
-  const formData = new FormData();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
 
-  if (mentor.image) formData.append("image", mentor.image);
+    if (mentor.image) formData.append("image", mentor.image);
 
-  formData.append("name", mentor.name);
-  formData.append("subjectTaught", mentor.subjectTaught);
-  formData.append("experience", mentor.experience);
-  formData.append("specialization", mentor.specialization);
-  formData.append("description", mentor.description);
-  formData.append("youtubeLink", mentor.youtubeLink);
-  formData.append("coursesLink", mentor.coursesLink);
+    formData.append("name", mentor.name);
+    formData.append("subjectTaught", mentor.subjectTaught);
+    formData.append("experience", mentor.experience);
+    formData.append("specialization", mentor.specialization);
+    formData.append("description", mentor.description);
+    formData.append("youtubeLink", mentor.youtubeLink);
+    formData.append("coursesLink", mentor.coursesLink);
 
-  // ✅ REAL ARRAY: append each course individually
-  mentor.CoursesHandled.forEach((course) => {
-    formData.append("CoursesHandled", course); // backend receives array
-  });
+    // ✅ REAL ARRAY: append each course individually
+    mentor.CoursesHandled.forEach((course) => {
+      formData.append("CoursesHandled", course); // backend receives array
+    });
 
-  mutate(
-    { method: "post", url: "/mentors/create", data: formData },
-    {
-      onSuccess: () => {
-        toast.success("Mentor added");
-        navigate("/mentors");
+    mutate(
+      { method: "post", url: "/mentors/create", data: formData },
+      {
+        onSuccess: () => {
+          toast.success("Mentor added");
+          navigate("/mentors");
 
-        setMentor({
-          image: null,
-          name: "",
-          subjectTaught: "",
-          experience: "",
-          specialization: "",
-          description: "",
-          youtubeLink: "",
-          coursesLink: "",
-          CoursesHandled: [],
-          CourseInput: "",
-        });
+          setMentor({
+            image: null,
+            name: "",
+            subjectTaught: "",
+            experience: "",
+            specialization: "",
+            description: "",
+            youtubeLink: "",
+            coursesLink: "",
+            CoursesHandled: [],
+            CourseInput: "",
+          });
 
-        if (imgRef.current) imgRef.current.value = null;
-        setPreview(null);
-      },
-      onError: () => toast.error("Something went wrong"),
-    }
-  );
-};
+          if (imgRef.current) imgRef.current.value = null;
+          setPreview(null);
+        },
+        onError: () => toast.error("Something went wrong"),
+      }
+    );
+  };
 
   const multiValueProps = {
     label: "Courses Handled",
@@ -107,6 +107,7 @@ export default function AddMentorForm() {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <InputField
+          disabled={isPending}
           label="Upload Image"
           type="file"
           accept="image/*"
@@ -122,14 +123,40 @@ export default function AddMentorForm() {
           />
         )}
 
-        <InputField label="Name" name="name" value={mentor.name} onChange={handleChange} required />
-        <InputField label="Subject" name="subjectTaught" value={mentor.subjectTaught} onChange={handleChange} />
-        <InputField label="Experience" name="experience" value={mentor.experience} onChange={handleChange} />
-        <InputField label="Specialization" name="specialization" value={mentor.specialization} onChange={handleChange} />
+        <InputField
+          disabled={isPending}
+          label="Name"
+          name="name"
+          value={mentor.name}
+          onChange={handleChange}
+          required
+        />
+        <InputField
+          disabled={isPending}
+          label="Subject"
+          name="subjectTaught"
+          value={mentor.subjectTaught}
+          onChange={handleChange}
+        />
+        <InputField
+          disabled={isPending}
+          label="Experience"
+          name="experience"
+          value={mentor.experience}
+          onChange={handleChange}
+        />
+        <InputField
+          disabled={isPending}
+          label="Specialization"
+          name="specialization"
+          value={mentor.specialization}
+          onChange={handleChange}
+        />
 
         <MultipleValues {...multiValueProps} />
 
         <InputField
+          disabled={isPending}
           label="Description"
           type="textarea"
           name="description"
@@ -137,8 +164,20 @@ export default function AddMentorForm() {
           onChange={handleChange}
         />
 
-        <InputField label="Youtube Link" name="youtubeLink" value={mentor.youtubeLink} onChange={handleChange} />
-        <InputField label="Courses Link" name="coursesLink" value={mentor.coursesLink} onChange={handleChange} />
+        <InputField
+          disabled={isPending}
+          label="Youtube Link"
+          name="youtubeLink"
+          value={mentor.youtubeLink}
+          onChange={handleChange}
+        />
+        <InputField
+          disabled={isPending}
+          label="Courses Link"
+          name="coursesLink"
+          value={mentor.coursesLink}
+          onChange={handleChange}
+        />
 
         {error && <p className="text-red-600 text-center">{error}</p>}
 

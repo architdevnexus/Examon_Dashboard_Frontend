@@ -1,5 +1,4 @@
 import { FaTachometerAlt, FaUsers, FaBoxOpen } from "react-icons/fa";
-
 import { GiAchievement, GiNotebook } from "react-icons/gi";
 import { MdHistory, MdOutlineReviews } from "react-icons/md";
 import { IoNewspaperOutline } from "react-icons/io5";
@@ -14,6 +13,7 @@ import { IoIosNotifications } from "react-icons/io";
 import {
   PiChalkboardSimpleBold,
   PiExamBold,
+  PiFlagBannerFoldFill,
   PiVideoBold,
 } from "react-icons/pi";
 
@@ -44,9 +44,9 @@ export const navItems = [
     route: "/mentors",
   },
   {
-    label:"Home Quiz",
-    icon:<FaBoxOpen/>,
-    route:"/home-quiz"
+    label: "Home Quiz",
+    icon: <GiNotebook />,
+    route: "/home-quiz",
   },
   {
     label: "Study Material",
@@ -98,6 +98,11 @@ export const navItems = [
     label: "Reviews",
     icon: <MdOutlineReviews />,
     route: "/reviews",
+  },
+  {
+    label: "Banners",
+    icon: <PiFlagBannerFoldFill />,
+    route: "/banners",
   },
   {
     label: "Blogs",

@@ -75,6 +75,7 @@ const AddNewsForm = () => {
             <input
               type="file"
               name="image"
+              disabled={isPending}
               accept="image/*"
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-2 cursor-pointer file:cursor-pointer  text-sm file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
@@ -99,6 +100,7 @@ const AddNewsForm = () => {
               name="title"
               placeholder="Enter news title"
               maxLength={100}
+              disabled={isPending}
               value={formData.title}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-2 "
@@ -115,6 +117,7 @@ const AddNewsForm = () => {
               name="description"
               placeholder="Enter description"
               rows={5}
+              disabled={isPending}
               maxLength={1000}
               value={formData.description}
               onChange={handleChange}

@@ -5,7 +5,7 @@ import ReviewCard from "../Component/Cards/ReviewCard.jsx";
 import { useGetContent } from "../hooks/useHooks.js";
 
 export default function ReviewListPage() {
-  const [active, setActive] = useState("active");
+  const [active, setActive] = useState("approved");
   const [searchTerm, setSearchTerm] = useState("");
 
   const {

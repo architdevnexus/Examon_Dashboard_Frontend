@@ -20,7 +20,7 @@ const Login = ({ setAuthUser }) => {
     const authUser = localStorage.getItem("authUser");
 
     if (token && authUser) {
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   }, [navigate]);
 

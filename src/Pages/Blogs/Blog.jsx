@@ -22,10 +22,11 @@ export default function DedicatedBlogPage() {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    //console.log(error);
-    toast.error(error.response.data.message);
+    toast.error(error.message || error.response.data.message);
     return;
   }
+
+  console.log(blog);
 
   return (
     <div className="min-h-screen   font-sans px-4 py-6 md:px-10">

@@ -76,6 +76,8 @@ import Notification from "./Pages/Notification";
 import OfferForm from "./Pages/Notification/CreateNotification";
 import AdminAddSubUser from "./Pages/User/AddUser";
 import HomeQuiz from "./Pages/Exam/HomeQuiz";
+import UpdateHomeQuizForm from "./Pages/StudyMaterial/Quiz/UpdateHomeQuiz";
+import Banners from "./Pages/BannerPage";
 
 function AppContent() {
   const [authUser, setAuthUser] = useState(() => {
@@ -109,7 +111,7 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <Routes>
-                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
 
                   <Route
                     path="/logout"
@@ -128,9 +130,10 @@ function AppContent() {
                   />
 
                   <Route path="/notification" element={<Notification />} />
-                  <Route path="/offer" element={<OfferForm />} />
+                  <Route path="/notification/offer" element={<OfferForm />} />
 
                   {/* ------------- Quizzzzzz -------------- */}
+
                   <Route
                     path="/studymaterial/quiz"
                     element={<QuizListPage />}
@@ -142,6 +145,10 @@ function AppContent() {
                   <Route
                     path="/studymaterial/update-quiz/:id"
                     element={<UpdateQuizForm />}
+                  />
+                  <Route
+                    path="/home/update-quiz/:id"
+                    element={<UpdateHomeQuizForm />}
                   />
                   {/* --------------------------- */}
 
@@ -215,7 +222,9 @@ function AppContent() {
                   <Route path="/batch/add" element={<AddBatchForm />} />
 
                   <Route path="/contact-us" element={<ContactDetailsPage />} />
-                  <Route path="/home-quiz" element={<HomeQuiz/>}/>
+                  <Route path="/home-quiz" element={<HomeQuiz />} />
+
+                  <Route path="/banners" element={<Banners />} />
 
                   <Route
                     path="/batch/update/:cid/:id"

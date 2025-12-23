@@ -65,7 +65,7 @@ function UpdateBlog() {
           toast.success("Blog Updated");
         },
         onError: (e) => {
-          console.log(e);
+          // console.log(e);
           toast.error(e.response.data.message);
         },
       }

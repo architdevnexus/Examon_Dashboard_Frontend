@@ -64,7 +64,7 @@ const BatchUpdateForm = () => {
   useEffect(() => {
     if (isSuccess && batch?.data) {
       const data = batch.data;
-      console.log(data);
+      // console.log(data);
       setFormData({
         image: null, // keep null for file inputs; we'll show existing images via preview URLs
         image2: null,
@@ -379,17 +379,6 @@ const BatchUpdateForm = () => {
           value={formData.perks}
           onChange={handleChange}
           placeholder="e.g. RECORDED, PYQs, LIVE TESTS"
-        />
-
-        <InputField
-          disabled={isPending}
-          max={500000}
-          label="Price"
-          name="price"
-          type="number"
-          value={formData.price}
-          onChange={handleChange}
-          placeholder="e.g. 5999"
         />
 
         <section className="bg-gray-50 p-6 rounded-xl border">

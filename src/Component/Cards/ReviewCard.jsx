@@ -12,7 +12,7 @@ export default function ReviewCard({ review }) {
 
   const [Expand, setExpand] = useState(false);
 
-  console.log(review);
+  // console.log(review);
 
   const MAX = 160;
 

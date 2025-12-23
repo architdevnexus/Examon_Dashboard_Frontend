@@ -25,7 +25,7 @@ const Login = ({ setAuthUser }) => {
   }, [navigate]);
 
   const handleSubmit = async (e) => {
-    console.log(subuser);
+    // console.log(subuser);
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -58,14 +58,14 @@ const Login = ({ setAuthUser }) => {
 
         setAuthUser(data.user);
 
-        console.log(data);
+        // console.log(data);
         // Then sync to localStorage
         localStorage.setItem("token", data.accessToken);
         localStorage.setItem("authUser", JSON.stringify(data.user));
         navigate("/", { replace: true });
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setError(
         err?.response?.data?.msg || err?.message || "Something went wrong"
       );

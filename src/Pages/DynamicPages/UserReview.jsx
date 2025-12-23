@@ -95,12 +95,11 @@ const UserReview = () => {
     return;
   }
 
-  console.log(data);
-
   return (
     <div className="p-5 bg-white rounded-xl shadow-md border border-gray-200">
       <h1 className="text-2xl font-bold mb-5 text-gray-800">
-        ({data?.data.length}) Reviews posted by {data?.data[0]?.clientname}
+        ({data?.data.length}) Reviews posted by{" "}
+        {data?.data[0]?.clientname || "User"}
       </h1>
 
       <div className="overflow-x-auto">

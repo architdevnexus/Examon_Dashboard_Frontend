@@ -26,7 +26,7 @@ export default function DedicatedBlogPage() {
     return;
   }
 
-  console.log(blog);
+  // console.log(blog);
 
   return (
     <div className="min-h-screen   font-sans px-4 py-6 md:px-10">

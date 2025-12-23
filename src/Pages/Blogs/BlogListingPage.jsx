@@ -15,7 +15,7 @@ const BlogPage = () => {
   if (isLoading) return <Loader />;
   if (isError) return null;
 
-  console.log(data);
+  // console.log(data);
 
   const headerProps = {
     heading: " News, Media Gallery & Insights",
@@ -35,7 +35,7 @@ const BlogPage = () => {
     .flat(1);
   // .filter((category) => category.blogs.length > 0);
 
-  console.log(filteredBlogs);
+  // console.log(filteredBlogs);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">

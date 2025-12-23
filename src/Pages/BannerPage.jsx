@@ -76,7 +76,7 @@ const Banners = () => {
   };
   //  Submit form data to backend
   const handleSubmit = () => {
-    console.log(formData);
+    // console.log(formData);
     const FD = new FormData();
 
     for (const key in formData) {
@@ -91,7 +91,7 @@ const Banners = () => {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          // console.log(resp);
           toast.success(resp.message || "Banner updated");
           setEditable(false);
         },

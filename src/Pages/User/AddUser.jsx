@@ -119,7 +119,7 @@ const AdminAddSubUser = () => {
       return;
     }
     // setNewUser();
-    console.log(newUser);
+    // console.log(newUser);
 
     mutate(
       {
@@ -131,7 +131,7 @@ const AdminAddSubUser = () => {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          // console.log(resp);
           if (editingId) {
             setNewUser({
               fullName: "",
@@ -145,7 +145,7 @@ const AdminAddSubUser = () => {
           // Navigate(-1);
         },
         onError: (e) => {
-          console.log(e);
+          // console.log(e);
           toast.error(
             e.response.data.message ||
               e.response.data.msg ||
@@ -159,7 +159,7 @@ const AdminAddSubUser = () => {
 
   const verifyOtp = async (e) => {
     e.preventDefault();
-    console.log(otp);
+    // console.log(otp);
     mutate(
       {
         method: "post",
@@ -168,7 +168,7 @@ const AdminAddSubUser = () => {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          // console.log(resp);
           setNewUser({
             fullName: "",
             email: "",
@@ -179,7 +179,7 @@ const AdminAddSubUser = () => {
           toast.success(resp?.message || "Subuser verified");
         },
         onError: (e) => {
-          console.log(e);
+          // console.log(e);
           toast.error(
             e.response.data?.message ||
               e.response.data?.msg ||

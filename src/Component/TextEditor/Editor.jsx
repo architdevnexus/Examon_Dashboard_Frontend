@@ -70,7 +70,7 @@ export default function WriteBlog() {
 
   /* ------------------ JSX ------------------ */
   return (
-    <div className="card p-8 max-w-4xl mx-auto">
+    <div className="card p-6 mx-auto">
       <h1 className="text-2xl font-semibold text-gray-800 border-b pb-3 mb-6">
         Examon Blogs
       </h1>

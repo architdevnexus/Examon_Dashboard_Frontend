@@ -38,7 +38,7 @@ export default function ContactDetailsPage() {
     heading: "Contact Submissions",
     searchTerm,
     setSearchTerm,
-    hideBtn: true,
+    hideButton: true,
     placeholder: "Search Name, Email...",
   };
 

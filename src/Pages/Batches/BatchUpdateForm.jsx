@@ -74,7 +74,7 @@ const BatchUpdateForm = () => {
         perks: data?.perks ?? "",
         duration: data?.duration ?? "",
         price: data?.price ?? "",
-        finalPrice: data?.finalPrice ?? "",
+        finalPrice: data?.discount ?? "",
         teachers: data?.teachers ?? "",
         enrollLink: data?.enrollLink ?? "",
       });
@@ -210,7 +210,6 @@ const BatchUpdateForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const payload = new FormData();
 
     // append all non-file fields
@@ -227,6 +226,8 @@ const BatchUpdateForm = () => {
     // append files if provided (file objects) — server expects image1 & image2 (matching your previous code)
     if (formData.image) payload.append("image1", formData.image);
     if (formData.image2) payload.append("image2", formData.image2);
+    if (discountPercent) payload.append("discountPercent", discountPercent);
+    if (discountPercent) payload.append("discount", formData.finalPrice);
 
     mutate(
       {

@@ -79,7 +79,7 @@ function BlogComponent({ _id, title, featuredImage, createdAt, blogContent }) {
           <img
             src={featuredImage}
             alt={title}
-            className="w-full max-h-[500px] object-cover rounded-lg shadow-sm"
+            className="w-full max-h-[500px] object-contain rounded-lg shadow-sm"
           />
         </div>
       )}

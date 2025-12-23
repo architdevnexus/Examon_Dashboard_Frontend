@@ -30,7 +30,7 @@ export default function ReviewListPage() {
     heading: "All Reviews",
     btnText: "Pending Review",
     hideSearch: true,
-    hideBtn: true,
+    hideButton: true,
     reviewBtns: true,
     active,
     setActive,

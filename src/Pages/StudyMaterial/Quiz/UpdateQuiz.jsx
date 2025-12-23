@@ -327,7 +327,6 @@ const UpdateQuizForm = () => {
                   className="border p-2 rounded"
                 />
                 <input
-                  required
                   type="text"
                   value={q.topic}
                   onChange={(e) =>

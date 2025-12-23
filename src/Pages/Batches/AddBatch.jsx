@@ -86,6 +86,7 @@ const AddBatchForm = () => {
 
       if (key === "image") fd.append("image1", value);
       else if (key === "image2") fd.append("image2", value);
+      else if (key === "finalPrice") fd.append("discount", value);
       else if (key === "batchCategory")
         fd.append("batchCategory", value.trim() || "Other");
       else fd.append(key, value);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaUser, FaBookOpen, FaCalendarAlt } from "react-icons/fa";
+import { FaBookOpen, FaCalendarAlt } from "react-icons/fa";
 import { MdOutlineWork, MdLink } from "react-icons/md";
 import { AiOutlineFullscreen } from "react-icons/ai";
 import ActionBtns from "../ActionBtns";

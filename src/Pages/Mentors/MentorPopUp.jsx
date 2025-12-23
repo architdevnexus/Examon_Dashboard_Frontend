@@ -37,7 +37,7 @@ export default function MentorDetailsModal({ mentor, onClose }) {
               </p>
               <p>
                 <span className="font-semibold">Courses Handled:</span>{" "}
-                {mentor?.CoursesHandled}
+                {mentor?.CoursesHandled?.join(", ")}
               </p>
               <p>
                 <span className="font-semibold">Description:</span>{" "}

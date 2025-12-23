@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useGetContentById } from "../../hooks/useHooks";
+import Loader from "../../Component/Loader";
 
 /* ============================================================
    Skeleton Loader (Improved)
@@ -94,8 +96,7 @@ const QuizDetailsModal = ({ quiz, onClose }) => {
                 </div>
 
                 <p className="mt-3 text-sm text-gray-600">
-                  <strong>Correct Answer:</strong>{" "}
-                  {q.options[q.correctAnswer]}
+                  <strong>Correct Answer:</strong> {q.options[q.correctAnswer]}
                 </p>
               </div>
             ))}
@@ -118,57 +119,29 @@ const QuizDetailsModal = ({ quiz, onClose }) => {
 ============================================================ */
 const UserQuiz = () => {
   const { id } = useParams();
-  const [quizzes, setQuizzes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
   const [selectedQuiz, setSelectedQuiz] = useState(null);
 
-  const token = localStorage.getItem("token");
+  const { data, isLoading, isError, error } = useGetContentById({
+    id,
+    keys: ["quiz", id],
+    handlerProps: {
+      url: `/user/quizzes/${id}`,
+    },
+  });
 
-  /* Fetch User Quiz Attempts */
-  const fetchUserQuiz = async () => {
-    try {
-      setLoading(true);
-
-      const res = await fetch(
-        `https://backend.palgharhome.com/api/user/quizzes/${id}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!res.ok) throw new Error("Failed to fetch quiz attempts");
-
-      const data = await res.json();
-      setQuizzes(data?.attempts || []);
-    } catch (err) {
-      console.error(err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (id) fetchUserQuiz();
-  }, [id]);
-
-  /* Error UI */
-  if (error) {
-    return (
-      <div className="p-4 bg-red-100 text-red-700 rounded-lg font-medium">
-        ⚠ {error}
-      </div>
-    );
+  if (isLoading) return <Loader />;
+  if (isError) {
+    toast.error(error?.response?.data?.message || "Something went wrong");
+    return;
   }
+
+  console.log(data);
 
   return (
     <div className="p-5 bg-white rounded-xl shadow-md border border-gray-200">
       <h1 className="text-2xl font-bold mb-5 text-gray-800">
-        Attempted Quizzes ({quizzes.length})
+        Attempted Quizzes ({data.totalAttempts})
       </h1>
 
       {/* Table */}
@@ -186,11 +159,10 @@ const UserQuiz = () => {
 
           <tbody className="text-sm">
             {/* Loading State */}
-            {loading &&
-              [...Array(5)].map((_, i) => <SkeletonRow key={i} />)}
+            {isLoading && [...Array(5)].map((_, i) => <SkeletonRow key={i} />)}
 
             {/* Empty State */}
-            {!loading && quizzes.length === 0 && (
+            {!isLoading && data.totalAttempts === 0 && (
               <tr>
                 <td
                   colSpan="5"
@@ -202,17 +174,17 @@ const UserQuiz = () => {
             )}
 
             {/* Data */}
-            {!loading &&
-              quizzes.map((quiz, idx) => (
+            {!isLoading &&
+              data.attempts.map((quiz, idx) => (
                 <tr
-                  key={quiz._id}
+                  key={idx}
                   className="hover:bg-gray-50 transition cursor-pointer border-b"
                   onClick={() => setSelectedQuiz(quiz)}
                 >
                   <td className="px-4 py-3 font-medium">{idx + 1}</td>
                   <td className="px-4 py-3">{quiz.quizTitle}</td>
                   <td className="px-4 py-3">{quiz.score}</td>
-                  <td className="px-4 py-3">{quiz.quizTotalMarks}</td>
+                  <td className="px-4 py-3">{quiz.totalMarks}</td>
                   <td className="px-4 py-3">
                     {new Date(quiz.attemptedAt).toLocaleString()}
                   </td>

@@ -12,6 +12,8 @@ export default function ReviewCard({ review }) {
 
   const [Expand, setExpand] = useState(false);
 
+  console.log(review);
+
   const MAX = 160;
 
   const shortText = review.review.slice(0, MAX);

@@ -18,7 +18,7 @@ function UpdateBlog() {
   const [content, setContent] = useState("");
   const [preview, setpreview] = useState(null);
 
-  const { data, isLoading, isError, isSuccess, error } = useGetContentById({
+  const { data, isLoading, isError, isSuccess } = useGetContentById({
     keys: ["blog", id],
     id,
     handlerProps: {
@@ -43,7 +43,6 @@ function UpdateBlog() {
   }
 
   if (isError) {
-    //console.log(error);
     return;
   }
 
@@ -62,6 +61,7 @@ function UpdateBlog() {
           setTitle("");
           setImg(null);
           setContent("");
+          setpreview(null);
           toast.success("Blog Updated");
         },
         onError: (e) => {
@@ -70,6 +70,18 @@ function UpdateBlog() {
         },
       }
     );
+  };
+
+  const handleFileChange = (e) => {
+    const { files } = e.target;
+    if (files[0].type.split("/")[0] !== "image") {
+      toast.error("Please select a valid image file");
+      e.target.value = null;
+
+      return;
+    }
+    setImg(e.target.files[0]);
+    setpreview(URL.createObjectURL(files[0]));
   };
 
   return (
@@ -87,10 +99,7 @@ function UpdateBlog() {
           disabled={isPending}
           name="img"
           accept="image/*"
-          onChange={(e) => {
-            setImg(e.target.files[0]);
-            setpreview(URL.createObjectURL(e.target.files[0]));
-          }}
+          onChange={handleFileChange}
           className="w-full border border-gray-300 rounded-lg p-1 cursor-pointer file:cursor-pointer  text-sm file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
           required
         />
@@ -103,7 +112,7 @@ function UpdateBlog() {
       <input
         type="text"
         disabled={isPending}
-        maxLength={100}
+        // maxLength={100}
         placeholder="Enter blog title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}

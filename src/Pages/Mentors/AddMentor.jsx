@@ -35,10 +35,14 @@ export default function AddMentorForm() {
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-
-    setMentor((prev) => ({ ...prev, image: file }));
-    setPreview(URL.createObjectURL(file));
+    if (file.type.startsWith("image/")) {
+      setMentor((prev) => ({ ...prev, image: file }));
+      setPreview(URL.createObjectURL(file));
+      return;
+    }
+    e.target.value = null;
+    toast.error("Please select a valid image file.");
+    setPreview(null);
   };
 
   const handleSubmit = (e) => {

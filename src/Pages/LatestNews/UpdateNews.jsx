@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../../Component/Loader";
@@ -16,6 +16,8 @@ const UpdateNewsForm = () => {
     description: "",
   });
   const [preview, setPreview] = useState(null);
+
+  const imgRef = useRef();
 
   const { data, isLoading, isSuccess, isError, error } = useGetContentById({
     id,
@@ -50,6 +52,17 @@ const UpdateNewsForm = () => {
   //  Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
+    if (name === "image" && files[0].type.split("/")[0] !== "image") {
+      toast.error("Please select a valid image");
+
+      if (imgRef.current) {
+        imgRef.current.value = null;
+      }
+
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: files ? files[0] : value,
@@ -112,6 +125,7 @@ const UpdateNewsForm = () => {
               Upload Image
             </label>
             <input
+              ref={imgRef}
               type="file"
               name="image"
               accept="image/*"
@@ -133,7 +147,7 @@ const UpdateNewsForm = () => {
               Title
             </label>
             <input
-              maxLength={100}
+              // maxLength={100}
               type="text"
               name="title"
               placeholder="Enter news title"
@@ -151,7 +165,7 @@ const UpdateNewsForm = () => {
             </label>
             <textarea
               name="description"
-              maxLength={1000}
+              // maxLength={1000}
               placeholder="Enter description"
               rows={4}
               value={formData.description}

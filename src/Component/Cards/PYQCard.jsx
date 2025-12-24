@@ -33,7 +33,7 @@ const PyqCard = ({ cid, pyq }) => {
   return (
     <div
       style={{
-        cursor: isPending ? "not-allowed" : "pointer",
+        cursor: isPending ? "not-allowed" : " ",
       }}
       className={`bg-white shadow-md hover:shadow-lg rounded-2xl p-5 transition border border-gray-100 flex flex-col justify-between ${
         isPending && "animate-pulse"
@@ -48,9 +48,16 @@ const PyqCard = ({ cid, pyq }) => {
               {pyq.pyqCategory}
             </span>
           </div>
-          <span className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full">
-            {pyq.year}
-          </span>
+          <div>
+            {pyq?.year?.[0]?.split(",")?.map((pyqy, i) => (
+              <span
+                key={i}
+                className="text-xs ml-1 bg-blue-50 text-blue-700 px-2 py-1 rounded-full"
+              >
+                {pyqy}
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* Title */}

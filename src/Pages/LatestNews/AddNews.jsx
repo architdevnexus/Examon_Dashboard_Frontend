@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useUpdateOrDeleteContent } from "../../hooks/useHooks";
@@ -15,9 +15,22 @@ const AddNewsForm = () => {
     keys: ["news"],
   });
 
+  const imgRef = useRef();
+
   //  Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
+    if (name === "image" && files[0].type.split("/")[0] !== "image") {
+      toast.error("Please select a valid image");
+
+      if (imgRef.current) {
+        imgRef.current.value = null;
+      }
+      setPreview(null);
+      return;
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: files ? files[0] : value,
@@ -73,6 +86,7 @@ const AddNewsForm = () => {
               Upload Image
             </label>
             <input
+              ref={imgRef}
               type="file"
               name="image"
               disabled={isPending}
@@ -99,7 +113,7 @@ const AddNewsForm = () => {
               type="text"
               name="title"
               placeholder="Enter news title"
-              maxLength={100}
+              // maxLength={100}
               disabled={isPending}
               value={formData.title}
               onChange={handleChange}
@@ -118,7 +132,7 @@ const AddNewsForm = () => {
               placeholder="Enter description"
               rows={5}
               disabled={isPending}
-              maxLength={1000}
+              // maxLength={1000}
               value={formData.description}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg p-2 "

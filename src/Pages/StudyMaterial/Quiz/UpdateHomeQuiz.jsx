@@ -186,7 +186,7 @@ const UpdateHomeQuizForm = () => {
     name: "tagInput",
     placeholder: "add tag",
     formData,
-    maxLength: 30,
+    // maxLength: 30,
     valueArray: formData.tags,
     valueArrayString: "tags",
     valueInput: formData.tagInput,

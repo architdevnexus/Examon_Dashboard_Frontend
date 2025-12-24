@@ -42,10 +42,6 @@ const Banners = () => {
       const banners = data.banners[0];
       setFormData({
         id: banners._id,
-        // aboutBanner: banners.aboutBanner[0].url,
-        // courseBanner: banners.courseBanner[0].url,
-        // blogBanner: banners.blogBanner[0].url,
-        // contactBanner: banners.contactBanner[0].url,
       });
       setPreview({
         aboutBanner: banners.aboutBanner[0].url,
@@ -67,7 +63,15 @@ const Banners = () => {
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
+    if (!file.type.startsWith("image/")) {
+      e.target.value = null;
+      setPreview((prev) => ({
+        ...prev,
+        [e.target.name]: null,
+      }));
+      toast.error("Please select a valid image file");
+      return;
+    }
     setFormData((prev) => ({ ...prev, [e.target.name]: file }));
     setPreview((prev) => ({
       ...prev,

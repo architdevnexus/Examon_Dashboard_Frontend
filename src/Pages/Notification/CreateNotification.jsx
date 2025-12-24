@@ -162,7 +162,6 @@ export default function OfferForm() {
                 disabled={isPending}
                 type="text"
                 name="title"
-                maxLength={60}
                 value={formData.title}
                 onChange={handleChange}
                 className="w-full mt-1 p-2 border rounded-lg"
@@ -180,7 +179,6 @@ export default function OfferForm() {
                 value={formData.description}
                 onChange={handleChange}
                 rows={4}
-                maxLength={200}
                 className="w-full resize-none mt-1 p-2 border rounded-lg"
                 placeholder="You just unlocked a special 35% discount..."
                 required
@@ -260,7 +258,6 @@ export default function OfferForm() {
                 onChange={handleChange}
                 className="w-full mt-1 p-2 border rounded-lg"
                 placeholder="6h"
-                maxLength={20}
                 required
               />
             </div>
@@ -334,13 +331,16 @@ export default function OfferForm() {
                       >
                         {n.title.slice(0, 40)}
                       </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {new Date(n.createdAt).toLocaleDateString("en-IN", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </p>
+                      <div className="flex justify-between">
+                        <p className="text-xs text-gray-500 mt-1">
+                          {new Date(n.createdAt).toLocaleDateString("en-IN", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </p>
+                        <p>{n.batch}</p>
+                      </div>
                       <div className="absolute top-3 right-3">
                         {deletingId === n._id ? (
                           <MoonLoader color="#003e68" size={20} />

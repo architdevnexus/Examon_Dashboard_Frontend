@@ -5,7 +5,7 @@ export default function MentorDetailsModal({ mentor, onClose }) {
     <div className="fixed inset-0  bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white w-full max-w-2xl aspect-[2/1] rounded-xl p-6 shadow-xl relative animate-scaleIn overflow-y-auto max-h-[90vh]">
         <button
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+          className="absolute top-3 right-3 p-1 rounded-full  bg-gray-500 cursor-pointer   hover:text-gray-800"
           onClick={onClose}
         >
           <X size={22} />

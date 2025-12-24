@@ -13,8 +13,6 @@ export default function WriteBlog() {
   const [content, setContent] = useState("");
   const [blogCategory, setBlogCategory] = useState("");
 
-  const fileRef = useRef(null);
-
   /* ------------------ API hooks ------------------ */
   const { mutate, isPending } = useUpdateOrDeleteContent({
     keys: ["blog"],
@@ -46,7 +44,7 @@ export default function WriteBlog() {
     formData.append("featuredImage", img);
     formData.append("title", title);
     formData.append("blogContent", content);
-    formData.append("blogCategory", blogCategory); 
+    formData.append("blogCategory", blogCategory);
 
     mutate(
       {
@@ -61,11 +59,21 @@ export default function WriteBlog() {
           setImg(null);
           setContent("");
           setBlogCategory("");
-          if (fileRef.current) fileRef.current.value = "";
         },
         onError: (e) => toast.error(e.message),
       }
     );
+  };
+
+  const handleFileChange = (e) => {
+    const { files } = e.target;
+    if (files[0].type.split("/")[0] !== "image") {
+      toast.error("Please select a valid image file");
+      e.target.value = null;
+      setImg(null);
+      return;
+    }
+    setImg(e.target.files[0]);
   };
 
   /* ------------------ JSX ------------------ */
@@ -82,9 +90,8 @@ export default function WriteBlog() {
         </label>
         <input
           type="file"
-          ref={fileRef}
           accept="image/png, image/jpeg, image/jpg"
-          onChange={(e) => setImg(e.target.files[0])}
+          onChange={handleFileChange}
           className="w-full border rounded-lg p-1 text-sm file:bg-blue-600 file:text-white file:px-4 file:py-2 file:rounded-md hover:file:bg-blue-700"
           disabled={isPending}
           required
@@ -104,7 +111,7 @@ export default function WriteBlog() {
         type="text"
         placeholder="Enter blog title"
         value={title}
-        maxLength={100}
+        // maxLength={100}
         onChange={(e) => setTitle(e.target.value)}
         className="w-full p-2 border rounded mb-4"
         disabled={isPending}

@@ -331,7 +331,7 @@ const BatchUpdateForm = () => {
 
         <InputField
           disabled={isPending}
-          maxLength={60}
+          // maxLength={60}
           label="Batch Name"
           name="batchName"
           value={formData.batchName}
@@ -342,7 +342,7 @@ const BatchUpdateForm = () => {
 
         <InputField
           disabled={isPending}
-          maxLength={200}
+          // maxLength={200}
           label="Syllabus"
           name="syllabus"
           value={formData.syllabus}
@@ -353,7 +353,7 @@ const BatchUpdateForm = () => {
         <InputField
           disabled={isPending}
           label="Duration"
-          maxLength={20}
+          // maxLength={20}
           name="duration"
           value={formData.duration}
           onChange={handleChange}
@@ -420,7 +420,7 @@ const BatchUpdateForm = () => {
 
         <InputField
           disabled={isPending}
-          maxLength={100}
+          // maxLength={100}
           label="Teachers"
           name="teachers"
           value={formData.teachers}
@@ -430,7 +430,7 @@ const BatchUpdateForm = () => {
 
         <InputField
           disabled={isPending}
-          maxLength={100}
+          // maxLength={100}
           label="Enroll link"
           name="enrollLink"
           value={formData.enrollLink}

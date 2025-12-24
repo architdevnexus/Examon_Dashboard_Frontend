@@ -20,8 +20,21 @@ const AddPyqForm = () => {
   //   Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+
     if (name === "pdf") {
       const file = files?.[0] ?? null;
+
+      if (file.type !== "application/pdf") {
+        toast.error("Please select a valid PDF file.");
+        if (fileRef.current) fileRef.current.value = null;
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("File size should be less than 10MB.");
+        if (fileRef.current) fileRef.current.value = null;
+        return;
+      }
+
       setFormData((prev) => ({ ...prev, pdf: file }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
@@ -31,12 +44,18 @@ const AddPyqForm = () => {
   //   Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.pdf) return alert("Please select a PDF file!");
+
+    for (const key in formData) {
+      if (key !== "pdf" && !formData[key].trim()) {
+        return toast.warn(`Please fill the ${key} field!`);
+      }
+    }
+    if (!formData.pdf) return toast.warn("Please select a PDF file!");
 
     const data = new FormData();
     data.append("pyqCategory", formData.pyqCategory);
     data.append("title", formData.title);
-    data.append("year", String(formData.year));
+    data.append("year", String(formData.year?.split(",").map((y) => y.trim())));
     data.append("pdf", formData.pdf);
 
     mutate(
@@ -58,14 +77,12 @@ const AddPyqForm = () => {
           if (fileRef.current) fileRef.current.value = null;
         },
         onError: (e) => {
-          //console.log(e);
-          toast.error(e.message);
+          console.log(e);
+          toast.error(e.response.data.message || e.message);
         },
       }
     );
   };
-
-  const Year = new Date().getFullYear();
 
   return (
     <div className="max-w-xl mx-auto bg-white shadow-lg rounded-2xl p-6 mt-10">
@@ -78,8 +95,8 @@ const AddPyqForm = () => {
         <InputField
           label="PYQ Category"
           name="pyqCategory"
+          disabled={isPending}
           type="text"
-          maxLength={25}
           value={formData.pyqCategory}
           onChange={handleChange}
           placeholder="e.g. PYQ"
@@ -89,8 +106,8 @@ const AddPyqForm = () => {
         {/* Title */}
         <InputField
           label="Title"
+          disabled={isPending}
           name="title"
-          maxLength={80}
           type="text"
           value={formData.title}
           onChange={handleChange}
@@ -101,13 +118,12 @@ const AddPyqForm = () => {
         {/* Year */}
         <InputField
           label="Year"
+          disabled={isPending}
           name="year"
-          type="number"
-          min={2000}
-          max={Year}
+          type="type"
           value={formData.year}
           onChange={handleChange}
-          placeholder="e.g. 2026"
+          placeholder="e.g. 2024, 2025"
           required
         />
         {/* PDF Upload */}
@@ -115,6 +131,7 @@ const AddPyqForm = () => {
           label="Upload PDF"
           name="pdf"
           type="file"
+          disabled={isPending}
           id="pdf"
           ref={fileRef}
           accept="application/pdf"

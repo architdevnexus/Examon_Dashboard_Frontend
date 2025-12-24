@@ -4,7 +4,7 @@ const MultipleValues = ({
   placeholder,
   formData,
   valueArray,
-  maxLength = 20,
+  maxLength = 500,
   valueArrayString,
   setFormData,
   onchange,

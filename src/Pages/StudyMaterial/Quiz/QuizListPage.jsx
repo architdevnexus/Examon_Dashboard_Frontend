@@ -71,7 +71,7 @@ const QuizListPage = ({ cls, urls, queryKey, hideButton = false }) => {
     mutate(
       {
         method: "delete",
-        url: urls?.delete + id || `/quizzes/${id}`,
+        url: urls?.delete ? urls.delete + id : `/quizzes/${id}`,
       },
       {
         onSuccess: (resp) => {

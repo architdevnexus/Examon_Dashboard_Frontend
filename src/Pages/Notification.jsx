@@ -64,7 +64,7 @@ const NotificationForm = () => {
     for (const key in formData) {
       FD.append(key, formData[key]);
     }
- 
+
     mutate(
       {
         method: "post",
@@ -167,7 +167,6 @@ const NotificationForm = () => {
                   type="text"
                   name="title"
                   disabled={isPending}
-                  maxLength={50}
                   value={formData.title}
                   onChange={handleChange}
                   placeholder="Enter notification title"
@@ -183,7 +182,6 @@ const NotificationForm = () => {
                 <input
                   type="text"
                   name="subtitle"
-                  maxLength={80}
                   disabled={isPending}
                   value={formData.subtitle}
                   onChange={handleChange}
@@ -201,7 +199,6 @@ const NotificationForm = () => {
                   name="description"
                   disabled={isPending}
                   value={formData.description}
-                  maxLength={200}
                   rows={4}
                   onChange={handleChange}
                   placeholder="Enter notification description"
@@ -229,13 +226,13 @@ const NotificationForm = () => {
               <button
                 type="submit"
                 className={`w-full py-3 rounded-lg text-white font-semibold ${
-                  isPending
+                  isPending && !deletingId
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-blue-600 hover:bg-blue-700"
                 }`}
-                disabled={isPending}
+                disabled={isPending && !deletingId}
               >
-                {isPending ? "Sending..." : "Send Notification"}
+                {isPending && !deletingId ? "Sending..." : "Send Notification"}
               </button>
 
               {isError && (

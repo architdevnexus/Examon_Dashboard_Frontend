@@ -64,10 +64,14 @@ const AddBatchForm = () => {
 
   const handleImage = (e, key, setPreview) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-
-    setFormData((p) => ({ ...p, [key]: file }));
-    setPreview(URL.createObjectURL(file));
+    if (file && file.type.startsWith("image/")) {
+      setFormData((p) => ({ ...p, [key]: file }));
+      setPreview(URL.createObjectURL(file));
+      return;
+    }
+    e.target.value = null;
+    setPreview(null);
+    toast.error("Please select a valid image file");
   };
 
   /* ------------------ SUBMIT ------------------ */
@@ -136,7 +140,7 @@ const AddBatchForm = () => {
         {/* Images */}
         <section>
           <h3 className="text-lg font-medium mb-3">Batch Images</h3>
-          <div className=" gap-6">
+          <div className="gap-6">
             {[
               [
                 "image",

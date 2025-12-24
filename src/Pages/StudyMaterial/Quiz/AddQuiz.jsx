@@ -137,7 +137,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
     name: "tagInput",
     placeholder: "add tag",
     formData,
-    maxLength: 30,
     valueArray: formData.tags,
     valueArrayString: "tags",
     valueInput: formData.tagsInput,
@@ -157,7 +156,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
           <input
             required
             type="text"
-            maxLength={100}
             name="title"
             disabled={isPending}
             value={formData.title}
@@ -169,7 +167,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
             required
             type="text"
             name="exam"
-            maxLength={50}
             disabled={isPending}
             value={formData.exam}
             onChange={handleChange}
@@ -180,7 +177,7 @@ const AddNewQuiz = ({ url, queryKey }) => {
             required
             type="number"
             min={1}
-            max={10000}
+     
             name="duration"
             disabled={isPending}
             value={formData.duration}
@@ -192,7 +189,7 @@ const AddNewQuiz = ({ url, queryKey }) => {
             required
             type="number"
             min={1}
-            max={10000}
+           
             disabled={isPending}
             name="totalMarks"
             value={formData.totalMarks}
@@ -224,7 +221,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
               <input
                 required
                 type="text"
-                maxLength={300}
                 value={q.question}
                 onChange={(e) =>
                   handleQuestionChange(qIndex, "question", e.target.value)
@@ -239,7 +235,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
                     required
                     key={oIndex}
                     type="text"
-                    maxLength={50}
                     value={opt}
                     onChange={(e) =>
                       handleOptionChange(qIndex, oIndex, e.target.value)
@@ -277,7 +272,7 @@ const AddNewQuiz = ({ url, queryKey }) => {
                   required
                   type="number"
                   min={1}
-                  max={100}
+             
                   value={q.marks}
                   onChange={(e) =>
                     handleQuestionChange(qIndex, "marks", e.target.value)
@@ -287,7 +282,6 @@ const AddNewQuiz = ({ url, queryKey }) => {
                 />
                 <input
                   type="text"
-                  maxLength={50}
                   value={q.topic}
                   onChange={(e) =>
                     handleQuestionChange(qIndex, "topic", e.target.value)

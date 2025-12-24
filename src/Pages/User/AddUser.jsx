@@ -8,6 +8,8 @@ import { MoonLoader } from "react-spinners";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { navItems } from "../../Component/Navbar/SidebarTabs";
+import { IoEye } from "react-icons/io5";
+import { IoMdEyeOff } from "react-icons/io";
 
 const AdminAddSubUser = () => {
   document.title = "Add Subuser - Examon Dashboard";
@@ -22,6 +24,7 @@ const AdminAddSubUser = () => {
   const [editingId, setEditingId] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const [otp, setOtp] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (editingId) {
@@ -55,7 +58,6 @@ const AdminAddSubUser = () => {
     },
   });
 
-  if (data) console.log(data);
   const { mutate, isPending, isError, error } = useUpdateOrDeleteContent({
     keys: ["user"],
   });
@@ -232,15 +234,34 @@ const AdminAddSubUser = () => {
 
             <div>
               <label className="block text-sm font-medium mb-1">Password</label>
-              <input
-                type="password"
-                name="password"
-                disabled={isPending || showOtp}
-                value={newUser.password}
-                onChange={(e) => handleOnChange(e)}
-                className="w-full border rounded px-3 py-2 text-sm"
-                placeholder={editingId ? "New Password" : "Password"}
-              />
+
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  disabled={isPending || showOtp}
+                  value={newUser.password}
+                  onChange={(e) => handleOnChange(e)}
+                  className="w-full border rounded px-3 py-2 text-sm"
+                  placeholder={editingId ? "New Password" : "Password"}
+                />
+
+                {!showPassword ? (
+                  <IoMdEyeOff
+                    size={20}
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"
+                    tabIndex={-1}
+                  />
+                ) : (
+                  <IoEye
+                    size={20}
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm"
+                    tabIndex={-1}
+                  />
+                )}
+              </div>
             </div>
 
             <div>

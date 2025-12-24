@@ -66,7 +66,7 @@ const AddPyqForm = () => {
       },
       {
         onSuccess: (resp) => {
-          console.log(resp);
+          // console.log(resp);
           toast.success(resp?.message || "PYQ uploaded successfully");
           setFormData({
             pyqCategory: "",
@@ -77,7 +77,7 @@ const AddPyqForm = () => {
           if (fileRef.current) fileRef.current.value = null;
         },
         onError: (e) => {
-          console.log(e);
+          // console.log(e);
           toast.error(e.response.data.message || e.message);
         },
       }

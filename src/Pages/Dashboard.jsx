@@ -33,6 +33,7 @@ function Dashboard() {
 
   if (isError) return <p>{error}</p>;
 
+  console.log(dashboard);
   const CardsData = [
     {
       icon: <FaUsers />,

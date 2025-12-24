@@ -146,10 +146,7 @@ function AppContent() {
                     path="/studymaterial/update-quiz/:id"
                     element={<UpdateQuizForm />}
                   />
-                  <Route
-                    path="/home/update-quiz/:id"
-                    element={<UpdateHomeQuizForm />}
-                  />
+
                   {/* --------------------------- */}
 
                   {/* ------------- PYQ -------------- */}
@@ -223,7 +220,10 @@ function AppContent() {
 
                   <Route path="/contact-us" element={<ContactDetailsPage />} />
                   <Route path="/home-quiz" element={<HomeQuiz />} />
-
+                  <Route
+                    path="/home/update-quiz/:id"
+                    element={<UpdateHomeQuizForm />}
+                  />
                   <Route path="/banners" element={<Banners />} />
 
                   <Route

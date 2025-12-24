@@ -1,13 +1,20 @@
 import { useState, useMemo } from "react";
-import { MdCancel } from "react-icons/md";
+import { MdCancel, MdDelete } from "react-icons/md";
 import ListingPageHeader from "../Component/Header/ListingPageHeader";
-import { useGetContent } from "../hooks/useHooks";
+import { useGetContent, useUpdateOrDeleteContent } from "../hooks/useHooks";
 import Loader from "../Component/Loader";
+import { MoonLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 export default function ContactDetailsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [modalOpen, setModalOpen] = useState({ message: "", isOpen: false });
   const [page, setPage] = useState(1);
+  const [deletingId, setDeletingId] = useState("");
+
+  const { mutate } = useUpdateOrDeleteContent({
+    keys: ["contactUs"],
+  }); // delete exam
 
   const limit = 10; // items per page
 
@@ -33,6 +40,31 @@ export default function ContactDetailsPage() {
         contact?.email?.toLowerCase().includes(term)
     );
   }, [contacts, searchTerm]);
+
+  const onDelete = (id) => {
+    setDeletingId(id);
+
+    mutate(
+      {
+        method: "delete",
+        url: `/contact-us/delete/${id}`,
+      },
+      {
+        onSuccess: (resp) => {
+          setDeletingId(null);
+          toast.success("Record deleted");
+        },
+        onError: (e) => {
+          //console.log(e);
+          toast.error(
+            e.response?.data?.message || e.message || "Error deleting record"
+          );
+
+          setDeletingId(null);
+        },
+      }
+    );
+  };
 
   const headerProps = {
     heading: "Contact Submissions",
@@ -60,6 +92,7 @@ export default function ContactDetailsPage() {
             <th className={thClass}>Message</th>
             <th className={thClass}>Status</th>
             <th className={thClass}>Submitted At</th>
+            <th className={thClass}> </th>
           </tr>
         </thead>
         <tbody>
@@ -95,6 +128,18 @@ export default function ContactDetailsPage() {
                 <td className="py-3 px-4 text-gray-800">{contact.status}</td>
                 <td className="py-3 px-4 text-gray-800">
                   {new Date(contact.createdAt).toLocaleString()}
+                </td>
+                <td className="py-3 px-4 text-gray-800">
+                  {deletingId === contact._id ? (
+                    <MoonLoader color="#003e68" size={20} />
+                  ) : (
+                    <MdDelete
+                      size={30}
+                      className="bg-red-500 text-white rounded-full p-1.5 cursor-pointer hover:bg-red-600 transition"
+                      title="Delete"
+                      onClick={() => onDelete?.(contact._id)}
+                    />
+                  )}
                 </td>
               </tr>
             ))

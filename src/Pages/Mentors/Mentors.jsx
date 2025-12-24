@@ -40,7 +40,7 @@ function Mentors() {
     return;
   }
 
-  console.log(mentors);
+  // console.log(mentors);
 
   const filteredMentors = mentors.data.filter((mentor) =>
     mentor.name.toLowerCase().includes(searchTerm.toLowerCase())

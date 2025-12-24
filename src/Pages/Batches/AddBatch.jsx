@@ -98,10 +98,7 @@ const AddBatchForm = () => {
 
     //  Explicit backend key
     fd.append("discountPercent", discountPercent);
-    for (let pair of fd.entries()) {
-      console.log(pair[0], ":", pair[1]);
-    }
-    console.groupEnd();
+    
 
     mutate(
       {

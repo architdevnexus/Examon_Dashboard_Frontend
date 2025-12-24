@@ -136,7 +136,7 @@ const UserQuiz = () => {
     return;
   }
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="p-5 bg-white rounded-xl shadow-md border border-gray-200">

@@ -114,6 +114,7 @@ export default function AddMentorForm() {
           disabled={isPending}
           label="Upload Image"
           type="file"
+          required
           accept="image/*"
           onChange={handleFileChange}
           ref={imgRef}
@@ -138,6 +139,7 @@ export default function AddMentorForm() {
         <InputField
           disabled={isPending}
           label="Subject"
+          required
           name="subjectTaught"
           value={mentor.subjectTaught}
           onChange={handleChange}
@@ -162,6 +164,8 @@ export default function AddMentorForm() {
         <InputField
           disabled={isPending}
           label="Description"
+          required
+          rows={4}
           type="textarea"
           name="description"
           value={mentor.description}

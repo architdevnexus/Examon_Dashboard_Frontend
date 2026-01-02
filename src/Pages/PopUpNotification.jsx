@@ -6,8 +6,9 @@ import Loader from "../Component/Loader";
 
 import { MdDelete } from "react-icons/md";
 import { MoonLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
-const NotificationForm = () => {
+const PopUpNotification = () => {
   const [formData, setFormData] = useState({
     image: null,
     title: "",
@@ -16,6 +17,7 @@ const NotificationForm = () => {
     link: "",
   });
 
+  const navigate = useNavigate();
   const [deletingId, setDeletingId] = useState(false);
   const [preview, setPreview] = useState(null);
   const imgRef = useRef(null);
@@ -35,6 +37,7 @@ const NotificationForm = () => {
   const { mutate, isPending, isError, error } = useUpdateOrDeleteContent({
     keys: ["notification"],
   });
+  
   // delete exam
 
   if (isLoading) return <Loader />;
@@ -52,10 +55,14 @@ const NotificationForm = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
+    if (file && file.type.split("/")[0] === "image") {
       setFormData((prev) => ({ ...prev, image: file }));
       setPreview(URL.createObjectURL(file));
+      return
     }
+    file && toast.error("Please select a valid image");
+    imgRef.current.value = null;
+    setPreview(null);
   };
 
   const handleSubmit = (e) => {
@@ -85,7 +92,7 @@ const NotificationForm = () => {
           toast.success(d.message);
         },
         onError: (err) => {
-          //console.log(err);
+          console.log(err);
           toast.error(err?.message || "Something went wrong");
         },
       }
@@ -107,8 +114,11 @@ const NotificationForm = () => {
           setDeletingId(null);
         },
         onError: (err) => {
-          //console.log(err);
-          toast.error(err.response?.data?.message || "error");
+          console.log(err);
+          toast.error("Session expired, please login again");
+          if (err.status === 403 || err.status === 401) {
+            return navigate("/logout", { replace: true });
+          }
           setDeletingId(null);
         },
       }
@@ -147,7 +157,7 @@ const NotificationForm = () => {
                   accept="image/*"
                   onChange={handleFileChange}
                   className="w-full border border-gray-300 rounded-lg p-2 cursor-pointer file:cursor-pointer text-sm file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
-                  // required
+                // required
                 />
 
                 {preview && (
@@ -225,11 +235,10 @@ const NotificationForm = () => {
 
               <button
                 type="submit"
-                className={`w-full py-3 rounded-lg text-white font-semibold ${
-                  isPending && !deletingId
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-blue-600 hover:bg-blue-700"
-                }`}
+                className={`w-full py-3 rounded-lg text-white font-semibold ${isPending && !deletingId
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+                  }`}
                 disabled={isPending && !deletingId}
               >
                 {isPending && !deletingId ? "Sending..." : "Send Notification"}
@@ -341,4 +350,4 @@ const NotificationForm = () => {
   );
 };
 
-export default NotificationForm;
+export default PopUpNotification;

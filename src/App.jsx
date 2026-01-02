@@ -4,10 +4,11 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate,
 } from "react-router-dom";
-import Navbar from "./Component/Navbar/Navbar";
+import Navbar from "./Component/Navbar/Sidebar";
 import { SidebarProvider, useSidebar } from "./Component/Navbar/SidebarContext";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 // Pages
 import Dashboard from "./Pages/Dashboard";
@@ -66,28 +67,52 @@ import ViewExamInDetail from "./Pages/Exam/ViewExamInDetail";
 import UpdateExamEditor from "./Pages/Exam/UpdateExam";
 import UpdateNewsForm from "./Pages/LatestNews/UpdateNews";
 import LogOut from "./Component/LogOut";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UpdateBlog from "./Pages/Blogs/UpdateBlog";
 import ContactDetailsPage from "./Pages/ContactUs";
 import UserManagement from "./Pages/UserManagement";
 import UserReview from "./Pages/DynamicPages/UserReview";
 import UserQuiz from "./Pages/DynamicPages/UserQuiz";
-import Notification from "./Pages/Notification";
-import OfferForm from "./Pages/Notification/CreateNotification";
+import PopUpNotification from "./Pages/PopUpNotification";
+import OfferNotification from "./Pages/Notification/OfferNotification";
 import AdminAddSubUser from "./Pages/User/AddUser";
 import HomeQuiz from "./Pages/Exam/HomeQuiz";
 import UpdateHomeQuizForm from "./Pages/StudyMaterial/Quiz/UpdateHomeQuiz";
 import Banners from "./Pages/BannerPage";
+import axios from "axios";
 
 function AppContent() {
-  const [authUser, setAuthUser] = useState(() => {
-    const saved = localStorage.getItem("authUser");
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [authUser, setAuthUser] = useState(null);
+
+  useEffect(() => {
+
+    setAuthUser(() => {
+      const user = localStorage.getItem("token");
+      return user || null;
+    });
+
+    // (async () => {
+    //   try {
+    //     const { data } = await axios.get('https://backend.mastersaab.co.in/api/profile/get', {
+    //       headers: {
+    //         Authorization: `Bearer ${(localStorage.getItem("token"))}`
+    //       },
+    //       withCredentials: true,
+    //     });
+    //     setAuthUser(data.user);
+
+    //   } catch (error) {
+    //     toast.error("Session expired, please login again");
+    //     return <Navigate to="/logout" replace />;
+    //   }
+    // })()
+    console.log("app.jsx")
+  }, []);
 
   const { collapsed } = useSidebar();
   const location = useLocation();
   const isLoginRoute = location.pathname === "/login";
+
 
   return (
     <div className="flex w-auto">
@@ -95,27 +120,26 @@ function AppContent() {
       {authUser && !isLoginRoute && <Navbar user={authUser} />}
 
       <main
-        className={`transition-all duration-300 w-full min-h-screen bg-gray-50 ${
-          authUser && !isLoginRoute ? (collapsed ? "ml-20" : "ml-72") : ""
-        }`}
+        className={`transition-all duration-300 w-full min-h-screen bg-gray-50 ${authUser && !isLoginRoute ? (collapsed ? "ml-20" : "ml-72") : ""
+          }`}
       >
         <Routes>
           <Route
             path="/login"
             index
-            element={<Login setAuthUser={setAuthUser} />}
+            element={authUser ? <Navigate to={"/dashboard"} /> : <Login setAuthUser={setAuthUser} />}
           />
 
           <Route
             path="/*"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute user={authUser} setAuthUser={setAuthUser} >
                 <Routes>
-                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/dashboard" index element={<Dashboard />} />
 
                   <Route
                     path="/logout"
-                    element={<LogOut logout={setAuthUser} />}
+                    element={<LogOut user={authUser} logout={setAuthUser} />}
                   />
 
                   <Route path="/mentors" element={<Mentors />} />
@@ -129,8 +153,8 @@ function AppContent() {
                     element={<UpdateMentorForm />}
                   />
 
-                  <Route path="/notification" element={<Notification />} />
-                  <Route path="/notification/offer" element={<OfferForm />} />
+                  <Route path="/notification" element={<PopUpNotification />} />
+                  <Route path="/notification/offer" element={<OfferNotification />} />
 
                   {/* ------------- Quizzzzzz -------------- */}
 

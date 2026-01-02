@@ -19,7 +19,7 @@ export default function Sidebar({ user }) {
     subMenu?.some((item) => location.pathname.startsWith(item.route));
 
   useEffect(() => {
-    const allowedtbs = JSON.parse(localStorage.getItem("authUser")).allowedTabs;
+    const allowedtbs = user.allowedTabs;
     // console.log(allowedtbs);
     if (allowedtbs) {
       setFilteredTabs(navItems.filter((tab) => allowedtbs.includes(tab.label)));
@@ -32,20 +32,17 @@ export default function Sidebar({ user }) {
 
   return (
     <aside
-      className={`h-screen fixed z-50 top-0 left-0 bg-[var(--primary-color)] text-[var(--tertiary-color)] border-r border-[var(--border)] transition-all duration-300 font-[var(--font-family)] flex flex-col ${
-        collapsed ? "w-20" : "w-72"
-      }`}
+      className={`h-screen fixed z-50 top-0 left-0 bg-[var(--primary-color)] text-[var(--tertiary-color)] border-r border-[var(--border)] transition-all duration-300 font-[var(--font-family)] flex flex-col ${collapsed ? "w-20" : "w-72"
+        }`}
     >
       {/* Profile & Collapse Toggle */}
       <div
-        className={`flex ${
-          collapsed ? "flex-col items-center gap-2" : "flex-row justify-between"
-        } items-center p-4 border-b border-[var(--border)]`}
+        className={`flex ${collapsed ? "flex-col items-center gap-2" : "flex-row justify-between"
+          } items-center p-4 border-b border-[var(--border)]`}
       >
         <div
-          className={`flex items-center gap-4 ${
-            collapsed ? "justify-center" : ""
-          }`}
+          className={`flex items-center gap-4 ${collapsed ? "justify-center" : ""
+            }`}
         >
           <img
             src={
@@ -87,11 +84,10 @@ export default function Sidebar({ user }) {
                   <button
                     title={collapsed ? item.label : undefined}
                     onClick={() => toggleDropdown(item.label)}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-md ${
-                      isActiveParent
-                        ? "border bg-[var(--accent-dark)] text-[var(--secondary-color)]"
-                        : "text-[var(--primary-text)] hover:bg-[var(--accent-dark)] hover:text-[var(--secondary-color)]  "
-                    }`}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-md ${isActiveParent
+                      ? "border bg-[var(--accent-dark)] text-[var(--secondary-color)]"
+                      : "text-[var(--primary-text)] hover:bg-[var(--accent-dark)] hover:text-[var(--secondary-color)]  "
+                      }`}
                   >
                     <span className="flex items-center gap-2">
                       {item.icon}
@@ -111,10 +107,9 @@ export default function Sidebar({ user }) {
                           key={subIdx}
                           to={sub.route}
                           className={({ isActive }) =>
-                            `flex items-center gap-2 px-3 py-1.5 text-sm  rounded-md transition ${
-                              isActive
-                                ? "  bg-[var(--accent-dark)]  text-[var(--secondary-color)]"
-                                : "text-[var(--fade-color)] hover:bg-[var(--accent-dark)] hover:text-white"
+                            `flex items-center gap-2 px-3 py-1.5 text-sm  rounded-md transition ${isActive
+                              ? "  bg-[var(--accent-dark)]  text-[var(--secondary-color)]"
+                              : "text-[var(--fade-color)] hover:bg-[var(--accent-dark)] hover:text-white"
                             }`
                           }
                         >
@@ -130,10 +125,9 @@ export default function Sidebar({ user }) {
                   to={item.route}
                   onClick={() => toggleDropdown(item.label)}
                   className={({ isActive }) =>
-                    `flex items-center  gap-2 px-3 py-2 rounded-md transition ${
-                      isActive
-                        ? " border bg-[var(--accent-dark)] text-[var(--tertiary-color)]"
-                        : "text-[var(--primary-text)] hover:bg-[var(--accent-dark)] hover:text-white"
+                    `flex items-center  gap-2 px-3 py-2 rounded-md transition ${isActive
+                      ? " border bg-[var(--accent-dark)] text-[var(--tertiary-color)]"
+                      : "text-[var(--primary-text)] hover:bg-[var(--accent-dark)] hover:text-white"
                     }`
                   }
                 >

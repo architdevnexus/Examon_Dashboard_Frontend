@@ -34,7 +34,7 @@ export const navItems = [
     route: "/user-management",
   },
   {
-    label: "Add Subuser",
+    label: "Sub Admins",
     icon: <RiUserAddFill />,
     route: "/add-subuser",
   },

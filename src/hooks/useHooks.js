@@ -9,9 +9,7 @@ export const useUpdateOrDeleteContent = ({ keys }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: keys });
     },
-    onError: (e) => {
-      //console.log(keys[0], e);
-    },
+    onError: (e) => {},
   });
 };
 

@@ -150,9 +150,9 @@ const AdminAddSubUser = () => {
           // console.log(e);
           toast.error(
             e.response.data.message ||
-              e.response.data.msg ||
-              e.message ||
-              "Error creating subuser"
+            e.response.data.msg ||
+            e.message ||
+            "Error creating subuser"
           );
         },
       }
@@ -184,9 +184,9 @@ const AdminAddSubUser = () => {
           // console.log(e);
           toast.error(
             e.response.data?.message ||
-              e.response.data?.msg ||
-              e.message ||
-              "Error verifing subuser"
+            e.response.data?.msg ||
+            e.message ||
+            "Error verifing subuser"
           );
         },
       }
@@ -295,8 +295,8 @@ const AdminAddSubUser = () => {
                 {isPending
                   ? "Submitting..."
                   : editingId
-                  ? "Update Subuser"
-                  : "Create Subuser"}
+                    ? "Update Subuser"
+                    : "Create Subuser"}
               </button>
             )}
             {isError && (
@@ -354,7 +354,8 @@ const AdminAddSubUser = () => {
                     No subuser.
                   </p>
                 ) : (
-                  data?.data.map((n, index) => (
+                  data?.data.map((n, index) =>
+                  (
                     <div
                       key={index}
                       className={`border relative border-gray-100 rounded-lg p-3 hover:bg-gray-50 transition
@@ -374,22 +375,15 @@ const AdminAddSubUser = () => {
                         {n.email}
                       </p>
 
-                      <p className="text-xs text-gray-500 mt-1">
-                        {new Date(n.createdAt).toLocaleDateString("en-IN", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </p>
+
                       <div className="absolute top-3 right-3">
                         {deletingId === n._id ? (
                           <MoonLoader color="#003e68" size={20} />
                         ) : editingId === n._id ? (
                           <RxCross2
                             size={30}
-                            className={`bg-gray-200 rounded-full p-1.5 cursor-pointer hover:bg-gray-600 hover:text-white transition${
-                              isPending || (showOtp && "cursor-not-allowed")
-                            }`}
+                            className={`bg-gray-200 rounded-full p-1.5 cursor-pointer hover:bg-gray-600 hover:text-white transition${isPending || (showOtp && "cursor-not-allowed")
+                              }`}
                             title="Edit"
                             onClick={() => {
                               if (!isPending && !showOtp) setEditingId(null);
@@ -399,9 +393,8 @@ const AdminAddSubUser = () => {
                           <div className="flex gap-2">
                             <MdEdit
                               size={30}
-                              className={`bg-gray-200 rounded-full p-1.5 cursor-pointer hover:bg-gray-600 hover:text-white transition${
-                                isPending || (showOtp && "cursor-not-allowed")
-                              }`}
+                              className={`bg-gray-200 rounded-full p-1.5 cursor-pointer hover:bg-gray-600 hover:text-white transition${isPending || (showOtp && "cursor-not-allowed")
+                                }`}
                               title="Edit"
                               onClick={() => {
                                 if (!isPending && !showOtp) handleOnEdit(n._id);
@@ -409,9 +402,8 @@ const AdminAddSubUser = () => {
                             />
                             <MdDelete
                               size={30}
-                              className={`bg-red-500 text-white rounded-full p-1.5 cursor-pointer hover:bg-red-600 transition${
-                                isPending || (showOtp && "cursor-not-allowed")
-                              }`}
+                              className={`bg-red-500 text-white rounded-full p-1.5 cursor-pointer hover:bg-red-600 transition${isPending || (showOtp && "cursor-not-allowed")
+                                }`}
                               title="Delete"
                               onClick={() => {
                                 if (!isPending) onDelete?.(n._id);
@@ -421,7 +413,8 @@ const AdminAddSubUser = () => {
                         )}
                       </div>
                     </div>
-                  ))
+                  )
+                  )
                 )}
               </div>
             </div>

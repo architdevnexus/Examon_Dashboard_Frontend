@@ -7,17 +7,15 @@ import { MdDelete } from "react-icons/md";
 import { MoonLoader } from "react-spinners";
 import MultipleValues from "../../Component/Input/MultipleValues";
 
-export default function OfferForm() {
+export default function OfferNotification() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     discount: "",
-    banner: "",
     batch: "",
     tags: [],
     tagInput: "",
-    expiresIn: "",
-    priority: "",
+    link: "",
   });
 
   const [deletingId, setDeletingId] = useState(false);
@@ -84,13 +82,10 @@ export default function OfferForm() {
             title: "",
             description: "",
             discount: "",
-            banner: "",
-            cta: { label: "", url: "" },
             tags: [],
             batch: "",
             tagInput: "",
-            expiresIn: "",
-            priority: "",
+            link: "",
           });
 
           //console.log(resp);
@@ -202,25 +197,6 @@ export default function OfferForm() {
               />
             </div>
 
-            {/* Banner */}
-            <div>
-              <label className="font-medium">Banner*</label>
-              <select
-                disabled={isPending}
-                name="banner"
-                value={formData.banner}
-                onChange={handleChange}
-                className="w-full mt-1 p-2 border rounded-lg"
-                required
-              >
-                <option value="">Select Banner Type</option>
-                <option value="limited_offer">Limited Offer</option>
-                <option value="flash_banner">Flash Banner</option>
-                <option value="premium_banner">Premium Banner</option>
-              </select>
-            </div>
-
-            {/* CTA */}
 
             <div>
               <label className="font-medium">Batch*</label>
@@ -249,44 +225,27 @@ export default function OfferForm() {
 
             {/* Expires In */}
             <div>
-              <label className="font-medium">Expires In*</label>
+              <label className="font-medium">Link*</label>
               <input
                 disabled={isPending}
-                type="text"
-                name="expiresIn"
-                value={formData.expiresIn}
+                type="url"
+                name="link"
+                value={formData.link}
                 onChange={handleChange}
                 className="w-full mt-1 p-2 border rounded-lg"
-                placeholder="6h"
+                placeholder="https://example.com/offer"
                 required
               />
             </div>
 
-            {/* Priority */}
-            <div>
-              <label className="font-medium">Priority*</label>
-              <select
-                name="priority"
-                disabled={isPending}
-                value={formData.priority}
-                onChange={handleChange}
-                className="w-full mt-1 p-2 border rounded-lg"
-                required
-              >
-                <option value="">Select Priority</option>
-                <option value="low">Low</option>
-                <option value="normal">Normal</option>
-                <option value="high">High</option>
-              </select>
-            </div>
+
 
             {/* Submit */}
             <button
               type="submit"
               disabled={isPending}
-              className={`w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold${
-                isPending ? "opacity-70 cursor-not-allowed" : ""
-              }`}
+              className={`w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold${isPending ? "opacity-70 cursor-not-allowed" : ""
+                }`}
             >
               {isPending ? "Saving..." : "Save Offer"}
             </button>
@@ -339,7 +298,7 @@ export default function OfferForm() {
                             year: "numeric",
                           })}
                         </p>
-                        <p>{n.batch}</p>
+                        {n?.link && <a className="text-blue-600 cursor-pointer underline" target="__blank" href={n.link}>Link</a>}
                       </div>
                       <div className="absolute top-3 right-3">
                         {deletingId === n._id ? (

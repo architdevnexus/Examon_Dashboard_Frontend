@@ -97,6 +97,7 @@ const AddNotes = () => {
         <InputField
           label="Notes Category"
           name="notesCategory"
+          disabled={isPending}
           type="text"
           value={formData.notesCategory}
           onChange={handleChange}
@@ -106,6 +107,7 @@ const AddNotes = () => {
 
         {/* Title */}
         <InputField
+          disabled={isPending}
           label="Title"
           name="title"
           type="text"
@@ -118,6 +120,7 @@ const AddNotes = () => {
         {/* Language / Medium */}
         <InputField
           label="Medium"
+          disabled={isPending}
           name="language"
           type="text"
           value={formData.language}
@@ -129,6 +132,7 @@ const AddNotes = () => {
         {/* Level (select) */}
         <InputField
           label="Level"
+          disabled={isPending}
           name="level"
           type="select"
           value={formData.level}
@@ -145,6 +149,7 @@ const AddNotes = () => {
         {/* PDF Upload */}
         <InputField
           label="Upload PDF"
+          disabled={isPending}
           name="pdf"
           type="file"
           ref={fileRef}

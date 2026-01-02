@@ -31,9 +31,9 @@ function Dashboard() {
 
   if (isLoading) return <Loader />;
 
-  if (isError) return <p>{error}</p>;
+  if (isError) return <p>{error.message}</p>;
 
-  console.log(dashboard);
+
   const CardsData = [
     {
       icon: <FaUsers />,
@@ -77,11 +77,7 @@ function Dashboard() {
       link: "/studymaterial/pyq",
       data: dashboard?.PYQs[0]?.questionspaper || [],
     },
-    // {
-    //   title: "Courses",
-    //   link: "/courses",
-    //   data: dashboard?.Courses[0]?.courses || [],
-    // },
+
     {
       title: "Batches",
       link: "/batches",

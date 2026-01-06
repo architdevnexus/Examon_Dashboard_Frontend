@@ -27,7 +27,6 @@ const LogOut = ({ logout, user }) => {
   //   LogOut()
   // }, [])
 
-
   return <Navigate to="/login" replace />;
 };
 

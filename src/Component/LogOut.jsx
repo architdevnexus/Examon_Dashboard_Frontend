@@ -7,7 +7,7 @@ const LogOut = ({ logout, user }) => {
   localStorage.removeItem("token");
   logout(null);
 
-
+// testing for ci/cd 1.1.1
   // const LogOut = async (e) => {
 
   //   try {

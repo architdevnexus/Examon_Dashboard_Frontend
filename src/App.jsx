@@ -106,7 +106,7 @@ function AppContent() {
     //     return <Navigate to="/logout" replace />;
     //   }
     // })()
-    console.log("app.jsx")
+
   }, []);
 
   const { collapsed } = useSidebar();

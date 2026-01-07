@@ -7,6 +7,7 @@ import {
   useUpdateOrDeleteContent,
 } from "../../hooks/useHooks.js";
 import InputField from "../../Component/Input/InputField.jsx";
+import { AiOutlineDelete } from "react-icons/ai";
 
 const BatchUpdateForm = () => {
   const { cid, id } = useParams();
@@ -24,6 +25,11 @@ const BatchUpdateForm = () => {
     description: "",
     perks: "",
     duration: "",
+    link: [{
+      id: 1,
+      title: "",
+      url: "",
+    }],
     price: "",
     finalPrice: "",
     teachers: "",
@@ -66,12 +72,17 @@ const BatchUpdateForm = () => {
       const data = batch.data;
       // console.log(data);
       setFormData({
-        image: null, // keep null for file inputs; we'll show existing images via preview URLs
+        image: null,
         image2: null,
         batchName: data?.batchName ?? "",
         syllabus: data?.syllabus ?? "",
         description: data?.description ?? "",
         perks: data?.perks ?? "",
+        link: data?.link ?? [{
+          id: 1,
+          title: "",
+          url: "",
+        }],
         duration: data?.duration ?? "",
         price: data?.price ?? "",
         finalPrice: data?.discount ?? "",
@@ -132,7 +143,6 @@ const BatchUpdateForm = () => {
   if (isLoading) return <Loader />;
 
   if (isError) {
-    // show toast once and render nothing (keeps previous behavior but safe)
     toast.error(error?.message ?? "Failed to load batch");
     return null;
   }
@@ -208,32 +218,80 @@ const BatchUpdateForm = () => {
     }));
   };
 
+  const RemoveLink = (id) => {
+    const popUpRes = confirm("Confirm to delete this question");
+
+    if (popUpRes) {
+      const remainingLinks = formData.link.filter((l) => l.id !== id);
+
+      setFormData((prev) => ({
+        ...prev,
+        link: remainingLinks,
+      }));
+    }
+  };
+
+  const addLink = () => {
+    setFormData((prev) => ({
+      ...prev,
+      link: [
+        ...prev.link,
+        {
+          id: prev.link.length + 1,
+          title: "",
+          url: "",
+        },
+      ],
+    }));
+  };
+
+  const handleLinkChange = (index, field, value) => {
+    const updatedLinks = [...formData.link];
+    updatedLinks[index - 1][field] = value;
+    setFormData((prev) => ({ ...prev, link: updatedLinks }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = new FormData();
+    const fd = new FormData();
 
     // append all non-file fields
-    const skip = new Set(["image", "image2"]);
-    for (const key in formData) {
-      if (
-        Object.prototype.hasOwnProperty.call(formData, key) &&
-        !skip.has(key)
-      ) {
-        payload.append(key, formData[key] ?? "");
-      }
-    }
+    // const skip = new Set(["image", "image2"]);
+    // for (const key in formData) {
+    //   if (
+    //     Object.prototype.hasOwnProperty.call(formData, key) &&
+    //     !skip.has(key)
+    //   ) {
+    //     payload.append(key, formData[key] ?? "");
+    //   }
+    // }
 
-    // append files if provided (file objects) — server expects image1 & image2 (matching your previous code)
-    if (formData.image) payload.append("image1", formData.image);
-    if (formData.image2) payload.append("image2", formData.image2);
-    if (discountPercent) payload.append("discountPercent", discountPercent);
-    if (discountPercent) payload.append("discount", formData.finalPrice);
+    // // append files if provided (file objects) — server expects image1 & image2 (matching your previous code)
+    // if (formData.image) payload.append("image1", formData.image);
+    // if (formData.image2) payload.append("image2", formData.image2);
+    // if (discountPercent) payload.append("discountPercent", discountPercent);
+    // if (discountPercent) payload.append("discount", formData.finalPrice);
+
+    Object.entries(formData).forEach(([key, value]) => {
+      if (!value) return;
+
+      if (key === "image") fd.append("image1", value);
+      else if (key === "image2") fd.append("image2", value);
+      else if (key === "finalPrice") fd.append("discount", value);
+      else if (key === "link") fd.append("link", JSON.stringify(value));
+      else if (key === "batchCategory")
+        fd.append("batchCategory", value.trim() || "Other");
+      else fd.append(key, value);
+    });
+
+    //  Explicit backend key
+    fd.append("discountPercent", discountPercent);
 
     mutate(
       {
         method: "patch",
         url: `/live/batches/update/${cid}/${id}`,
-        data: payload,
+        data: fd,
       },
       {
         onSuccess: (resp) => {
@@ -261,6 +319,11 @@ const BatchUpdateForm = () => {
             syllabus: "",
             description: "",
             perks: "",
+            link: [{
+              id: 1,
+              title: "",
+              url: "",
+            }],
             duration: "",
             price: "",
             teachers: "",
@@ -297,7 +360,7 @@ const BatchUpdateForm = () => {
               accept="image/*"
               onChange={handleFileChange}
               inputClassName="border p-2 rounded w-full"
-              // helpText="Recommended: 400x400"
+            // helpText="Recommended: 400x400"
             />
             {preview && (
               <img
@@ -371,6 +434,55 @@ const BatchUpdateForm = () => {
           placeholder="Brief batch description..."
           inputClassName=" resize-none"
         />
+
+        <div>
+          <h3 className="font-semibold text-gray-700 mb-2">Links</h3>
+
+          {formData.link.map((l, index) => (
+            <div
+              key={index}
+              className="border relative flex rounded-xl gap-1 p-4 mb-4 bg-gray-50 shadow-sm"
+            >
+              <input
+                required
+                type="text"
+                onChange={(e) =>
+                  handleLinkChange(l.id, "title", e.target.value)
+                }
+                value={l.title}
+                placeholder="Title"
+                className="border p-2 w-1/2 rounded "
+              />
+              <input
+                required
+                type="url"
+                value={l.url}
+                onChange={(e) =>
+                  handleLinkChange(l.id, "url", e.target.value)
+                }
+                placeholder="Url"
+
+                className="border p-2 w-1/2 rounded"
+              />
+              <span
+                onClick={() => {
+                  RemoveLink(l.id);
+                }}
+                className="flex justify-center items-center cursor-pointer rounded-full p-1 bg-red-600 text-white "
+              >
+                <AiOutlineDelete size={21} />
+              </span>
+            </div>
+          ))}
+
+          <button
+            type="button"
+            onClick={addLink}
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          >
+            + Add Link
+          </button>
+        </div>
 
         <InputField
           disabled={isPending}

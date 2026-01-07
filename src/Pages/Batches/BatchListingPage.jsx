@@ -34,17 +34,16 @@ export default function BatchListingPage() {
 
   if (isError) return <div>{error}</div>;
 
-  const filteredCourses = BatchResp.categories
-    .map((category) => ({
-      ...category,
-      batches: category.batches.filter(
-        (c) =>
-          c.batchName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          category.batchCategory
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase())
-      ),
-    }))
+  const filteredCourses = BatchResp.categories?.map((category) => ({
+    ...category,
+    batches: category.batches.filter(
+      (c) =>
+        c.batchName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        category.batchCategory
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+    ),
+  }))
     .filter((category) => category.batches.length > 0);
 
   const headerProps = {
@@ -61,7 +60,7 @@ export default function BatchListingPage() {
 
     if (!isConfirmed) return;
 
-    setDeletingId(id);
+    setDeletingId({ cid, id });
 
     mutate(
       {
@@ -88,7 +87,6 @@ export default function BatchListingPage() {
   const handleUpdate = ({ cid, id }) => {
     //console.log(id);
     if (!id) {
-      alert("fd");
       toast.warn("Id is missing");
       return;
     }
@@ -102,6 +100,7 @@ export default function BatchListingPage() {
     );
 
     if (!isConfirmed) return;
+    setDeletingId({ cid: id });
 
     mutate(
       {
@@ -112,6 +111,7 @@ export default function BatchListingPage() {
         onSuccess: (resp) => {
           //console.log(resp);
           toast.success(resp.message);
+          setDeletingId(null);
         },
         onError: (e) => {
           //console.log(e);
@@ -128,34 +128,34 @@ export default function BatchListingPage() {
       {filteredCourses.length === 0 ? (
         <p className="text-center text-gray-500  ">No batches available.</p>
       ) : (
-        filteredCourses.map((category, index) => (
+        filteredCourses?.map((category, index) => (
           <div key={index}>
             {category?.batchCategory && (
               <div className="flex justify-between px-2 border-b   items-center my-2">
                 <h3 className="text-2xl uppercase py-2">
                   {category.batchCategory}
                 </h3>
-                {!isPending ? (
-                  <MdDelete
-                    size={30}
-                    className="bg-red-500   text-white rounded-full p-1.5 cursor-pointer hover:bg-red-600 transition"
-                    title="Delete entire category"
-                    onClick={() => onDeleteCategory?.(category._id)}
-                  />
-                ) : (
-                  <MoonLoader color="#003e68" size={20} />
-                )}
+                {deletingId?.cid == category._id ? (
+                  (
+                    <MoonLoader color="#003e68" size={20} />
+                  )
+                ) : <MdDelete
+                  size={30}
+                  className="bg-red-500   text-white rounded-full p-1.5 cursor-pointer hover:bg-red-600 transition"
+                  title="Delete entire category"
+                  onClick={() => onDeleteCategory?.(category._id)}
+                />}
               </div>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 border-b pb-2 mb-2  lg:grid-cols-3 gap-6">
-              {category.batches.map((batch, i) => (
+              {category.batches?.map((batch, i) => (
                 <BatchCard
                   key={i}
                   cId={category._id}
                   batch={batch}
                   onDelete={handleDelete}
                   onEdit={handleUpdate}
-                  isDeleting={deletingId === batch._id}
+                  isDeleting={deletingId?.id === batch._id}
                 />
               ))}
             </div>

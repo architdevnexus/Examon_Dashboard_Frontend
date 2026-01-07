@@ -212,7 +212,7 @@ export default function OfferNotification() {
                 {batchesLoading ? (
                   <option value="">Fetching Batches...</option>
                 ) : (
-                  batchNames?.batchNames.map((name, i) => (
+                  batchNames?.batchNames?.map((name, i) => (
                     <option key={i} value={name}>
                       {name}
                     </option>
@@ -273,7 +273,7 @@ export default function OfferNotification() {
                     No notifications yet.
                   </p>
                 ) : (
-                  data.data.map((n, index) => (
+                  data?.data?.map((n, index) => (
                     <div
                       title={n.description}
                       key={index}

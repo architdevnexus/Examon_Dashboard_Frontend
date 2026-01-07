@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useUpdateOrDeleteContent } from "../../hooks/useHooks.js";
 import InputField from "../../Component/Input/InputField.jsx";
+import { AiOutlineDelete } from "react-icons/ai";
 
 const INITIAL_STATE = {
   image: null,
@@ -11,6 +12,11 @@ const INITIAL_STATE = {
   batchName: "",
   syllabus: "",
   description: "",
+  link: [{
+    id: 1,
+    title: "",
+    url: "",
+  }],
   perks: "",
   duration: "",
   price: "",
@@ -74,6 +80,39 @@ const AddBatchForm = () => {
     toast.error("Please select a valid image file");
   };
 
+  const RemoveLink = (id) => {
+    const popUpRes = confirm("Confirm to delete this question");
+
+    if (popUpRes) {
+      const remainingLinks = formData.link.filter((l) => l.id !== id);
+
+      setFormData((prev) => ({
+        ...prev,
+        link: remainingLinks,
+      }));
+    }
+  };
+
+  const addLink = () => {
+    setFormData((prev) => ({
+      ...prev,
+      link: [
+        ...prev.link,
+        {
+          id: prev.link.length + 1,
+          title: "",
+          url: "",
+        },
+      ],
+    }));
+  };
+
+  const handleLinkChange = (index, field, value) => {
+    const updatedLinks = [...formData.link];
+    updatedLinks[index - 1][field] = value;
+    setFormData((prev) => ({ ...prev, link: updatedLinks }));
+  };
+
   /* ------------------ SUBMIT ------------------ */
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,6 +122,8 @@ const AddBatchForm = () => {
       return;
     }
 
+    console.log(formData)
+
     const fd = new FormData();
 
     Object.entries(formData).forEach(([key, value]) => {
@@ -91,6 +132,7 @@ const AddBatchForm = () => {
       if (key === "image") fd.append("image1", value);
       else if (key === "image2") fd.append("image2", value);
       else if (key === "finalPrice") fd.append("discount", value);
+      else if (key === "link") fd.append("link", JSON.stringify(value));
       else if (key === "batchCategory")
         fd.append("batchCategory", value.trim() || "Other");
       else fd.append(key, value);
@@ -98,7 +140,7 @@ const AddBatchForm = () => {
 
     //  Explicit backend key
     fd.append("discountPercent", discountPercent);
-    
+
 
     mutate(
       {
@@ -222,6 +264,55 @@ const AddBatchForm = () => {
           onChange={handleChange}
           inputClassName="resize-none"
         />
+        <div>
+          <h3 className="font-semibold text-gray-700 mb-2">Links</h3>
+
+          {formData.link.map((l, index) => (
+            <div
+              key={index}
+              className="border relative flex rounded-xl gap-1 p-4 mb-4 bg-gray-50 shadow-sm"
+            >
+              <input
+                required
+                type="text"
+                onChange={(e) =>
+                  handleLinkChange(l.id, "title", e.target.value)
+                }
+                value={l.title}
+                placeholder="Title"
+                className="border p-2 w-1/2 rounded "
+              />
+              <input
+                required
+                type="url"
+                value={l.url}
+                onChange={(e) =>
+                  handleLinkChange(l.id, "url", e.target.value)
+                }
+                placeholder="Url"
+
+                className="border p-2 w-1/2 rounded"
+              />
+              <span
+                onClick={() => {
+                  RemoveLink(l.id);
+                }}
+                className="flex justify-center items-center cursor-pointer rounded-full p-1 bg-red-600 text-white "
+              >
+                <AiOutlineDelete size={21} />
+              </span>
+            </div>
+          ))}
+
+          <button
+            type="button"
+            onClick={addLink}
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          >
+            + Add Link
+          </button>
+        </div>
+
         <InputField
           label="Perks"
           name="perks"

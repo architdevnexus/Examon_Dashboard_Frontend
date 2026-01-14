@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-
 import { MdEdit, MdSave } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import Loader from "../Component/Loader";
 import { toast } from "react-toastify";
 import { MoonLoader } from "react-spinners";
-import { StatInput } from "../Component/Input/AchimentInput";
 import { useGetContent, useUpdateOrDeleteContent } from "../hooks/useHooks";
 import InputField from "../Component/Input/InputField";
 
@@ -135,11 +133,10 @@ const Achievements = () => {
               name={f.name}
               label={f.label}
               disabled={!Editable}
-              type="number"
-              min={0}
+              type="String"
+              minLength={0}
               value={formData[f.name]}
               onChange={handleChange}
-              placeholder="e.g. PYQ"
               required
             />
           ))}
